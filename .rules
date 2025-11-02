@@ -1,5 +1,6 @@
 ## Writing style
 
 * Use Semantic Line Breaks, but don't be too aggressive adding link breaks.
-* Markdown heading should have newlines around
-* Lists should have a newline before the first item and after the last item
+* No newline at the beginning of file
+* Markdown headings should have newlines around them
+* Lists: newlines before first item and after last item
