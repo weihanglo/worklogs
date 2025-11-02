@@ -37,6 +37,16 @@
 //!     * Merged https://github.com/weihanglo/cargo/pull/12143
 //! ```
 //!
+//! ## Available categories
+//!
+//! * Issue triages
+//! * RFC reviews
+//! * FCP reviews
+//! * PR reviews
+//! * PR submissions
+//! * Discussions
+//! * Researches
+//!
 //! ## Recipes
 //!
 //! ```console
