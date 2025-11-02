@@ -4,14 +4,54 @@
 # such empty
 ---
 
-use std::fmt::Display;
-use std::fs::File;
-use std::io::{BufReader, BufRead, Write};
-use std::process;
-use std::str::FromStr;
+//! # A parser for my own half-broken worklog format
+//!
+//! ## Requirements
+//!
+//! - [Rust](https://rust-lang.org)
+//! - [xsv](https://github.com/BurntSushi/xsv)
+//! - [sort](https://en.wikipedia.org/wiki/Sort_(Unix))
+//!
+//! ## Worklog format
+//!
+//! The worklog may look like
+//!
+//! ```markdown
+//! ## 2023-05-16
+//!
+//! * Issue triages
+//!     * Closed https://github.com/weihanglo/cargo/issues/12140
+//!     * Commented https://github.com/weihanglo/cargo/issues/12114
+//! * FCP reviews
+//!     * Merged https://github.com/weihanglo/cargo/pull/12146
+//! * PR submissions
+//!     * Created https://github.com/weihanglo/rust-analyzer/pull/14819
+//!
+//! ## 2023-05-15
+//!
+//! * Issue triages
+//!     * Closed https://github.com/weihanglo/cargo/issues/2995
+//!     * Tracked https://github.com/weihanglo/cargo/issues/10490
+//!     * Commented https://github.com/weihanglo/cargo/issues/4184
+//! * PR reviews
+//!     * Merged https://github.com/weihanglo/cargo/pull/12143
+//! ```
+//!
+//! ## Recipes
+//!
+//! ```console
+//! cargo run -- work.log work.log.csv
+//! sort -u -t, -k5,5 work.log.csv | sort -t, -k1,1 | xsv frequency -n
+//! ```
+
+use std::env;
 use std::error;
 use std::fmt;
-use std::env;
+use std::fmt::Display;
+use std::fs::File;
+use std::io::{BufRead, BufReader, Write};
+use std::process;
+use std::str::FromStr;
 
 type BoxResult<T> = Result<T, Box<dyn error::Error>>;
 
@@ -116,15 +156,15 @@ fn error_lnr(lnr: usize, err: impl fmt::Display) -> Box<Error> {
     error(format!("broken on line {lnr}: {err}"))
 }
 
-
 fn parse_item(date: &str, kind: Kind, text: &str) -> BoxResult<Record> {
     let (action, url) = match text
         .trim_start_matches(&['-', ' ', '*'])
         .trim()
-        .split_once(' ') {
-            Some(s) => s,
-            None => return Err(error(format!("failed to parse `{text}`")))
-        };
+        .split_once(' ')
+    {
+        Some(s) => s,
+        None => return Err(error(format!("failed to parse `{text}`"))),
+    };
     let action = action.parse::<Action>()?;
     let canonical_url = url.rsplit_once('#').map(|x| x.0).unwrap_or(url).into();
     let record = Record {
@@ -172,7 +212,7 @@ fn main() -> BoxResult<()> {
                 continue;
             }
             ("  ", text) => parse_item(&date, kind, text).map_err(|e| error_lnr(lnr, e))?,
-            _ => return Err(error_lnr(lnr, ""))
+            _ => return Err(error_lnr(lnr, "")),
         };
 
         writeln!(output, "{record}").map_err(|e| error_lnr(lnr, e))?;
