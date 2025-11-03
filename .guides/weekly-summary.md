@@ -2,7 +2,7 @@
 
 Rules for generating weekly summaries in `weekly.md` from daily PR logs in `daily.md`.
 
-## Week Boundaries - CRITICAL
+## Week Boundaries
 
 * Header = Monday when summary is written (week already ended)
 * Coverage = Previous 7 days (Monday-Sunday of prior week)
@@ -25,7 +25,7 @@ For each PR, use `gh pr view <PR-URL>` (add `--comments` or `--diff` if needed):
 **Include with full write-up:**
 
 - User says it's important
-- Unblocks external projects (e.g., Eclipse Zenoh)
+- Unblocks external projects (e.g., Eclipse Zenoh, Bazel)
 - Design discussions, RFC/FCP reviews
 - Fixes user-facing bugs or security issues
 - Beta backports (shows urgency)
@@ -40,7 +40,7 @@ For each PR, use `gh pr view <PR-URL>` (add `--comments` or `--diff` if needed):
 **Skip:**
 
 - Cargo submodule updates in rust-lang/rust
-- Work already documented elsewhere in the week
+- Work already documented elsewhere in the week (should compile them)
 
 **If uncertain:** Mark TODO and ask user.
 
@@ -77,6 +77,7 @@ Is it refactoring/test/version-bump/cleanup?
 ## Examples
 
 ### ✅ Full Write-Up: Clear External Impact
+
 ```markdown
 * Fixed `cargo update --precise` to accept arbitrary Git revisions including short SHAs, tags, and branch names for Git dependencies.
   Previously, libgit2's zero-padding of short SHAs caused lookup failures, preventing users from pinning dependencies to specific commits by tag or short hash.
@@ -88,6 +89,7 @@ Is it refactoring/test/version-bump/cleanup?
 Why good: Outcome-focused verb ("Fixed"), explains broken behavior, shows user impact, names external beneficiary, includes issue link.
 
 ### ✅ TODO: Internal Refactoring
+
 ```markdown
 * TODO: Refactored string joining utilities to use itertools —
   [rust-lang/cargo#13275](https://github.com/rust-lang/cargo/pull/13275)
@@ -98,12 +100,14 @@ Why TODO: Pure refactoring without clear user benefit.
 ## Quick Reference
 
 **Finding context:**
+
 1. Start: `gh pr view <URL>` → title + description
 2. If unclear: `gh pr view <URL> --comments` → discussion
 3. Still unclear: `gh pr diff <URL>` → code changes
 4. Check "Fixes #XXXX" → original user problem
 
 **User feedback patterns:**
+
 - User says "X is important" → Full write-up
 - User says "Y not important" → TODO or omit
 - Better to mark TODO than write weak rationale
