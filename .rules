@@ -15,49 +15,16 @@
 * No internal project names, codenames, customer or partner details
 * Keep metrics and technical details generic
 
-## Monthly summaries
+## Narrative Style
 
-### Structure
-
-* Aggregate weekly entries by theme, not chronologically
-* Group related activities into single bullet points (e.g., all cache management work together)
-* One clear theme per bullet - split unrelated work even if from same week
-* Combine multiple PRs/discussions under broader goals
-
-### Lead with outcomes
-
-* Start with impact, not process - "Unblocked stabilization" not "Advanced system"
+* Lead with outcomes: "Unblocked stabilization" not "Advanced system"
 * Use outcome-focused verbs: Stabilized, Enabled, Fixed, Unblocked
-* Avoid process verbs as opening: Reviewed, Discussed, Worked on (okay for supporting context)
-* Explain what it enables first, then how if needed
-
-### Explain impact
-
-* Who benefits: $WORK, enterprise users, specific communities, tool maintainers
-* What it enables: parallel builds, stabilization paths, better observability
-* Why it matters: solves pain points, addresses blockers, improves security
+* Avoid process verbs as opening: Reviewed, Discussed, Worked on
+* Explain WHO benefits, WHAT it enables, WHY it matters
 * Connect to bigger initiatives: Rust Project Goals, RFCs, ecosystem needs
-
-### Clarity
-
-* Clarify your role: champion vs implementor, reviewer vs author
-* Include context links: design docs, Project Goal pages, not just PRs
-* Be specific about scope: "one step toward stabilization", "beta backport"
-* Combine discovered work with its source (e.g., optimizations found during feature work)
-
-### What to avoid
-
-* Don't lead with process verbs - buries the impact
-* Don't list PRs chronologically - group by what they accomplish
-* Don't include minor/unthematic items unless they fit a broader theme
-* Don't focus on HOW over WHAT and WHY
-
-### When in doubt
-
-* If missing context, ask the user
-* Look at previous months for style consistency
 
 ## Workflow Guides
 
-For specific workflows, see:
+For specific summary generation workflows, see:
 * `.guides/weekly-summary.md` - Generating weekly summaries from daily logs
+* `.guides/monthly-summary.md` - Generating monthly summaries from weekly entries
