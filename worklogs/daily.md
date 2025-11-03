@@ -833,8 +833,6 @@
 
 * Issue triages
   * Commented https://github.com/rust-lang/cargo/issues/15743#issuecomment-3085303591
-* FCP reviews
-  * Commented
 
 ## 2025-07-16
 
@@ -2812,13 +2810,13 @@
   * Commented https://github.com/rust-lang/cargo/pull/14747#discussion_r1825313696
   * Closed https://github.com/rust-lang/cargo/pull/14763#issuecomment-2451101984
   * Merged https://github.com/rust-lang/cargo/pull/14750#issuecomment-2451174930
-* PR suggestions
+* PR submissions
   * Created https://github.com/rust-lang/cargo/pull/14765
 
 ## 2024-10-30
 
 * Issue triages
-  * https://github.com/rust-lang/cargo/issues/14712#issuecomment-2448332806
+  * Commented https://github.com/rust-lang/cargo/issues/14712#issuecomment-2448332806
 * PR reviews
   * Merged https://github.com/rust-lang/cargo/pull/14748#issuecomment-2448633061
   * Commented https://github.com/rust-lang/blog.rust-lang.org/pull/1422#discussion_r1823647939
@@ -3206,8 +3204,6 @@
   * Commented https://github.com/rust-lang/cargo/pull/14598#discussion_r1776131433
 * PR submissions
   * Updated https://github.com/rust-lang/cargo/pull/14587#discussion_r1775239340
-* Discussions
-  * Created
 
 ## 2024-09-24
 
@@ -3369,7 +3365,6 @@
 
 * Issue triages
   * Closed https://github.com/rust-lang/cargo/issues/14485#issuecomment-2324751096https://github.com/rust-lang/rust/issues/129889#issuecomment-2324758441
-  * Commented
 
 ## 2024-09-01
 
@@ -3555,7 +3550,6 @@
 * PR reviews
   * Merged https://github.com/rust-lang/cargo/pull/14367#discussion_r1707806031
   * Merged https://github.com/rust-lang/cargo/pull/14368#issuecomment-2274473145
-  * Merged
 * PR submissions
   * Created https://github.com/rust-lang/cargo/pull/14366
   * Created https://github.com/rust-lang/cargo/pull/14370
@@ -3681,7 +3675,6 @@
 
 * PR reviews
   * Commented https://github.com/rust-lang/cargo/pull/14305#pullrequestreview-2203487432
-  * Merged
 
 ## 2024-07-27
 
@@ -4394,7 +4387,6 @@
   * Closed https://github.com/rust-lang/cargo/pull/13694#issuecomment-2128493099
 * PR submissions
   * Created https://github.com/rust-lang/rust/pull/125465
-  * Created
 * Discussions
   * Created https://rust-lang.zulipchat.com/#narrow/stream/247081-t-compiler.2Fperformance/topic/tempfile.20in.20rustc-perf.20make.20it.20hard.20to.20configure.20vendor
 
