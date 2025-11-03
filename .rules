@@ -1,6 +1,16 @@
-## Writing style
+# Writing style
 
-* Use Semantic Line Breaks, but don't be too aggressive adding link breaks.
+## Formatting
+
+* Use Semantic Line Breaks, but don't be too aggressive adding link breaks
 * No newline at the beginning of file
 * Markdown headings should have newlines around them
 * Lists: newlines before first item and after last item
+* Use `*` for all list markers (not `-`)
+* List item continuation lines should have 2-space indentation
+
+## Confidentiality
+
+* Use `$WORK` placeholder for company/employer
+* No internal project names, codenames, customer or partner details
+* Keep metrics and technical details generic
