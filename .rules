@@ -56,3 +56,8 @@
 
 * If missing context, ask the user
 * Look at previous months for style consistency
+
+## Workflow Guides
+
+For specific workflows, see:
+* `.guides/weekly-summary.md` - Generating weekly summaries from daily logs
