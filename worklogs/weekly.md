@@ -231,7 +231,8 @@
 * Started [the discussion](https://rust-lang.zulipchat.com/#narrow/channel/266220-t-rustdoc/topic/Plan.20to.20stabilize.20.60--emit.3Ddep-info.5B.3Dpath.5D.60) of testing and stabilizing rustdoc `dep-info` file.
   Previously we’ve mentioned it is quite important for correctly rebuild docs.
   It now requires rustdoc team to remove blocker on their side —
-  [rust-lang/cargo#15605](https://github.com/rust-lang/cargo/pull/15605),  [rust-lang/this-week-in-rust#6702](https://github.com/rust-lang/this-week-in-rust/pull/6702), 
+  [rust-lang/cargo#15605](https://github.com/rust-lang/cargo/pull/15605),
+  [rust-lang/this-week-in-rust#6702](https://github.com/rust-lang/this-week-in-rust/pull/6702),
 
 ## 2025-05-26
 
@@ -412,8 +413,10 @@
 ## 2025-01-06
 
 * Discussed the splitting of `CARGO_HOME` with rustup and cargo team folks.
-  While it was not a high priority, people most find it annoying and want Cargo be compliant with the de-facto XDG directory standard.
-  This turned me burnout for a while because folks online were with bad temper— [rust-lang/cargo#1734 (comment)](https://github.com/rust-lang/cargo/issues/1734#issuecomment-2571792782)
+  While it was not a high priority,
+  people most find it annoying and want Cargo be compliant with the de-facto XDG directory standard.
+  This turned me burnout for a while because folks online were with bad temper —
+  [rust-lang/cargo#1734 (comment)](https://github.com/rust-lang/cargo/issues/1734#issuecomment-2571792782)
 * Discussed how to reduce people’s need of writing build script.
   Reduing build scripts can largely speed up the build performance —
   [rust-lang/cargo#14948 (comment)](https://github.com/rust-lang/cargo/issues/14948#issuecomment-2569625709)
@@ -689,7 +692,8 @@
 * Mentored one contributor to enhance and clarify how caret requirements work and mean in Cargo.toml file —
   [rust-lang/cargo#12679](https://github.com/rust-lang/cargo/pull/12679#pullrequestreview-1629936045)
 * Filed two pull requests for refactoring messy registry code into enums for modeling values in a type-safe way —
-  [rust-lang/cargo#12677](https://github.com/rust-lang/cargo/pull/12677) and [rust-lang/cargo#12675](https://github.com/rust-lang/cargo/pull/12675), 
+  [rust-lang/cargo#12677](https://github.com/rust-lang/cargo/pull/12677)
+  and [rust-lang/cargo#12675](https://github.com/rust-lang/cargo/pull/12675),
 
 ## 2023-09-11
 
