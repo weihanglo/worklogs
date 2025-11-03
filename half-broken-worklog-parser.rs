@@ -207,7 +207,8 @@ fn main() -> BoxResult<()> {
     let mut date = String::new();
     let mut kind = Kind::default();
 
-    for (lnr, line) in BufReader::new(input).lines().enumerate() {
+    for (lnr, line) in BufReader::new(input).lines().skip(1).enumerate() {
+        let lnr = lnr + 2; // first line skipped and line nubmer is one-based.
         let line = line.unwrap();
         if line.len() < 2 {
             continue;
