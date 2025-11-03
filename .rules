@@ -14,3 +14,12 @@
 * Use `$WORK` placeholder for company/employer
 * No internal project names, codenames, customer or partner details
 * Keep metrics and technical details generic
+
+## Monthly summaries
+
+* Aggregate weekly entries by theme, not chronologically
+* Group related activities into single bullet points
+* Lead with outcomes and impact, not process details
+* Combine multiple PRs/discussions under broader goals
+* Be concise: focus on what was accomplished and why it matters
+* If missing context, ask the user
