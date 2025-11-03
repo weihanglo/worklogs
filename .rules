@@ -22,9 +22,14 @@
 * Avoid process verbs as opening: Reviewed, Discussed, Worked on
 * Explain WHO benefits, WHAT it enables, WHY it matters
 * Connect to bigger initiatives: Rust Project Goals, RFCs, ecosystem needs
+* Include context links: issues, RFCs, design docs, Project Goal pages
+* Avoid confusing reader when you're not the implementor/author (clarify role if needed)
+* Combine discovered work with its source (e.g., optimizations found during feature work)
+* Be specific about scope: "one step toward stabilization", "beta backport"
 
 ## Workflow Guides
 
 For specific summary generation workflows, see:
+
 * `.guides/weekly-summary.md` - Generating weekly summaries from daily logs
 * `.guides/monthly-summary.md` - Generating monthly summaries from weekly entries

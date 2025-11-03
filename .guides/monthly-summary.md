@@ -30,10 +30,10 @@ Group related activities into cohesive narratives showing progress on broader go
 
 ### 3. Write
 
-* Lead with outcome: "Stabilized", "Enabled", "Fixed" (NOT "Worked on", "Advanced")
-* Explain: WHO benefits, WHAT it enables, WHY it matters
-* Link: Include design docs, Project Goal pages, not just PRs
-* Clarify role: champion vs implementor, reviewer vs author
+Follow narrative style from `.rules`.
+
+In monthly summaries,
+focus more on the big picture, business value, and the impact of the work.
 
 ## Examples
 
