@@ -59,7 +59,9 @@ use std::error;
 use std::fmt;
 use std::fmt::Display;
 use std::fs::File;
-use std::io::{BufRead, BufReader, Write};
+use std::io::BufRead;
+use std::io::BufReader;
+use std::io::Write as _;
 use std::process;
 use std::str::FromStr;
 
@@ -162,8 +164,8 @@ fn error(msg: String) -> Box<Error> {
     Box::new(Error(msg))
 }
 
-fn error_lnr(lnr: usize, err: impl fmt::Display) -> Box<Error> {
-    error(format!("broken on line {lnr}: {err}"))
+fn error_lnr(lnr: usize, err: impl Display) -> Box<Error> {
+    error(format!("broken at line {lnr}: {err}"))
 }
 
 fn parse_item(date: &str, kind: Kind, text: &str) -> BoxResult<Record> {
