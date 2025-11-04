@@ -11,7 +11,6 @@
   [rust-lang/cargo#16073](https://github.com/rust-lang/cargo/pull/16073#discussion_r2420979303),
   [rust-lang/cargo#16087](https://github.com/rust-lang/cargo/pull/16087#pullrequestreview-3329575996),
   [rust-lang/cargo#16092](https://github.com/rust-lang/cargo/pull/16092#discussion_r2424887141),
-
   [rust-lang/cargo#16177](https://github.com/rust-lang/cargo/pull/16177#pullrequestreview-3404194709),
   [Zulip discussion](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/different.20.24CARGO_HOMEs.20sharing.20build-dir/with/548309962).
 * Unblocked `-Zconfig-include` stabilization by adding array-of-any-type support to Cargo's configuration system.
