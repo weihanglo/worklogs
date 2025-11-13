@@ -1,5 +1,18 @@
 # Daily worklogs
 
+## 2025-11-11
+
+* Issue triages
+  * Created https://github.com/rust-lang/rust/issues/148835
+  * Commented https://github.com/rust-lang/rust/issues/148816#issuecomment-3517539792
+  * Commented https://github.com/rust-lang/cargo/issues/16237#issuecomment-3518231284
+  * Commented https://github.com/rust-lang/cargo/issues/16238#issuecomment-3519533133
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16243#discussion_r2516445079
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/16242
+  * Created https://github.com/alexcrichton/tar-rs/pull/420
+
 ## 2025-11-10
 
 * PR reviews
