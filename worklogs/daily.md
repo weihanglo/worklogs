@@ -1,5 +1,18 @@
 # Daily worklogs
 
+## 2025-11-18
+
+* PR reviews
+  * Commented https://github.com/rust-lang/rust/pull/149047#issuecomment-3547877346
+  * Commented https://github.com/rust-lang/cargo/pull/16265#discussion_r2538515054
+  * Merged https://github.com/rust-lang/cargo/pull/16265#pullrequestreview-3479021008
+  * Merged https://github.com/rust-lang/cargo/pull/16274#pullrequestreview-3479115582
+  * Merged https://github.com/rust-lang/cargo/pull/16275#pullrequestreview-3479787343
+* PR submissions
+  * Created https://github.com/rust-lang/rust/pull/149073
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/245100-t-compiler.2Fprioritization.2Falerts/topic/.23148948.20rustc.20does.20not.20always.20update.20the.20mtime.20of.20all.20its.20o.E2.80.A6/near/557972516
+
 ## 2025-11-17
 
 * Issue triages
