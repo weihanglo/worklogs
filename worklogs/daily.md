@@ -1,5 +1,17 @@
 # Daily worklogs
 
+## 2025-11-24
+
+* Issue triages
+  * Closed https://github.com/rust-lang/cargo/issues/15558
+  * Commented https://github.com/rust-lang/cargo/issues/16291#issuecomment-3572769811
+  * Commented https://github.com/rust-lang/rust/issues/83784#issuecomment-3572830043
+  * Commented https://github.com/rust-lang/cargo/issues/7614#issuecomment-3573725846
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16296#discussion_r2557884166
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/rustdoc-json.20output.20filename.20design/with/560014414
+
 ## 2025-11-23
 
 * Issue triages
