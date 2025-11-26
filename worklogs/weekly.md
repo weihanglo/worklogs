@@ -501,29 +501,187 @@
 
 ## 2024-04-01
 
+* Published `cargo-test-macro` and `cargo-test-support` crates to crates.io, enabling external cargo plugin developers to use Cargo's test utilities.
+  Addresses long-standing request to share test infrastructure with the broader Rust ecosystem —
+  [rust-lang/cargo#13418](https://github.com/rust-lang/cargo/pull/13418)
+  [rust-lang/cargo#10147](https://github.com/rust-lang/cargo/issues/10147)
+
 ## 2024-03-25
+
+* Help reviewed and beta/stable-backported a fix to a critical bug
+  that debuginfo were accidentally stripped for MSVC targets that broke backtraces on Windows.
+  This works around `-Cstrip=debuginfo` behaving like `-Cstrip=symbols` on MSVC
+  until rustc fix lands —
+  [rust-lang/cargo#13630](https://github.com/rust-lang/cargo/pull/13630)
+  [rust-lang/cargo#13653](https://github.com/rust-lang/cargo/pull/13653)
+* Fixed panic when resolving empty command aliases in Cargo config —
+  [rust-lang/cargo#13613](https://github.com/rust-lang/cargo/pull/13613)
+* Wrote a mega thread collecting all the soft-deprecations Cargo has for years.
+  Categorized them and sketched a plan for making them either hard deprecations,
+  or becoming Cargo-native lints —
+  [rust-lang/cargo#13629](https://github.com/rust-lang/cargo/issues/13629).
+  This also aligned with the Cargo linting system Cargo is going to have
+  for manifest files and potentially other areas in Cargo —
+  [rust-lang/cargo#13621](https://github.com/rust-lang/cargo/pull/13621).
+* Help reviewed compiler path trimming refactor that is considered the last step before stabilization,
+  This change was motivated by an earlier pull request of mine —
+  [rust-lang/rust#122450](https://github.com/rust-lang/rust/pull/122450)
+
 
 ## 2024-03-18
 
+* Started the experiment of caching registry index in SQLite.
+  The benchmark shows that it doesn't degrade much on index IO operations
+  (around -5% on macOS and Linux, and previous +40% on Windows)
+  but it does add complexity, so the team determined to put off it.
+  [rust-lang/cargo#13584](https://github.com/rust-lang/cargo/pull/13584)
+* Started the discussion about reproducibility when a Cargo package was moved.
+  `-Ztrim-paths` stroke again that it could fix this issue when enabled —
+  [rust-lang/cargo#1358y](https://github.com/rust-lang/cargo/issues/13586)
+
 ## 2024-03-11
+
+* Help the integration of Chrome trace visualization support
+  for profiling Cargo's performance via `CARGO_LOG_PROFILE` environment variable.
+  Helps developers understand where build time is spent,
+  improving iteration time and onboarding for Cargo itself —
+  [rust-lang/cargo#13399](https://github.com/rust-lang/cargo/pull/13399)
+* Mentored a new contributor to write documentation for git and path dependencies
+  with better examples, sub-headings, and clearer explanation of how version/git/path keys interact —
+  [rust-lang/cargo#13341](https://github.com/rust-lang/cargo/pull/13341)
+  [rust-lang/cargo#9624](https://github.com/rust-lang/cargo/issues/9624)
 
 ## 2024-03-04
 
+* Started abstracting filesystem operations from on-disk index cache as groundwork for SQLite-based index cache.
+  This enables future performance improvements and experiment for registry index operations,
+  this is also desired at $WORK when operating registry mirrors —
+  [rust-lang/cargo#13515](https://github.com/rust-lang/cargo/pull/13515)
+  [rust-lang/cargo#6908](https://github.com/rust-lang/cargo/issues/6908)
+* Timely unblocked rustdoc developers
+  by fixing deduplication of `--extern-html-root-url` flags
+  for rustdoc to prevent duplicate arguments —
+  [rust-lang/cargo#13544](https://github.com/rust-lang/cargo/pull/13544)
+* Helped drive the last mile of `-Zgc` garbage collection of Cargo's global cache
+  towards stabilization —
+  [rust-lang/cargo#13492](https://github.com/rust-lang/cargo/pull/13492#issuecomment-1965180849)
+
 ## 2024-02-26
+
+* Enabled MSRV-aware lockfile generation that respects `package.rust-version`
+  when creating new lockfiles.
+  This prevents packages with older MSRVs from getting incompatible lockfiles
+  when using latest Cargo,
+  ensuring builds remain compatible with declared minimum Rust versions.
+  Also a critical part for incoming MSRV-aware dependency resolution for
+  better MSRV assessment for the community —
+  [rust-lang/cargo#12861](https://github.com/rust-lang/cargo/pull/12861)
+* Found a undocumented and half-implemented target-specific `rustdocflags` flag.
+  To ensure in the future Cargo maintains the stability and compatibility,
+  extensively supported all `cfg` and target triple syntax `rustdocflags` passing —
+  [rust-lang/cargo#13197](https://github.com/rust-lang/cargo/pull/13197)
 
 ## 2024-02-19
 
+* Explored trimming DI node in macOS that is essential for `-Ztrim-paths` towards stabilization,
+  which is an important feature for better debugging and cache stories —
+  [rust-lang/rust#118518](https://github.com/rust-lang/rust/pull/118518#discussion_r1492961367)
+
 ## 2024-02-12
+
+* Updated Cargo's jobserver dependency to 0.1.28,
+  incorporating the GNU make-compliant fix where last `--jobserver-auth` flag wins —
+  [rust-lang/cargo#13419](https://github.com/rust-lang/cargo/pull/13419)
+* Investigated the impact to Cargo of libgit2 security vulnerabilities (CVE)
+  that could cause denial-of-service through infinite loops in carefully crafted Git revision specs.
+  Also backported to beta 1.77 to prevent potential hangs from malicious dependencies —
+  [rust-lang/cargo#13412](https://github.com/rust-lang/cargo/pull/13412)
+  [rust-lang/cargo#13417](https://github.com/rust-lang/cargo/pull/13417)
 
 ## 2024-02-05
 
+* Helped backport fixes for panics when parsing Cargo.toml files with empty spans, map/sequence syntax errors.
+  [rust-lang/cargo#13375](https://github.com/rust-lang/cargo/pull/13375)
+  [rust-lang/cargo#13376](https://github.com/rust-lang/cargo/pull/13376)
+  [rust-lang/cargo#13393](https://github.com/rust-lang/cargo/pull/13393)
+* Fixed jobserver incompatibility issue with new flag `--jobserver-auth`,
+  introduced in GNU Make v4.2.
+  This stopped bleeding before GNU Make v4.2 becomes more prevalent.
+  [rust-lang/jobserver-rs#67](https://github.com/rust-lang/jobserver-rs/pull/67)
+  [rust-lang/jobserver-rs#66](https://github.com/rust-lang/jobserver-rs/pull/66)
+* Enabled M1 macOS runner in CI pipeline as aarch64-apple-darwin moves toward tier-1 platform status —
+  [rust-lang/cargo#13377](https://github.com/rust-lang/cargo/pull/13377)
+
 ## 2024-01-29
+
+* Explored vendoring path dependencies that live outside workspace boundaries
+  to enable reproducible tarballs for workspaces with shared local dependencies.
+  This addresses cases where `[patch]` entries or shared path deps aren't under user control,
+  making vendor process incomplete. This was wanted at $WORK —
+  [rust-lang/cargo#13347](https://github.com/rust-lang/cargo/pull/13347)
+  [rust-lang/cargo#9172](https://github.com/rust-lang/cargo/issues/9172)
+* Refactored rebuild detection's `Freshness::Dirty` representation
+  to better encode fresh builds vs forced rebuilds.
+  Improved code clarity by eliminating unnecessary Option wrapper
+  and ensuring source verification runs for forced rebuilds —
+  [rust-lang/cargo#13361](https://github.com/rust-lang/cargo/pull/13361)
 
 ## 2024-01-22
 
+* Enabled new unstable flag `cargo update --precise` to accept yanked versions,
+  unblocking users who need to reproduce historical builds,
+  perform security audits, or run git bisect on old codebases.
+  This addresses long-standing pain points
+  where yanked transitive dependencies prevented adding unrelated crates or analyzing legacy code.
+  [rust-lang/cargo#13333](https://github.com/rust-lang/cargo/pull/13333)
+  [rust-lang/cargo#4225](https://github.com/rust-lang/cargo/issues/4225)
+
 ## 2024-01-15
 
+* Found and fixed various bugs around newly accepted Package ID specification syntax in `--package` flag.
+  Those bugs could have broken the compatbility of stable Cargo releases.
+  * Fixed package ID specification handling to accept `?` character in `--package` flag for Git sources.
+    This aligned CLI behavior with the extended Package ID Spec format stabilized earlier,
+    preventing flag parsing errors when specifying Git dependencies with query parameters —
+    [rust-lang/cargo#13315](https://github.com/rust-lang/cargo/pull/13315)
+    [rust-lang/cargo#13318](https://github.com/rust-lang/cargo/pull/13318)
+  * Fixed package ID format consistency across JSON messages and metadata output.
+    Addressed regression where stabilized pkgid spec format wasn't applied to JSON message format,
+    breaking tools like Miri that parse build messages —
+    [rust-lang/cargo#13311](https://github.com/rust-lang/cargo/pull/13311)
+    [rust-lang/cargo#13322](https://github.com/rust-lang/cargo/pull/13322)
+  * In order to comminucate the compatibility,
+    added cross-references to Package ID Specifications chapter for better discoverability —
+    [rust-lang/cargo#13298](https://github.com/rust-lang/cargo/pull/13298)
+* Fixed panic in dependency resolver when sorting empty version summaries,
+  preventing edge case crashes in unusual dependency configurations —
+  [rust-lang/cargo#13287](https://github.com/rust-lang/cargo/pull/13287)
+
 ## 2024-01-08
+
+* Fixed `cargo update --precise` to accept arbitrary Git revisions
+  including short SHAs, tags, and branch names for Git dependencies.
+  Previously, libgit2's zero-padding of short SHAs caused lookup failures,
+  preventing users from pinning dependencies to specific commits by tag or short hash.
+  This unblocked Eclipse Foundation's Zenoh project
+  where plugins need exact commit matching with the hosting binary to avoid ABI incompatibility —
+  [rust-lang/cargo#13250](https://github.com/rust-lang/cargo/pull/13250)
+  [rust-lang/cargo#13188](https://github.com/rust-lang/cargo/issues/13188)
+* Explored design around `-Ztrim-paths` remap strategires to improve debugger experience
+  based on different dependency sources.
+  Addressed issues where remapping paths to `<pkg>-<version>` format made it impossible
+  for debuggers to restore source locations, and relative paths from multiple workspaces caused confusion.
+  This is wanted at $WORK it would eliminate unwanted absolute paths embedded in debug information.
+  [rust-lang/cargo#13171](https://github.com/rust-lang/cargo/issues/13171)
+* Reviewed RFC 3493 for precise pre-release `cargo update`,
+  which enables updating to pre-release versions when explicitly requested with `--precise`.
+  The pre-release semnatic has been broken for a long while.
+  The community has been waiting for a better SemVer-compatible pre-release semantic
+  so that crate authors can release alpha/beta libraries withou fears —
+  [rust-lang/rfcs#3493](https://github.com/rust-lang/rfcs/pull/3493)
+* Enhanced CLI user experience by adding colors to `-Zhelp` console output,
+  making unstable feature documentation more readable and easier to navigate —
+  [rust-lang/cargo#13269](https://github.com/rust-lang/cargo/pull/13269)
 
 ## 2024-01-01
 
