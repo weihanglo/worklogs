@@ -26,9 +26,11 @@ For each PR, use `gh pr view <PR-URL>` (add `--comments` or `--diff` if needed):
 
 - User says it's important
 - Unblocks external projects (e.g., Eclipse Zenoh, Bazel)
-- Design discussions, RFC/FCP reviews
+- RFC reviews and FCP decisions (shows architectural leadership)
+- Design discussions on internals.rust-lang.org or Zulip
 - Fixes user-facing bugs or security issues
 - Beta backports (shows urgency)
+- Project Goal reviews and proposals
 
 **Include with TODO prefix:**
 
@@ -74,6 +76,31 @@ Is it refactoring/test/version-bump/cleanup?
 └─ NO → Mark TODO, ask user
 ```
 
+## Maintainer Work
+
+As a Cargo maintainer, RFC/FCP reviews and design discussions demonstrate leadership:
+
+**RFC Reviews:**
+- Show architectural direction and ecosystem impact
+- Include WHO benefits and WHY the design matters
+- Example: "Reviewed RFC for templating `CARGO_TARGET_DIR` to consolidate target directories across workspace members. This addresses critical disk space concerns in monorepos..."
+
+**FCP (Final Comment Period):**
+- Initiating FCP = proposing stabilization/merge
+- Tracking FCP = monitoring community feedback
+- Completing FCP = shepherding to merge
+- Always explain WHY the feature matters to users
+
+**Design Discussions:**
+- internals.rust-lang.org threads
+- Zulip conversations
+- Show problem being explored and potential impact
+
+**PR Reviews:**
+- Not just "Merged X" - explain what X enables
+- For significant features, explain the value
+- Group related reviews by theme
+
 ## Examples
 
 ### ✅ Full Write-Up: Clear External Impact
@@ -87,6 +114,27 @@ Is it refactoring/test/version-bump/cleanup?
 ```
 
 Why good: Outcome-focused verb ("Fixed"), explains broken behavior, shows user impact, names external beneficiary, includes issue link.
+
+### ✅ Maintainer Leadership: FCP
+
+```markdown
+* Completed FCP and stabilized automatic garbage collection for Cargo's global cache directory.
+  Cargo will now automatically clean up old, unused cache files once per day by default.
+  This reduces disk usage for all Cargo users without requiring manual intervention —
+  [rust-lang/cargo#14287](https://github.com/rust-lang/cargo/pull/14287)
+```
+
+Why good: Shows decision-making authority, explains user benefit.
+
+### ✅ Maintainer Leadership: RFC Review
+
+```markdown
+* Reviewed RFC for templating `CARGO_TARGET_DIR` to consolidate target directories across workspace members.
+  This addresses critical disk space concerns in monorepos by enabling shared build artifact directories —
+  [rust-lang/rfcs#3371](https://github.com/rust-lang/rfcs/pull/3371)
+```
+
+Why good: Outcome verb ("Reviewed"), explains ecosystem impact, connects to real user problems.
 
 ### ✅ TODO: Internal Refactoring
 
