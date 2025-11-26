@@ -5582,11 +5582,6 @@
 * PR submissions
   * Created https://github.com/rust-lang/cargo/pull/13494
 
-## 2024-02-25
-
-* PR submissions
-  * Created https://github.com/rust-lang/cargo/issues/8170
-
 ## 2024-02-24
 
 * Issue triages
