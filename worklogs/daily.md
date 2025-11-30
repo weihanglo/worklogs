@@ -1,5 +1,18 @@
 # Daily worklogs
 
+## 2025-11-28
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/13681#issuecomment-3589691540
+  * Commented https://github.com/rust-lang/cargo/issues/13462#issuecomment-3589988183
+  * Commented https://github.com/rust-lang/cargo/issues/16308#issuecomment-3590006293
+  * Created https://github.com/rust-lang/mdBook/issues/2967
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16304#pullrequestreview-3519487951
+  * Merged https://github.com/rust-lang/cargo/pull/16292#issuecomment-3590184161
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/CARGO_TARGET_TMPDIR.20goes.20to.20build-dir.20or.20ws-local.20cache.3F/with/560828604
+
 ## 2025-11-27
 
 * Issue triages
