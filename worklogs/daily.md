@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2025-12-12
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/16371#issuecomment-3646611922
+  * Commented https://github.com/rust-lang/cargo/issues/16388#issuecomment-3648419899
+  * Commented https://github.com/rust-lang/cargo/issues/15656#issuecomment-3649023273
+* PR reviews
+  * Commented https://github.com/rust-lang/rust/pull/149900#pullrequestreview-3572593886
+  * Merged https://github.com/rust-lang/cargo/pull/16341#issuecomment-3647272746
+* PR submissions
+  * Created https://github.com/rust-lang/rust/pull/149934
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/.5Bbeta-1.2E93.5D.20nominate.20backport.20curl.20downgrade
+
 ## 2025-12-11
 
 * Issue triages
