@@ -1,5 +1,15 @@
 # Daily worklogs
 
+## 2025-12-18
+
+* FCP reviews
+  * Created https://github.com/rust-lang/cargo/pull/16415#issuecomment-3671085980
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/16416
+  * Merged https://github.com/rust-lang/cargo/pull/16414
+* Discussions
+  * Commented https://internals.rust-lang.org/t/cargo-fingerprinting/23834/3
+
 ## 2025-12-17
 
 * Issue triages
