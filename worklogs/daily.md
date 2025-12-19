@@ -1,5 +1,15 @@
 # Daily worklogs
 
+## 2025-12-15
+
+* Issue triages
+  * Created https://github.com/rust-lang/cargo/issues/16401
+  * Commented https://github.com/rust-lang/cargo/issues/16400#issuecomment-3657266981
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16398#pullrequestreview-3579438734
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/16399
+
 ## 2025-12-14
 
 * PR reviews
