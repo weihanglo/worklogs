@@ -1,5 +1,14 @@
 # Daily worklogs
 
+## 2025-12-22
+
+* Issue triages
+  * Commented https://github.com/rust-lang/rustfmt/issues/6752#issuecomment-3682907078
+* PR reviews
+  * Commented https://github.com/rust-lang/git2-rs/pull/1181#pullrequestreview-3605481499
+* PR submissions
+  * Created https://github.com/rust-lang/git2-rs/pull/1201
+
 ## 2025-12-20
 
 * PR reviews
