@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2025-12-20
+
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16423/changes#r2637124887
+
 ## 2025-12-19
 
 * FCP reviews
