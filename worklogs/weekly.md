@@ -1,5 +1,180 @@
 # Weekly summaries
 
+## 2026-01-05
+
+* Started experimental SHA256 support for Cargo's libgit2 stack.
+  Git is transitioning from SHA1 to SHA256 for object hashing,
+  and Cargo needs to support this to stay compatible with future Git repositories.
+  These include low- and high-level API, as well as libgit2 C library upstream contributions — 
+  [rust-lang/git2-rs#1201](https://github.com/rust-lang/git2-rs/pull/1201),
+  [rust-lang/git2-rs#1202](https://github.com/rust-lang/git2-rs/pull/1202),
+  [libgit2/libgit2#7179](https://github.com/libgit2/libgit2/pull/7179),
+  [libgit2/libgit2#7182](https://github.com/libgit2/libgit2/issues/7182),
+  [libgit2/libgit2#7183](https://github.com/libgit2/libgit2/pull/7183),
+  [libgit2/libgit2#7185](https://github.com/libgit2/libgit2/pull/7185).
+* Completed `cargo report rebuilds` command as part of the build-analysis project goal.
+  This command analyzes rebuild reasons from previous build sessions,
+  showing root causes and cascading rebuild impacts —
+  helping developers understand why their builds are slower than expected.
+  Also landed dependency tracking in build logs — 
+  [rust-lang/cargo#16448](https://github.com/rust-lang/cargo/pull/16448),
+  [rust-lang/cargo#15844](https://github.com/rust-lang/cargo/issues/15844),
+  [rust-lang/cargo#16456](https://github.com/rust-lang/cargo/pull/16456)
+* Reviewed another new Cargo lint regarding Unicode bidirectional control code points that can be used in "Trojan Source" attacks — 
+  [rust-lang/cargo#16452](https://github.com/rust-lang/cargo/pull/16452)
+* Mentored a new contributor for a non-trivial pull request
+  about providing location information for Cargo `patch` feature.
+  This is a source of confusion also at $WORK — 
+  [rust-lang/cargo#16407](https://github.com/rust-lang/cargo/pull/16407).
+
+## 2025-12-29
+
+* Help stabilized `pubtime` field in registry index,
+  allowing tools to query when crate versions were published.
+  This unblocks ecosystem tooling that needs publication timestamps —
+  [rust-lang/cargo#16372](https://github.com/rust-lang/cargo/pull/16372).
+* Discussed with contributors for alternative SVG rendering option for `--timings` HTML report. The canvas rendering resolves display performance issues in some browsers —
+  [rust-lang/cargo#15091](https://github.com/rust-lang/cargo/pull/15091).
+* More `-Zbuild-analysis` project goal stuff
+  * `cargo report sessions` command that provide a way for other `cargo report` commands to query session IDs —
+  [rust-lang/cargo#16428](https://github.com/rust-lang/cargo/pull/16428).
+  * Proposed to the cargo team that man pages for nested commands might be needed, as more `cargo report <cmd>` are added — [rust-lang/cargo#16430](https://github.com/rust-lang/cargo/pull/16430), [rust-lang/cargo#16432](https://github.com/rust-lang/cargo/pull/16432)
+
+## 2025-12-22
+
+* Completed FCP and helped merge TOML 1.1 parse support. Caught some incompatibility issues and clarified with the team
+  Users can generally safely use TOML 1.1 without affecting their published crate's compatibility —
+  [rust-lang/cargo#16415](https://github.com/rust-lang/cargo/pull/16415).
+* Proposed to remove `--timings=<FMT>` optional format values.
+  The JSON output was obsolete since `-Zbuild-analysis` logging provides a better alternative —
+  [rust-lang/cargo#16420](https://github.com/rust-lang/cargo/pull/16420).
+
+## 2025-12-15
+
+* Implemented the `cargo report timings` command to replay HTML report from log files, which means we can analyze build timings without worrying that we forgot to pass `--timings` flag. This is part of Cargo Build Analysis project goal — [rust-lang/cargo#16377](https://github.com/rust-lang/cargo/issues/16377), [rust-lang/cargo#16382](https://github.com/rust-lang/cargo/issues/16382).
+* Triaged two beta-1.93 regressions and coordinated backports:
+  - Identified curl-sys upgrade as cause of SSL errors on FreeBSD —
+    [rust-lang/cargo#16357](https://github.com/rust-lang/cargo/issues/16357).
+  - Helped diagnose concurrent `cargo check` locking bug, leading to fix PR —
+    [rust-lang/cargo#16384](https://github.com/rust-lang/cargo/issues/16384).
+* Proposed FCP for `cargo package --list` to skip registry verification,
+  since listing files doesn't need registry access —
+  [rust-lang/cargo#16341](https://github.com/rust-lang/cargo/pull/16341).
+* Refactored lints and improved the Cargo linting system — 
+  [rust-lang/cargo#16320](https://github.com/rust-lang/cargo/pull/16320),
+  [rust-lang/cargo#16324](https://github.com/rust-lang/cargo/pull/16324),
+  [rust-lang/cargo#16364](https://github.com/rust-lang/cargo/pull/16364),
+  [rust-lang/cargo#16392](https://github.com/rust-lang/cargo/pull/16392).
+* Guided a new contributor through a relatively not easy PR for caching Git submodules updates in Git dependencies in Cargo,
+  significantly speeding up repeated fetches of dependencies with submodules.
+  Previously each `cargo update` re-fetched submodules; now they're cached like regular git deps —
+  [rust-lang/cargo#16246](https://github.com/rust-lang/cargo/pull/16246).
+
+— [rust-lang/cargo#16246](https://github.com/rust-lang/cargo/pull/16246)
+* Joined the party of discussing a shorter diagnostic messages for AI agent — [rust-lang/cargo#16371](https://github.com/rust-lang/cargo/issues/16371#issuecomment-3646611922)
+
+## 2025-12-08
+
+* Landed rustdoc mergeable cross-crate info support (`-Zrustdoc-mergeable-info`).
+  This fixes an (intentional?) regression and dramatically speeds up doc generation for large projects —
+  benchmarks show ~40s vs ~500s for Cargo's own docs.
+  Rustdoc can now defer expensive search index generation until the final merge step —
+  [rust-lang/cargo#16331](https://github.com/rust-lang/cargo/pull/16331),
+  [rust-lang/cargo#16309](https://github.com/rust-lang/cargo/pull/16309),
+  [rust-lang/cargo#16306](https://github.com/rust-lang/cargo/issues/16306).
+* Landed new `implicit_minimum_version_req` lint,
+  warning when dependency versions like `"1.2"` could be written as `"1.2.0"` for clarity.
+  Helps catch cases where users may not realize they're allowing older patch versions. This is also a step towards stabilizing the entire Cargo linting system —
+  [rust-lang/cargo#16321](https://github.com/rust-lang/cargo/pull/16321).
+* Started making timing info more self-contained so that eventually Cargo can replay HTML report from log files — 
+  [rust-lang/cargo#16350](https://github.com/rust-lang/cargo/pull/16350),
+  [rust-lang/cargo#16346](https://github.com/rust-lang/cargo/pull/16346),
+  [rust-lang/cargo#16378](https://github.com/rust-lang/cargo/pull/16378),
+  [rust-lang/cargo#16337](https://github.com/rust-lang/cargo/pull/16337),
+  [rust-lang/cargo#16352](https://github.com/rust-lang/cargo/pull/16352).
+* Mentored a new contributor for fixing Cargo read config at CARGO_HOME twice if it were a symlink — [rust-lang/cargo#16325](https://github.com/rust-lang/cargo/pull/16325)
+
+## 2025-12-01
+
+* More works towards stabilizing `-Zconfig-include` — [rust-lang/cargo#16301](https://github.com/rust-lang/cargo/pull/16301), [rust-lang/cargo#16298](https://github.com/rust-lang/cargo/pull/16298)
+* Converted timing-info log messages from a single aggregated message per unit
+to an event-based model that captures the build timings. An event-based structured logging system is more extensible — [rust-lang/cargo#16303](https://github.com/rust-lang/cargo/pull/16303)
+* Mentored a contributor to add missing documentation for `--filter-platform=host` support in `cargo metadata` — [rust-lang/cargo#16312](https://github.com/rust-lang/cargo/pull/16312)
+
+## 2025-11-24
+
+* Discussed with rustdoc team about ideas to consolidate `--emit` flags that
+  could make rustdoc CLI clearer, as well as help make progress on fixing
+  rustdoc JSON format collision issues — [rust-lang/cargo#13283](https://github.com/rust-lang/cargo/issues/13283), [rust-lang/cargo#16291](https://github.com/rust-lang/cargo/issues/16291), [rust-lang/rust#83784](https://github.com/rust-lang/rust/issues/83784#issuecomment-3572830043)
+* Reviewed `--publish-time` flag for `cargo generate-lockfile`,
+  discussing index versioning, yank status documentation, and cache compatibility.
+  This flag demonstrates the use of `pubtime` field in crates.io index,
+  which aligns with the supply chain security and freshness topic at $WORK —
+  [rust-lang/cargo#16265](https://github.com/rust-lang/cargo/pull/16265).
+* Worked with cc-rs maintainer about `CARGO_ENCODED_RUSTFLAGS` limitation.
+  The env var doesn't include Cargo-controlled flags like LTO,
+  which affects build scripts trying to match rustc's flags —
+  [rust-lang/cc-rs#1613](https://github.com/rust-lang/cc-rs/issues/1613).
+* Proposed to stabilize `-Zconfig-include` feature,
+  with a couple of fixes and improvements to preserve more future extensibilities.
+  Users can now include additional config files with `include = ["path.toml"]`,
+  enabling better config organization and sharing across projects.
+  Includes support for optional files that silently skip if missing.
+  This has been wanted at $WORK for a long while —
+  [rust-lang/cargo#16284](https://github.com/rust-lang/cargo/pull/16284),
+  [rust-lang/cargo#16285](https://github.com/rust-lang/cargo/issues/16285),
+  [rust-lang/cargo#16286](https://github.com/rust-lang/cargo/issues/16286),
+* Helped and guided a new contributors fixing a long-standing `-Zbindeps` bug
+  where artifact dependency targets incorrectly propagated to proc-macros and build deps,
+  causing panics when cross-compiling with artifact dependencies —
+  [rust-lang/cargo#15788](https://github.com/rust-lang/cargo/pull/15788).
+* For `-Zbuild-analysis` Rust project goal,
+  filed a pull request separating data collection and presentation,
+  so that Cargo can replay an HTML report from log files — [rust-lang/cargo#16282](https://github.com/rust-lang/cargo/pull/16282)
+
+## 2025-11-17
+
+* Investigated and bisected a nasty rebuild loop bug affecting `cargo check` with build scripts.
+  Traced it to rustc's incremental compilation skipping rmeta regeneration (rust-lang/rust#114669),
+  causing Cargo to think dependencies were always dirty. This has been bugging compiler developers for a while.
+  Created the fix PR and filed upstream rustc issue —
+  [rust-lang/cargo#16104](https://github.com/rust-lang/cargo/issues/16104),
+  [rust-lang/cargo#16262](https://github.com/rust-lang/cargo/pull/16262),
+  [rust-lang/rust#148934](https://github.com/rust-lang/rust/issues/148934). Also opened a discussion in upstream so that we can fix this issue in a saner way (in the compiler) — [Zulip](https://rust-lang.zulipchat.com/#narrow/channel/245100-t-compiler.2Fprioritization.2Falerts/topic/.23148948.20rustc.20does.20not.20always.20update.20the.20mtime.20of.20all.20its.20o.E2.80.A6/near/557972516)
+* Fixed rustc span tracking for unnormalized source length,
+  which was causing incorrect dep-info output for `-Zchecksum-hash-algorithm`.
+  This unblocks checksum-based freshness detection in Cargo —
+  [rust-lang/rust#148962](https://github.com/rust-lang/rust/pull/148962).
+* Signed off FCP for `cargo clean --workspace`,
+  allowing users to clean all workspace member artifacts at once.
+  Useful for CI to reduce cache bloat from workspace members —
+  [rust-lang/cargo#16263](https://github.com/rust-lang/cargo/pull/16263).
+* Completed FCP and merged long-form `--format` variables for `cargo tree`,
+  allowing `{package}` instead of just `{p}` for better readability —
+  [rust-lang/cargo#16204](https://github.com/rust-lang/cargo/pull/16204).
+* Signed-off RFC for `-Zbuild-std` which will unblock a lot of custom standard library,
+  including multiple teams and products at $WORK —
+  [rust-lang/rfcs#3873](https://github.com/rust-lang/rfcs/pull/3873).
+* Fixed a nasty `cargo package` issue
+  that Cargo-generated files had too-old timestamp that zip cannot recognized —
+  [alexcrichton/tar-rs#420](https://github.com/alexcrichton/tar-rs/pull/420), [rust-lang/cargo#16237](https://github.com/rust-lang/cargo/issues/16237), [rust-lang/cargo#16242](https://github.com/rust-lang/cargo/issues/16242), [rust-lang/cargo#16250](https://github.com/rust-lang/cargo/pull/16250).
+* Fixed bootstrap to not require cmake when `local-rebuild` is enabled,
+  helping people rebuild stdlib directly from rust-src rustup component.
+  At $WORK this will unblock our use case —
+  [rust-lang/rust#148883](https://github.com/rust-lang/rust/pull/148883).
+
+## 2025-11-10
+
+* Guided a contributor to fix a bug dep-info files invalid slashes issue on Windows — [rust-lang/cargo#16233](https://github.com/rust-lang/cargo/issues/16233)
+* Found two bugs in stable Cargo in non-mergeable list implementations, and fixed all of them — [rust-lang/cargo#16208](https://github.com/rust-lang/cargo/issues/16208), [rust-lang/cargo#16209](https://github.com/rust-lang/cargo/issues/16209), [rust-lang/cargo#16219](https://github.com/rust-lang/cargo/issues/16219), [rust-lang/cargo#16220](https://github.com/rust-lang/cargo/issues/16220).
+* Discussed fine-grained locking design for shared build caches,
+  addressing operating system limitations and sharing between different `$CARGO_HOME` directories —
+  [rust-lang/cargo#16177](https://github.com/rust-lang/cargo/pull/16177).
+* Commented on SHA256 support tracking in git2-rs indicating that an unstable feature are welcome  —
+  [rust-lang/git2-rs#1090](https://github.com/rust-lang/git2-rs/issues/1090).
+* Guided a contributor to fix a bug in `cargo vendor` that had wrong assumption on Windows — [rust-lang/cargo#15875](https://github.com/rust-lang/cargo/issues/15875) and [rust-lang/cargo#16214](https://github.com/rust-lang/cargo/issues/16214)
+* Discussed with in RFC of the compiler about the integration of mitigation enforcement in Cargo — [rust-lang/rfcs#3855](https://github.com/rust-lang/rfcs/pull/3855)
+
 ## 2025-11-03
 
 * Reviewed and discussed rustdoc’s mergaeble cross crate info integration in Cargo.
