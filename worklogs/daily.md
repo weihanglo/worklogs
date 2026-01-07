@@ -1,5 +1,14 @@
 # Daily worklogs
 
+## 2026-01-03
+
+* Issue triages
+  * Created https://github.com/libgit2/libgit2/issues/7182
+* PR submissions
+  * Created https://github.com/libgit2/libgit2/pull/7179
+  * Created https://github.com/rust-lang/git2-rs/pull/1202
+  * Created https://github.com/libgit2/libgit2/pull/7183
+
 ## 2026-01-02
 
 * PR reviews
