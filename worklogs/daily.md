@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2025-12-30
+
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16423#discussion_r2653918891
+  * Commented https://github.com/rust-lang/cargo/pull/16131#discussion_r2654347026
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/16448
+  * Created https://github.com/rust-lang/rust/pull/150525
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/logging.20unit.20fingerprint/with/565825913
+
 ## 2025-12-29
 
 * FCP reviews
