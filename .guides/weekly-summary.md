@@ -13,6 +13,7 @@ Rules for generating weekly summaries in `weekly.md` from daily PR logs in `dail
 ### 1. Extract
 
 - Extract all PR/issue links from daily.md for the 7-day coverage period
+- Include both submissions AND comments/reviews on others' PRs
 - Skip `rust-lang/rust` PRs titled "Update cargo" (just submodule bumps)
 
 ### 2. Classify
@@ -28,6 +29,8 @@ For each PR, use `gh pr view <PR-URL>` (add `--comments` or `--diff` if needed):
 - Unblocks external projects (e.g., Eclipse Zenoh, Bazel)
 - RFC reviews and FCP decisions (shows architectural leadership)
 - Design discussions on internals.rust-lang.org or Zulip
+- PR/issue comments that shape direction or unblock contributors
+  (discussion is one of the most valuable inputs a maintainer can give)
 - Fixes user-facing bugs or security issues
 - Beta backports (shows urgency)
 - Project Goal reviews and proposals
