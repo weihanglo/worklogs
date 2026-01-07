@@ -27,6 +27,8 @@ Group related activities into cohesive narratives showing progress on broader go
 * Major initiative: MSRV resolver, SQLite cache, gitoxide migration
 * Ecosystem support: External project enablement, RFC implementation
 * Stabilization work: Feature progression toward stable
+* Contributor mentoring: Group mentorship across multiple PRs
+* Rust Project Goals: Link to official goal pages when relevant
 
 ### 3. Write
 
@@ -34,6 +36,11 @@ Follow narrative style from `.rules`.
 
 In monthly summaries,
 focus more on the big picture, business value, and the impact of the work.
+
+**Before writing:**
+
+* Read 1-2 recent months to match tone, bullet structure, and detail level
+* Note recurring patterns (mentoring, bug fixes) that may group well
 
 ## Examples
 
@@ -74,9 +81,15 @@ Why bad: Lists chronologically, no user impact, process-focused.
 * Minor cleanups, refactoring, test infrastructure
 * Version bumps unless security critical
 * Items that don't fit broader theme
+* Bug fixes unless significant enough to stand on their own
 
 **When uncertain:**
 
 * Ask user about importance/priority
 * Look at previous months for consistency
 * Better to omit minor items than dilute key achievements
+
+**Linking:**
+
+* Link Rust Project Goal pages when work relates to official goals
+* Include design docs, Zulip discussions for context on major decisions
