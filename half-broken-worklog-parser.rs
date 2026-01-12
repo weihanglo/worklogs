@@ -162,6 +162,20 @@ fn error_lnr(lnr: usize, err: impl Display) -> Box<Error> {
     error(format!("broken at line {lnr}: {err}"))
 }
 
+fn is_date(text: &str) -> bool {
+    let bytes = text.as_bytes();
+    if bytes.len() != 10 {
+        return false;
+    }
+    if bytes[4] != b'-' || bytes[7] != b'-' {
+        return false;
+    }
+    bytes
+        .iter()
+        .enumerate()
+        .all(|(i, b)| matches!(i, 4 | 7) || b.is_ascii_digit())
+}
+
 fn parse_item(date: &str, kind: Kind, text: &str) -> BoxResult<Record> {
     let (action, url) = match text
         .trim_start_matches(&['-', ' ', '*'])
@@ -211,7 +225,11 @@ fn main() -> BoxResult<()> {
             ("", _) => continue,
             (prefix, "") if !prefix.is_empty() => return Err(error_lnr(lnr, "")),
             ("##", text) => {
-                date = text.trim().to_string();
+                let next_date = text.trim();
+                if !is_date(next_date) {
+                    return Err(error_lnr(lnr, format!("invalid date `{next_date}`")));
+                }
+                date = next_date.to_string();
                 continue;
             }
             ("- " | "* ", text) => {
