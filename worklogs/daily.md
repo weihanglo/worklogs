@@ -1395,7 +1395,7 @@
 * Issue triages
   * Commented https://github.com/rust-lang/cargo/issues/2039#issuecomment-3176575783
 
-## 2025–08-09
+## 2025-08-09
 
 * Issue triages
   * Commented https://github.com/rust-lang/cargo/issues/15824#issuecomment-3172285036
@@ -3176,7 +3176,7 @@
   * Closed https://github.com/rust-lang/cargo/issues/14892#issuecomment-2518684970
   * Commented https://github.com/rust-lang/cargo/issues/12033#issuecomment-2518877033
 
-## 2024–12-03
+## 2024-12-03
 
 * Issue triages
   * Commented https://github.com/rust-lang/cargo/issues/14776#issuecomment-2515971559
@@ -5334,7 +5334,7 @@
   * Merged https://github.com/rust-lang/cargo/pull/13826
   * Created https://github.com/rust-lang/cargo/pull/13831
 
-## 2024-04–28
+## 2024-04-28
 
 * PR reviews
   * Commented https://github.com/rust-lang/cargo/pull/13817#discussion_r1582150093
@@ -6335,7 +6335,7 @@
 * PR submissions
   * Created https://github.com/rust-lang/cargo/pull/13333#discussion_r1461161390
 
-## 2024–01-20
+## 2024-01-20
 
 * PR reviews
   * Commented https://github.com/rust-lang/cargo/pull/13330#discussion_r1460688177
