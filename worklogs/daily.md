@@ -1,5 +1,13 @@
 # Daily worklogs
 
+## 2026-01-13
+
+* PR submissions
+  * Created https://github.com/libgit2/libgit2/pull/7195
+  * Created https://github.com/rust-lang/cargo/pull/16505
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/no.20easy.20way.20to.20get.20raw.20timing.20info.20from.20builds.20anymore/near/567811045
+
 ## 2026-01-12
 
 * PR reviews
