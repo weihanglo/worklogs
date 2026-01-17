@@ -156,6 +156,7 @@ Why TODO: Pure refactoring without clear user benefit.
 2. If unclear: `gh pr view <URL> --comments` → discussion
 3. Still unclear: `gh pr diff <URL>` → code changes
 4. Check "Fixes #XXXX" → original user problem
+5. Check PR author → distinguish own work vs mentoring
 
 **User feedback patterns:**
 
