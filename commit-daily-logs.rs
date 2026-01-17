@@ -21,7 +21,10 @@ use std::error;
 use std::fmt;
 use std::fmt::Display;
 use std::fs;
-use std::process::{self, Command};
+use std::io::Write;
+use std::process;
+use std::process::Command;
+use std::process::Stdio;
 
 type BoxResult<T> = Result<T, Box<dyn error::Error>>;
 
@@ -42,8 +45,17 @@ fn error(msg: impl Into<String>) -> Box<Error> {
     Box::new(Error(msg.into()))
 }
 
-fn run(command: &str, args: &[&str]) -> BoxResult<String> {
-    let output = Command::new(command).args(args).output()?;
+fn run(command: &str, args: &[&str], stdin: Option<&str>) -> BoxResult<String> {
+    let mut cmd = Command::new(command);
+    cmd.args(args).stdout(Stdio::piped());
+    if stdin.is_some() {
+        cmd.stdin(Stdio::piped());
+    }
+    let mut child = cmd.spawn()?;
+    if let Some(input) = stdin {
+        child.stdin.take().unwrap().write_all(input.as_bytes())?;
+    }
+    let output = child.wait_with_output()?;
     if !output.status.success() {
         return Err(error(format!(
             "command failed: {command} {}",
@@ -51,17 +63,6 @@ fn run(command: &str, args: &[&str]) -> BoxResult<String> {
         )));
     }
     Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
-}
-
-fn run_status(command: &str, args: &[&str]) -> BoxResult<()> {
-    let status = Command::new(command).args(args).status()?;
-    if !status.success() {
-        return Err(error(format!(
-            "command failed: {command} {}",
-            args.join(" ")
-        )));
-    }
-    Ok(())
 }
 
 fn is_date(text: &str) -> bool {
@@ -141,6 +142,7 @@ fn main() -> BoxResult<()> {
         let status = run(
             "git",
             &["-c", "core.fsmonitor=false", "status", "--porcelain"],
+            None,
         )?;
         if !status.is_empty() {
             let mut disallowed = Vec::new();
@@ -181,6 +183,7 @@ fn main() -> BoxResult<()> {
             "1",
             "--format=%s",
         ],
+        None,
     )?;
 
     if last_subject.is_empty() {
@@ -192,7 +195,7 @@ fn main() -> BoxResult<()> {
         .ok_or_else(|| error(format!("failed to parse commit subject: {last_subject}")))?
         .to_string();
 
-    let base_content = run("git", &["show", &format!("HEAD:{DAILY_PATH}")])?;
+    let base_content = run("git", &["show", &format!("HEAD:{DAILY_PATH}")], None)?;
     let current_content = fs::read_to_string(DAILY_PATH)?;
 
     let (base_lines, base_trailing_newline) = split_lines(&base_content);
@@ -247,12 +250,19 @@ fn main() -> BoxResult<()> {
         new_content.push('\n');
     }
 
-    fs::write(DAILY_PATH, new_content)?;
-
-    run_status("git", &["add", DAILY_PATH])?;
-    run_status(
+    // Stage content directly via git plumbing (without modifying working tree)
+    let blob = run("git", &["hash-object", "-w", "--stdin"], Some(&new_content))?;
+    let mode = run(
+        "git",
+        &["ls-files", "--format=%(objectmode)", "--", DAILY_PATH],
+        None,
+    )?;
+    let cacheinfo = format!("{mode},{blob},{DAILY_PATH}");
+    run("git", &["update-index", "--cacheinfo", &cacheinfo], None)?;
+    run(
         "git",
         &["commit", "-m", &format!("log: {}", target_heading.date)],
+        None,
     )?;
 
     Ok(())
