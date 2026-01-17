@@ -1,5 +1,47 @@
 # Weekly summaries
 
+## 2026-01-12
+
+* Collaborated with a contributor to fix multiple build script metadata regressions 
+  from debugging, regression triage, solution discussion, to landing fixes.
+  The issues affected `-Zbuild-std` users and patched dependencies with renamed crates,
+  ensuring `CARGO_DEP_*` environment variables work correctly
+  even when sources are modified via `[patch]` —
+  [rust-lang/cargo#16486](https://github.com/rust-lang/cargo/pull/16486),
+  [rust-lang/cargo#16489](https://github.com/rust-lang/cargo/pull/16489),
+  [rust-lang/cargo#16494](https://github.com/rust-lang/cargo/pull/16494),
+  [rust-lang/cargo#16496](https://github.com/rust-lang/cargo/pull/16496),
+  [rust-lang/rust#150739](https://github.com/rust-lang/rust/pull/150739).
+* Completed the build-analysis Rust Project Goal prototype as goal owner.
+  Beyond feature implementation,
+  also mentored two contributors landing the `--id` flag and timing metric refactor,
+  filed follow-up issues for new contributors,
+  and concluded the project goal with a path towards stabilization —
+  [rust-lang/cargo#16476](https://github.com/rust-lang/cargo/pull/16476),
+  [rust-lang/cargo#16488](https://github.com/rust-lang/cargo/pull/16485),
+  [rust-lang/cargo#16490](https://github.com/rust-lang/cargo/pull/16490),
+  [rust-lang/cargo#16497](https://github.com/rust-lang/cargo/pull/16497),
+  [rust-lang/cargo#16470](https://github.com/rust-lang/cargo/issues/16470),
+  [rust-lang/cargo#16471](https://github.com/rust-lang/cargo/issues/16471),
+  [rust-lang/cargo#16472](https://github.com/rust-lang/cargo/issues/16472),
+  [rust-lang/cargo#16473](https://github.com/rust-lang/cargo/issues/16473),
+  [rust-lang/cargo#16474](https://github.com/rust-lang/cargo/issues/16474),
+  [rust-lang/cargo#16475](https://github.com/rust-lang/cargo/issues/16475),
+  [rust-lang/cargo#16477](https://github.com/rust-lang/cargo/issues/16477),
+  [rust-lang/cargo#16488](https://github.com/rust-lang/cargo/issues/16488),
+  [rust-lang/rust-project-goals#398](https://github.com/rust-lang/rust-project-goals/issues/398).
+* Continued experimental SHA256 support for Cargo in both upstream git2-rs and libgit2 — 
+  [rust-lang/git2-rs#1204](https://github.com/rust-lang/git2-rs/pull/1204),
+  [rust-lang/git2-rs#1205](https://github.com/rust-lang/git2-rs/pull/1205),
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206).
+  [libgit2/libgit2#7185](https://github.com/libgit2/libgit2/pull/7185)
+* Fixed `cargo package` to correctly detect untracked files
+  when run from a workspace member directory.
+  This was reported by a co-worker at $WORK whose workflow was affected by the buggy behavior —
+  [rust-lang/cargo#16479](https://github.com/rust-lang/cargo/pull/16479),
+  [rust-lang/cargo#16478](https://github.com/rust-lang/cargo/issues/16478).
+  [rust-lang/blog.rust-lang.org#1775](https://github.com/rust-lang/blog.rust-lang.org/pull/1775).
+
 ## 2026-01-05
 
 * Started experimental SHA256 support for Cargo's libgit2 stack.
