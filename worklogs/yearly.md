@@ -2,6 +2,13 @@
 
 ## 2025 H2
 
+* 163 days logged
+* 154 PRs authored
+* 204 PRs reviewed
+* 168 issues triaged
+* 10 FCPs, 7 RFCs reviewed
+* Contributed to 8 repositories
+
 H2 centered on two official Rust Project Goals
 (Build Analysis, Build Directory Layout)
 and driving long-awaited stabilizations that unblock enterprise users.
@@ -123,6 +130,13 @@ and led cross-team infrastructure discussions.
   a blocker for $WORK adoption. Included reproduction and proposed fix.
 
 ## 2025 H1
+
+* 141 days logged
+* 96 PRs authored
+* 176 PRs reviewed
+* 172 issues triaged
+* 6 FCPs, 2 RFCs reviewed
+* Contributed to 8 repositories
 
 H1 focused on fixing critical regressions blocking $WORK and major ecosystem users,
 improving platform compatibility across OpenSSL/i686/Cygwin/AIX,
