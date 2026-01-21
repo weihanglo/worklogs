@@ -18,6 +18,45 @@ They tell a cohesive story of the half-year rather than just aggregating monthly
 
 ## Workflow
 
+### 0. Generate Statistics
+
+Run the statistics extraction script to get metrics for the summary header:
+
+```bash
+# H1 stats (Jan-Jun)
+./worklog-stats.rs worklogs/daily.md --from 2025-01 --to 2025-06
+
+# H2 stats (Jul-Dec)
+./worklog-stats.rs worklogs/daily.md --from 2025-07 --to 2025-12
+```
+
+Output looks like:
+
+```markdown
+## 2025 H1
+
+* 141 days logged
+* 96 PRs authored
+* 176 PRs reviewed
+* 172 issues triaged
+* 6 FCPs, 2 RFCs reviewed
+* Contributed to 8 repositories
+```
+
+Place this block at the top of each H1/H2 section in `yearly.md`, before the narrative overview.
+
+**Metrics explained:**
+
+* **Days logged** — unique dates with entries in daily.md
+* **PRs authored** — unique URLs under "PR submissions"
+* **PRs reviewed** — unique URLs under "PR reviews"
+* **Issues triaged** — unique URLs under "Issue triages"
+* **FCPs/RFCs** — unique URLs under those categories
+* **Repositories** — unique repos you contributed code to
+
+Note: "Merged" counts require GitHub API queries (see Kobzol's script).
+The worklog-based counts track activity, not outcomes.
+
 ### 1. Extract
 
 * Read all monthly entries for target half-year (H1: Jan-Jun, H2: Jul-Dec)
