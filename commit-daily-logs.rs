@@ -238,6 +238,12 @@ fn main() -> BoxResult<()> {
         return Ok(());
     }
 
+    println!("commit log: {}", target_heading.date);
+    println!("block lines {}..{}", block_start + 1, block_end);
+    for line in block_lines {
+        println!("{line}");
+    }
+
     let mut new_lines = Vec::new();
     new_lines.push(base_lines[0].clone());
     new_lines.push(base_lines[1].clone());
