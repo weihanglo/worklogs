@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2026-01-25
+
+* PR submissions
+  * Merged https://github.com/weihanglo/diffy/pull/16
+  * Merged https://github.com/weihanglo/diffy/pull/17
+  * Merged https://github.com/weihanglo/diffy/pull/18
+  * Merged https://github.com/weihanglo/diffy/pull/19
+  * Merged https://github.com/weihanglo/diffy/pull/20
+  * Merged https://github.com/weihanglo/diffy/pull/21
+  * Merged https://github.com/weihanglo/diffy/pull/22
+
 ## 2026-01-24
 
 * PR reviews
