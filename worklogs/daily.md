@@ -1,5 +1,15 @@
 # Daily worklogs
 
+## 2026-01-24
+
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16557#pullrequestreview-3703113163
+  * Merged https://github.com/rust-lang/cargo/pull/16553#pullrequestreview-3703266743
+  * Commented https://github.com/rust-lang/cargo/pull/16542#issuecomment-3796041436
+* PR submissions
+  * Merged https://github.com/weihanglo/diffy/pull/14
+  * Merged https://github.com/weihanglo/diffy/pull/15
+
 ## 2026-01-23
 
 * Issue triages
