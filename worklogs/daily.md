@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2026-01-28
+
+* PR submissions
+  * Merged https://github.com/weihanglo/diffy/pull/32
+
 ## 2026-01-27
 
 * Issue triages
