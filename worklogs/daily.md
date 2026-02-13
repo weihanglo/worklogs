@@ -1,5 +1,17 @@
 # Daily worklogs
 
+## 2026-02-03
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/16440#issuecomment-3843042746
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16581#pullrequestreview-3742170875
+  * Merged https://github.com/rust-lang/cargo/pull/16577#pullrequestreview-3746409272
+  * Commented https://github.com/rust-lang/cargo/pull/16568#issuecomment-3843005017
+* PR submissions
+  * Created https://github.com/weihanglo/diffy/pull/37
+  * Created https://github.com/mozilla/sccache/pull/2591
+
 ## 2026-02-02
 
 * Issue triages
