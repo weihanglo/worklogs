@@ -1,5 +1,20 @@
 # Daily worklogs
 
+## 2026-02-02
+
+* Issue triages
+  * Commented https://github.com/mozilla/sccache/issues/2278#issuecomment-3835836006
+* PR reviews
+  * Commented https://github.com/rust-lang/blog.rust-lang.org/pull/1788#discussion_r2752003980
+  * Merged https://github.com/rust-lang/cargo/pull/16580#pullrequestreview-3740503293
+* PR submissions
+  * Merged https://github.com/weihanglo/diffy/pull/33
+  * Merged https://github.com/weihanglo/diffy/pull/34
+  * Merged https://github.com/weihanglo/diffy/pull/35
+  * Merged https://github.com/weihanglo/diffy/pull/36
+  * Created https://github.com/apache/opendal/pull/7177
+  * Created http://github.com/rust-lang/git2-rs/pull/1214
+
 ## 2026-02-01
 
 * Issue triages
