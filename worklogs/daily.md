@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-03-05
+
+* Issue triages
+  * Commented https://github.com/rust-lang/rust/issues/153121#issuecomment-4009612632
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16694#issuecomment-4006663089
+  * Commented https://github.com/rust-lang/cargo/pull/16705#pullrequestreview-3898806385
+  * Merged https://github.com/rust-lang/cargo/pull/16708#discussion_r2893176188
+  * Merged https://github.com/rust-lang/cargo/pull/16688#pullrequestreview-3900588461
+  * Commented https://github.com/rust-lang/cargo/pull/16712#pullrequestreview-3900629731
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/16713
+  * Created https://github.com/rust-lang/cargo/pull/16714
+
 ## 2026-03-04
 
 * PR reviews
