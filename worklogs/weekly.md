@@ -1,5 +1,25 @@
 # Weekly summaries
 
+## 2026-01-19
+
+* Wored on adding SHA256 support for git2-rs,
+  which will unblock Cargo to support SHA256 repo in the future.
+  This is essential as Git project has a goal of making SHA256 the default hash algorithm this year.
+  We don't want Cargo to be left behind.
+  The efforts include upstream libgit2 contributions, binding update, and Cargo updates —
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206),
+  [rust-lang/cargo#16505](https://github.com/rust-lang/cargo/pull/16505),
+  [libgit2/libgit2#7195](https://github.com/libgit2/libgit2/pull/7195),
+  [rust-lang/cargo#16511](https://github.com/rust-lang/cargo/pull/16511),
+  [rust-lang/cargo#16511](https://github.com/rust-lang/cargo/pull/16511)
+* Mentored a contributor towards helping refactor structured logging and timing data to reuse the underlying metric collection logic —
+  [rust-lang/cargo#16497](https://github.com/rust-lang/cargo/pull/16497#discussion_r2699996331)
+* Worked on switching `--lockfile-path` CLI to `resolver.lockfile-path` config.
+  This would help rust-analyzer and other tools that rely on Cargo's lockfile format
+  better for read-only or having alternate lockfiles for min-publish time (cooldown time)
+  or different minimum supported Rust versions —
+  [rust-lang/cargo#16511](https://github.com/rust-lang/cargo/pull/16510)
+
 ## 2026-01-12
 
 * Collaborated with a contributor to fix multiple build script metadata regressions 
