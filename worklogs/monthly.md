@@ -1,5 +1,57 @@
 # Monthly summaries
 
+## 2026-01
+
+* Concluded the [Cargo Build Analysis Rust Project Goal](https://rust-lang.github.io/rust-project-goals/2025h2/cargo-build-analysis.html) as goal owner.
+  Landed the final piece — `cargo report rebuilds` — which analyzes rebuild reasons
+  from previous build sessions, showing root causes and cascading impacts.
+  Filed follow-up issues that paved a clear path toward stabilization
+  and later attracted new contributors, mentoring them through their first Cargo PRs —
+  [rust-lang/cargo#16448](https://github.com/rust-lang/cargo/pull/16448),
+  [rust-lang/cargo#16456](https://github.com/rust-lang/cargo/pull/16456),
+  [rust-lang/cargo#16476](https://github.com/rust-lang/cargo/pull/16476),
+  [rust-lang/cargo#16490](https://github.com/rust-lang/cargo/pull/16490),
+  [rust-lang/cargo#16497](https://github.com/rust-lang/cargo/pull/16497),
+  [rust-lang/cargo#15844](https://github.com/rust-lang/cargo/issues/15844),
+  [rust-lang/cargo#16470](https://github.com/rust-lang/cargo/issues/16470)–[#16477](https://github.com/rust-lang/cargo/issues/16477),
+  [rust-lang/rust-project-goals#398](https://github.com/rust-lang/rust-project-goals/issues/398).
+* Started experimental SHA256 support for Cargo's libgit2 stack.
+  Git is transitioning from SHA1 to SHA256 for object hashing,
+  and Cargo needs to keep up as the Git project aims to make SHA256 the default this year.
+  Contributed across the full stack: upstream libgit2 C library fixes,
+  Rust binding updates in git2-rs, and Cargo integration —
+  [libgit2/libgit2#7179](https://github.com/libgit2/libgit2/pull/7179),
+  [libgit2/libgit2#7183](https://github.com/libgit2/libgit2/pull/7183),
+  [libgit2/libgit2#7185](https://github.com/libgit2/libgit2/pull/7185),
+  [libgit2/libgit2#7195](https://github.com/libgit2/libgit2/pull/7195),
+  [rust-lang/git2-rs#1201](https://github.com/rust-lang/git2-rs/pull/1201)–[#1206](https://github.com/rust-lang/git2-rs/pull/1206),
+  [rust-lang/cargo#16505](https://github.com/rust-lang/cargo/pull/16505),
+  [rust-lang/cargo#16511](https://github.com/rust-lang/cargo/pull/16511).
+* Collaborated with a contributor to fix multiple build script metadata regressions,
+  from debugging and triage to solution discussion and landing fixes.
+  The issues affected `-Zbuild-std` users and patched dependencies with renamed crates,
+  ensuring `CARGO_DEP_*` environment variables work correctly
+  even when sources are modified via `[patch]` —
+  [rust-lang/cargo#16486](https://github.com/rust-lang/cargo/pull/16486),
+  [rust-lang/cargo#16489](https://github.com/rust-lang/cargo/pull/16489),
+  [rust-lang/cargo#16494](https://github.com/rust-lang/cargo/pull/16494),
+  [rust-lang/cargo#16496](https://github.com/rust-lang/cargo/pull/16496),
+  [rust-lang/rust#150739](https://github.com/rust-lang/rust/pull/150739).
+* Started building multi-file patch parsing support in the `diffy` crate,
+  enabling `git diff` and `git format-patch` output parsing.
+  This lays groundwork for Cargo patch workflows
+  that need to handle patches spanning multiple files —
+  [weihanglo/diffy#1](https://github.com/weihanglo/diffy/pull/1)–[#22](https://github.com/weihanglo/diffy/pull/22).
+* Fixed `cargo package` to correctly detect untracked files
+  when run from a workspace member directory.
+  This was reported by a co-worker at $WORK whose workflow was affected —
+  [rust-lang/cargo#16479](https://github.com/rust-lang/cargo/pull/16479),
+  [rust-lang/cargo#16478](https://github.com/rust-lang/cargo/issues/16478).
+* Worked on switching `--lockfile-path` CLI to `resolver.lockfile-path` config,
+  helping rust-analyzer and other tools
+  that need read-only or alternate lockfiles for different use cases —
+  [rust-lang/cargo#16510](https://github.com/rust-lang/cargo/pull/16510).
+
 ## 2025-12
 
 * Advanced the [Cargo Build Analysis Rust Project Goal](https://rust-lang.github.io/rust-project-goals/2025h2/cargo-build-analysis.html)
