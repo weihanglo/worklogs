@@ -1,5 +1,26 @@
 # Weekly summaries
 
+## 2026-01-26
+
+* Started building multi-file patch parsing support in the `diffy` crate,
+  enabling `git diff` and `git format-patch` output parsing.
+  This lays groundwork for Cargo patch workflows
+  that need to handle patches spanning multiple files —
+  [weihanglo/diffy#1](https://github.com/weihanglo/diffy/pull/1)–[#22](https://github.com/weihanglo/diffy/pull/22)
+* Reviewed and approved iTerm progress bar support for Cargo builds.
+  Users with iTerm 3.6.6+ will see progress indicators
+  in the terminal window during operations —
+  [rust-lang/cargo#16506](https://github.com/rust-lang/cargo/pull/16506)
+* Reviewed and approved several new lints for Cargo's linting system,
+  pushing it closer to stabilization:
+  `redundant_readme` warns about default `package.readme` values —
+  [rust-lang/cargo#16552](https://github.com/rust-lang/cargo/pull/16552);
+  `cargo rm` now suggests `--dev`/`--build`/`--target`
+  when the dependency exists in a different table —
+  [rust-lang/cargo#16533](https://github.com/rust-lang/cargo/pull/16533);
+  pluralized `non_kebab_case_bins` lint naming —
+  [rust-lang/cargo#16553](https://github.com/rust-lang/cargo/pull/16553)
+
 ## 2026-01-19
 
 * Wored on adding SHA256 support for git2-rs,
