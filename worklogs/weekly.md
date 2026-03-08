@@ -1,5 +1,30 @@
 # Weekly summaries
 
+## 2026-02-16
+
+* Fixed `host.runner` and `host.linker` regressions across three PRs:
+  `host.runner` was incorrectly applied when `-Zhost-config` was disabled,
+  leaked into `cargo run`, and `host.linker` had a long-standing bug
+  applying to non-host units since 2022.
+  This feature is useful for wrapping build script execution
+  with tools like distcc or Nix sandboxing.
+  At $WORK we want to experiment with it
+  for fine-grained build script control to improve security and determinism —
+  [rust-lang/cargo#16631](https://github.com/rust-lang/cargo/pull/16631),
+  [rust-lang/cargo#16638](https://github.com/rust-lang/cargo/pull/16638),
+  [rust-lang/cargo#16641](https://github.com/rust-lang/cargo/pull/16641)
+* Created FCP for `cargo help` nested subcommands,
+  enabling `cargo help report future-incompat` in addition to the dash-joined form.
+  This opens the door for better discoverability of nested command documentation
+  and also helps LLM tools retrieve Cargo man pages programmatically —
+  [rust-lang/cargo#16432](https://github.com/rust-lang/cargo/pull/16432)
+* Kicked off a design conversation around bridging `-Zbuild-analysis` with `--message-format=json`.
+  The goal is to make Cargo's structured logging more useful
+  for external tools like crater and the broader ecosystem —
+  [rust-lang/cargo#16632](https://github.com/rust-lang/cargo/pull/16632)
+* Continued working on multi-file patch parsing in the `diffy` crate —
+  [weihanglo/diffy#38](https://github.com/weihanglo/diffy/pull/38)–[#40](https://github.com/weihanglo/diffy/pull/40)
+
 ## 2026-02-09
 
 * Contributed `disable_create_dir` to Apache OpenDAL's WebDAV backend
