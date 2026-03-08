@@ -1,5 +1,32 @@
 # Weekly summaries
 
+## 2026-02-02
+
+* Reviewed and approved three new Cargo manifest lints:
+  `non_{kebab,snake}_case_packages` for package naming —
+  [rust-lang/cargo#16554](https://github.com/rust-lang/cargo/pull/16554);
+  `non_*_case_features` for feature naming —
+  [rust-lang/cargo#16560](https://github.com/rust-lang/cargo/pull/16560);
+  `redundant_homepage` for duplicate homepage/repository URLs —
+  [rust-lang/cargo#16561](https://github.com/rust-lang/cargo/pull/16561)
+* Continued building multi-file patch parsing in the `diffy` crate.
+  Replaced the initial `PatchSet` struct with a streaming `Patches` iterator
+  for better composability.
+  Filed a tracking issue for full `git format-patch` compatibility
+  and discussed upstream adoption with the original maintainer —
+  [weihanglo/diffy#23](https://github.com/weihanglo/diffy/pull/23)–[#32](https://github.com/weihanglo/diffy/pull/32),
+  [weihanglo/diffy#31](https://github.com/weihanglo/diffy/issues/31),
+  [bmwill/diffy#43](https://github.com/bmwill/diffy/issues/43)
+* Shepherded the `-Zbuild-analysis` feature forward
+  by creating a design issue for connecting `--message-format=json`
+  with build-analysis session IDs,
+  addressing user feedback about missing programmatic access to build timing data.
+  Also triaged a community feature request for adding command context
+  to build-analysis logs, which was implemented and merged the same week —
+  [rust-lang/cargo#16576](https://github.com/rust-lang/cargo/issues/16576),
+  [rust-lang/cargo#16528](https://github.com/rust-lang/cargo/issues/16528),
+  [rust-lang/cargo#16577](https://github.com/rust-lang/cargo/pull/16577)
+
 ## 2026-01-26
 
 * Started building multi-file patch parsing support in the `diffy` crate,
