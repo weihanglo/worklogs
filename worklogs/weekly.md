@@ -1,5 +1,28 @@
 # Weekly summaries
 
+## 2026-02-09
+
+* Contributed `disable_create_dir` to Apache OpenDAL's WebDAV backend
+  for servers that don't support PROPFIND, such as bazel-remote.
+  At $WORK we are experimenting with different remote caching strategies,
+  and this has been a long-requested capability in the Bazel community —
+  [apache/opendal#7177](https://github.com/apache/opendal/pull/7177),
+  [mozilla/sccache#2591](https://github.com/mozilla/sccache/pull/2591)
+* Coordinated two maintenance fixes across the ecosystem:
+  backported the null pointer safety fix in `git2-rs` to the 0.20.x branch
+  to get it into a publishable state,
+  and pinned `openssl-src` to work around an ELFv1/v2 ABI mismatch
+  breaking powerpc64 builds —
+  [rust-lang/git2-rs#1214](https://github.com/rust-lang/git2-rs/pull/1214),
+  [rust-lang/cargo#16601](https://github.com/rust-lang/cargo/pull/16601)
+* Stabilized the SVG renderer for Cargo's HTML timing report,
+  replacing the Canvas-based backend that had long-lingering performance issues
+  with large dependency graphs.
+  Firefox users in particular will benefit from reliable graph rendering —
+  [rust-lang/cargo#16602](https://github.com/rust-lang/cargo/pull/16602)
+* Continued working on multi-file patch parsing in the `diffy` crate —
+  [weihanglo/diffy#33](https://github.com/weihanglo/diffy/pull/33)–[#37](https://github.com/weihanglo/diffy/pull/37)
+
 ## 2026-02-02
 
 * Reviewed and approved three new Cargo manifest lints:
