@@ -163,3 +163,20 @@ Why TODO: Pure refactoring without clear user benefit.
 - User says "X is important" → Full write-up
 - User says "Y not important" → TODO or omit
 - Better to mark TODO than write weak rationale
+
+## Attribution & Role Verbs
+
+Match verb to actual role. Don't overclaim:
+
+- "Shepherded" = guided a reported issue through fix + backport
+- "Kicked off" = started a design conversation (NOT "Implemented")
+- "Coordinated" = drove cross-repo fixes (e.g., gitoxide → Cargo)
+- "Contributed" = submitted upstream to a project you don't maintain
+- If someone else found the bug: "Shepherded", not "Caught" or "Fixed"
+- If still in discussion: "Kicked off", not "Implemented"
+
+## Connecting to $WORK
+
+- When open source work is motivated by $WORK needs, note the connection
+- Use generic framing: "At $WORK we are experimenting with..."
+- Keep metrics and project details out per confidentiality rules
