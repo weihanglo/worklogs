@@ -1,5 +1,54 @@
 # Monthly summaries
 
+## 2026-02
+
+* Brought the `diffy` fork to near-complete `git format-patch` compatibility,
+  including binary patch support.
+  Validated by successfully replaying patches across
+  the entire history of rust-lang/rust and rust-lang/cargo.
+  Opened discussion with the upstream maintainer about adoption.
+  This is a prerequisite for Cargo to support patching with patch files,
+  a capability several internal customers at $WORK want —
+  [weihanglo/diffy#23](https://github.com/weihanglo/diffy/pull/23)–[#40](https://github.com/weihanglo/diffy/pull/40),
+  [weihanglo/diffy#31](https://github.com/weihanglo/diffy/issues/31),
+  [bmwill/diffy#43](https://github.com/bmwill/diffy/issues/43).
+* Fixed `host.runner` and `host.linker` regressions across three PRs.
+  `host.runner` was incorrectly applied when `-Zhost-config` was disabled
+  and leaked into `cargo run`;
+  `host.linker` had a long-standing bug applying to non-host units since 2022.
+  At $WORK we want to experiment with this
+  for fine-grained build script control to improve security and determinism —
+  [rust-lang/cargo#16631](https://github.com/rust-lang/cargo/pull/16631),
+  [rust-lang/cargo#16638](https://github.com/rust-lang/cargo/pull/16638),
+  [rust-lang/cargo#16641](https://github.com/rust-lang/cargo/pull/16641).
+* Reviewed and approved six new Cargo manifest lints,
+  pushing the linting system closer to stabilization:
+  package and feature naming conventions, redundant homepage/readme detection,
+  and `cargo rm` suggestion improvements —
+  [rust-lang/cargo#16552](https://github.com/rust-lang/cargo/pull/16552),
+  [rust-lang/cargo#16553](https://github.com/rust-lang/cargo/pull/16553),
+  [rust-lang/cargo#16554](https://github.com/rust-lang/cargo/pull/16554),
+  [rust-lang/cargo#16560](https://github.com/rust-lang/cargo/pull/16560),
+  [rust-lang/cargo#16561](https://github.com/rust-lang/cargo/pull/16561),
+  [rust-lang/cargo#16533](https://github.com/rust-lang/cargo/pull/16533).
+* Contributed `disable_create_dir` to Apache OpenDAL's WebDAV backend
+  for servers that don't support PROPFIND, such as bazel-remote.
+  At $WORK we are experimenting with different remote caching strategies,
+  and this has been a long-requested capability in the Bazel community —
+  [apache/opendal#7177](https://github.com/apache/opendal/pull/7177),
+  [mozilla/sccache#2591](https://github.com/mozilla/sccache/pull/2591).
+* Created FCP for `cargo help` nested subcommands,
+  enabling `cargo help report future-incompat` in addition to the dash-joined form.
+  This improves discoverability of nested command documentation
+  and helps LLM tools retrieve Cargo man pages programmatically —
+  [rust-lang/cargo#16432](https://github.com/rust-lang/cargo/pull/16432).
+* Coordinated ecosystem maintenance fixes:
+  backported a null pointer safety fix in `git2-rs` to the 0.20.x branch,
+  and pinned `openssl-src` to work around an ELFv1/v2 ABI mismatch
+  breaking powerpc64 builds —
+  [rust-lang/git2-rs#1214](https://github.com/rust-lang/git2-rs/pull/1214),
+  [rust-lang/cargo#16601](https://github.com/rust-lang/cargo/pull/16601).
+
 ## 2026-01
 
 * Concluded the [Cargo Build Analysis Rust Project Goal](https://rust-lang.github.io/rust-project-goals/2025h2/cargo-build-analysis.html) as goal owner.
