@@ -55,14 +55,18 @@ Group PRs by theme (NOT chronologically):
 - Feature area: git, config, build, package ops
 - User impact: DX, performance, debugger support
 - Initiative: RFC impl, stabilization, ecosystem support
-- Multi-week work: "Started", "Continued", "Completed"
+- Multi-week work: cross-reference prior weeks, show arc progression
 
 ### 4. Write
 
 - Lead with outcome: "Fixed", "Enabled", "Unblocked" (NOT "Worked on", "Reviewed")
-- Explain: WHO benefits, WHAT it enables, WHY it matters
+- Frame around what users GET, not what the code DOES
+- Connect to future value when applicable:
+  "paving the way for...", "a building block toward...", "the capstone of..."
+- Combine related PRs into single bullets when they serve one initiative
 - Link: Include issues (via "Fixes #XXXX"), RFCs, Project Goals
-- Multi-week: Use "Started" (full detail), "Continued" (less detail), "Completed" (impact)
+- Multi-week: Cross-reference prior weeks naturally
+  ("from the switch driven the previous week", "beyond the fix from last week")
 
 ## Classification Decision Tree
 
@@ -100,9 +104,9 @@ As a Cargo maintainer, RFC/FCP reviews and design discussions demonstrate leader
 - Show problem being explored and potential impact
 
 **PR Reviews:**
-- Not just "Merged X" - explain what X enables
-- For significant features, explain the value
-- Group related reviews by theme
+- Frame around what users get, not the mechanical act of merging
+- For initiative work: show how this piece fits the larger arc
+- Group related reviews into single bullets by theme
 
 ## Examples
 
@@ -168,7 +172,12 @@ Why TODO: Pure refactoring without clear user benefit.
 
 Match verb to actual role. Don't overclaim:
 
-- "Shepherded" = guided a reported issue through fix + backport
+- "Shepherded" = guided contributor work or issue through to landing
+- "Stabilized ... after FCP completion" = landed a stabilization you didn't author
+- "Made X the default" = capstone decision for an initiative
+- "Prototyped" = exploratory/experimental work, not yet committed direction
+- "Refined" = follow-up behavioral adjustment to existing feature
+- "Restored" = fixed a regression, emphasize value users get back
 - "Kicked off" = started a design conversation (NOT "Implemented")
 - "Coordinated" = drove cross-repo fixes (e.g., gitoxide → Cargo)
 - "Contributed" = submitted upstream to a project you don't maintain
