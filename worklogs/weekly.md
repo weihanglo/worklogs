@@ -1,5 +1,17 @@
 # Weekly summaries
 
+## 2026-03-02
+
+* Shepherded a fix for a reported `cargo package` regression
+  where `.crate` files kept trailing garbage when new content was shorter.
+  Also coordinated the beta backport of it —
+  [rust-lang/cargo#16683](https://github.com/rust-lang/cargo/issues/16683),
+  [rust-lang/cargo#16688](https://github.com/rust-lang/cargo/pull/16688)
+
+## 2026-02-23
+
+* Vacationing
+
 ## 2026-02-16
 
 * Fixed `host.runner` and `host.linker` regressions across three PRs:
