@@ -838,11 +838,106 @@ to an event-based model that captures the build timings. An event-based structur
 
 ## 2024-04-29
 
+* Made the MSRV-aware resolver the default for Edition 2024 —
+  the capstone of weeks of resolver work.
+  New projects on Edition 2024 will automatically get dependency versions
+  compatible with their `rust-version`, reducing surprise build failures
+  on older toolchains —
+  [rust-lang/cargo#13785](https://github.com/rust-lang/cargo/pull/13785)
+  [rust-lang/cargo#9930](https://github.com/rust-lang/cargo/issues/9930)
+* Initiated FCP to remove support for inheriting badges from `[workspace.package.badges]`.
+  This was an undocumented bug — never specified in the RFC
+  and inconsistent with how workspace inheritance works —
+  [rust-lang/cargo#13788](https://github.com/rust-lang/cargo/pull/13788)
+  [rust-lang/cargo#13643](https://github.com/rust-lang/cargo/issues/13643)
+* Shepherded Edition 2024 manifest cleanup:
+  removed underscore field support with `cargo fix` migration,
+  and tightened underscore/dash redundancy warnings as prep.
+  Users on Edition 2024 get cleaner, unambiguous `Cargo.toml` syntax —
+  [rust-lang/cargo#13804](https://github.com/rust-lang/cargo/pull/13804)
+  [rust-lang/cargo#13798](https://github.com/rust-lang/cargo/pull/13798)
+  [rust-lang/cargo#13800](https://github.com/rust-lang/cargo/pull/13800)
+  [rust-lang/rust#123754](https://github.com/rust-lang/rust/issues/123754)
+* Protected standard library source from being modified by `cargo fix`.
+  A rustc bug was emitting fix suggestions targeting sysroot files;
+  Cargo now refuses to write into sysroot regardless of upstream bugs —
+  [rust-lang/cargo#13792](https://github.com/rust-lang/cargo/pull/13792)
+  [rust-lang/cargo#9857](https://github.com/rust-lang/cargo/issues/9857)
+
 ## 2024-04-22
+
+* Shepherded three PRs that together landed the MSRV-aware resolver v3:
+  user-visible locking messages showing resolution strategy,
+  a config option to opt into MSRV-aware resolving,
+  and the resolver v3 implementation itself.
+  Users now see output like `[LOCKING] 2 packages to latest Rust 1.60.0 compatible versions`,
+  giving transparency into how dependencies are selected —
+  [rust-lang/cargo#13754](https://github.com/rust-lang/cargo/pull/13754)
+  [rust-lang/cargo#13769](https://github.com/rust-lang/cargo/pull/13769)
+  [rust-lang/cargo#13776](https://github.com/rust-lang/cargo/pull/13776)
+  [rust-lang/cargo#9930](https://github.com/rust-lang/cargo/issues/9930)
+* Completed FCP and merged the `[project]` error for Edition 2024
+  (initiated previous week), with `cargo fix` migration support —
+  [rust-lang/cargo#13747](https://github.com/rust-lang/cargo/pull/13747)
+* Fixed a gitoxide regression from the switch driven the previous week —
+  `cargo build` was failing when `list_files()` encountered certain directory layouts.
+  Collaborated with the gitoxide maintainer on the fix —
+  [rust-lang/cargo#13777](https://github.com/rust-lang/cargo/pull/13777)
+  [rust-lang/cargo#13773](https://github.com/rust-lang/cargo/issues/13773)
+* Prototyped an experiment for `[patch]` with unified diff files based on RFC 3177,
+  exploring how users could apply patches to dependencies without maintaining full forks.
+   This has been wanted for years. Also at $WORK we wanted this —
+  [rust-lang/cargo#13779](https://github.com/rust-lang/cargo/pull/13779)
+  [rust-lang/rfcs#3177](https://github.com/rust-lang/rfcs/pull/3177)
+* Removed the `preadv2` optimization from the jobserver crate entirely
+  after continued compatibility issues beyond the musl fix from last week.
+  Published to unblock `cc-rs` and downstream build tooling —
+  [rust-lang/jobserver-rs#88](https://github.com/rust-lang/jobserver-rs/pull/88)
+  [rust-lang/cc-rs#1039](https://github.com/rust-lang/cc-rs/issues/1039)
 
 ## 2024-04-15
 
+* Stabilized MSRV-aware version requirement selection for `cargo add` after FCP completion.
+  Users can now get MSRV-compatible dependency versions automatically when adding dependencies —
+  the first stable piece of the broader MSRV-aware workflow from RFC 3537,
+  paving the way for resolver-side stabilization —
+  [rust-lang/cargo#13608](https://github.com/rust-lang/cargo/pull/13608)
+  [rust-lang/cargo#9930](https://github.com/rust-lang/cargo/issues/9930)
+* Coordinated the work of two key pieces of the MSRV-aware resolver:
+  extending `--ignore-rust-version` to the dependency resolver,
+  and adding a `rustc -V` fallback when `rust-version` is unset.
+  These move the resolver closer to stabilization,
+  enabling users without explicit `rust-version` to still benefit from MSRV-aware resolution —
+  [rust-lang/cargo#13738](https://github.com/rust-lang/cargo/pull/13738)
+  [rust-lang/cargo#13743](https://github.com/rust-lang/cargo/pull/13743)
+  [rust-lang/cargo#9930](https://github.com/rust-lang/cargo/issues/9930)
+* Initiated FCP to error on deprecated `[project]` table in Edition 2024,
+  with `cargo fix` support to automatically migrate manifests to `[package]`.
+  Removes legacy syntax that has confused users since pre-1.0 days —
+  [rust-lang/cargo#13747](https://github.com/rust-lang/cargo/pull/13747)
+* Unblocked users hitting stale build script caches when switching between targets —
+  build scripts were not rerunning when target-specific rustflags changed —
+  [rust-lang/cargo#13560](https://github.com/rust-lang/cargo/pull/13560)
+  [rust-lang/cargo#13003](https://github.com/rust-lang/cargo/issues/13003)
+
 ## 2024-04-08
+
+* Initiated FCP and merged the switch to gitoxide for listing files in git repositories by default.
+  This fixes a 4-year-old crash where Cargo failed entirely on projects using git split index,
+  and improves correctness over the libgit2 implementation for edge cases.
+  Includes temporary opt-out via `__CARGO_GITOXIDE_DISABLE_LIST_FILES=1` for regressions —
+  [rust-lang/cargo#13696](https://github.com/rust-lang/cargo/pull/13696)
+  [rust-lang/cargo#10150](https://github.com/rust-lang/cargo/issues/10150)
+* Shepherded support for `cargo update --precise` accepting pre-release versions
+  under a new unstable flag.
+  This enables users to pin pre-release dependencies during development,
+  a building block toward full pre-release handling in Cargo —
+  [rust-lang/cargo#13626](https://github.com/rust-lang/cargo/pull/13626)
+  [rust-lang/cargo#13290](https://github.com/rust-lang/cargo/issues/13290)
+* Restored GitHub fast-path optimization for git dependency lookups
+  after a GitHub API change broke redirect handling,
+  causing Cargo to fall back to slower full fetches on every resolution —
+  [rust-lang/cargo#13718](https://github.com/rust-lang/cargo/pull/13718)
 
 ## 2024-04-01
 
