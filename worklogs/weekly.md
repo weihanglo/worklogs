@@ -1,5 +1,7 @@
 # Weekly summaries
 
+## 2026-03-09
+
 ## 2026-03-02
 
 * Shepherded a fix for a reported `cargo package` regression
@@ -768,65 +770,505 @@ to an event-based model that captures the build timings. An event-based structur
 
 ## 2024-12-30
 
+* Fixed symlink handling in `cargo package` to address Windows compatibility issues
+  where Git's `core.symlinks=false` causes symlinks to be checked out as plain text files —
+  [rust-lang/cargo#14994](https://github.com/rust-lang/cargo/pull/14994)
+  [rust-lang/cargo#14981](https://github.com/rust-lang/cargo/pull/14981)
+* Improved `cargo package` performance for large monorepos by using Git pathspec
+  to limit status checks to relevant paths only.
+  Addressed O(n²) performance issues in repositories with hundreds of workspace members,
+  preventing redundant dirty file checks across the entire repository —
+  [rust-lang/cargo#14997](https://github.com/rust-lang/cargo/pull/14997).
+  This was also asked and requested by large users like AWS Rust SDK project.
+* Initialized an FCP review for SourceID Ord/Eq simplification for the Cargo team,
+  which enables future performance optimizations in Cargo's resolver —
+  [rust-lang/cargo#14980](https://github.com/rust-lang/cargo/pull/14980)
+
 ## 2024-12-23
+
+* Fixed VCS dirty file detection in `cargo package` to properly handle files specified
+  with paths outside the package root.
+  Cargo now correctly checks Git status for `package.readme` and `package.license-file`
+  when they reference files outside the package but within the Git workdir,
+  preventing incorrect "dirty working directory" errors —
+  [rust-lang/cargo#14966](https://github.com/rust-lang/cargo/pull/14966)
+  [rust-lang/cargo#14967](https://github.com/rust-lang/cargo/issues/14967)
+* Refactored `cargo_package` module structure by splitting monolithic file into focused submodules.
+  This unblocks future improvements for symlink handlings and performance improvements.
+  [rust-lang/cargo#14982](https://github.com/rust-lang/cargo/pull/14982)
+  [rust-lang/cargo#14959](https://github.com/rust-lang/cargo/pull/14959)
+  [rust-lang/cargo#14960](https://github.com/rust-lang/cargo/pull/14960)
+* Continued improving user experience for dirty file reporting in `cargo package`
+  by displaying file paths relative to Git workdir instead of package root.
+  [rust-lang/cargo#14968](https://github.com/rust-lang/cargo/pull/14968)
+  [rust-lang/cargo#14970](https://github.com/rust-lang/cargo/pull/14970)
+* Stabilized higher precedence for trailing flags in `cargo rustc -- <flags>`.
+  This allows developers to override Cargo-set flags more reliably, fixing long-standing flag precedence issues —
+  [rust-lang/cargo#14900](https://github.com/rust-lang/cargo/pull/14900)
+  [rust-lang/cargo#14346](https://github.com/rust-lang/cargo/issues/14346)
 
 ## 2024-12-16
 
+* Tracked FCP for stabilizing Windows Terminal taskbar progress integration.
+  This moves the Windows developer experience improvements toward stable release —
+  [rust-lang/cargo#14615](https://github.com/rust-lang/cargo/pull/14615)
+* Reviewed RFC for Trusted Publishing support on crates.io.
+  This explores OIDC-based publishing to eliminate token management and improve supply chain security —
+  [rust-lang/rfcs#3691](https://github.com/rust-lang/rfcs/pull/3691)
+* Implemented cross-platform stable hash for registry index paths using rustc-stable-hash.
+  This enables `-Ztrim-paths` to build stable cross-platform paths for registry and git sources,
+  making source files findable at the same path when debugging across platforms.
+  Also helps cache registry index consistently across platforms, addressing openSUSE's build reproducibility needs —
+  [rust-lang/cargo#14917](https://github.com/rust-lang/cargo/pull/14917)
+  [rust-lang/cargo#14795](https://github.com/rust-lang/cargo/issues/14795)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14921](https://github.com/rust-lang/cargo/pull/14921)
+  [rust-lang/cargo#14926](https://github.com/rust-lang/cargo/pull/14926)
+  [rust-lang/cargo#14928](https://github.com/rust-lang/cargo/pull/14928)
+  [rust-lang/cargo#14931](https://github.com/rust-lang/cargo/pull/14931)
+  [rust-lang/cargo#14939](https://github.com/rust-lang/cargo/pull/14939)
+  [rust-lang/cargo#14940](https://github.com/rust-lang/cargo/pull/14940)
+  [rust-lang/cargo#14945](https://github.com/rust-lang/cargo/pull/14945)
+  [rust-lang/cargo#14951](https://github.com/rust-lang/cargo/pull/14951)
+
 ## 2024-12-09
+
+* Reviewed and merged fix preventing Cargo from discarding build cache on RUSTFLAGS changes.
+  Previously, any RUSTFLAGS modification would invalidate the entire cache. Now `-C extra-filename` includes RUSTFLAGS while `-C metadata` remains stable, enabling PGO and reproducible builds with better caching —
+  [rust-lang/cargo#14830](https://github.com/rust-lang/cargo/pull/14830)
+  [rust-lang/cargo#8716](https://github.com/rust-lang/cargo/issues/8716)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14849](https://github.com/rust-lang/cargo/pull/14849)
+  [rust-lang/cargo#14898](https://github.com/rust-lang/cargo/pull/14898)
+  [rust-lang/cargo#14902](https://github.com/rust-lang/cargo/pull/14902)
+  [rust-lang/cargo#14911](https://github.com/rust-lang/cargo/pull/14911)
+  [rust-lang/cargo#14913](https://github.com/rust-lang/cargo/pull/14913)
 
 ## 2024-12-02
 
+* Initiated FCP proposing cross-platform stable hash for source URL paths.
+  This proposal to use BLAKE3 enables `-Ztrim-paths` to work consistently across platforms,
+  benefiting developers sharing debug info and source files between different systems —
+  [rust-lang/cargo#14795](https://github.com/rust-lang/cargo/issues/14795)
+* Participated in discussion on debugging docs.rs build failures with new Cargo error reporting.
+  This helps improve diagnostic clarity for crate authors encountering build issues —
+  [rust-lang.zulipchat.com](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/help.20debugging.20a.20docs.2Ers.20issue.20with.20a.20new.20cargo.20error/near/485698051)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14880](https://github.com/rust-lang/cargo/pull/14880)
+  [rust-lang/cargo#14884](https://github.com/rust-lang/cargo/pull/14884)
+
 ## 2024-11-25
+
+* Initiated FCP for ensuring cross-platform stable paths to registry index directories.
+  This addresses hash inconsistency issues affecting build reproducibility and tooling that relies on predictable cache locations —
+  [rust-lang/cargo#14795](https://github.com/rust-lang/cargo/issues/14795)
+* Completed FCP and merged support for raw-idents in cfg expressions with future-incompatibility warning against bare keywords.
+  This prevents future breakage when Rust adds new keywords while allowing existing code to continue working —
+  [rust-lang/cargo#14671](https://github.com/rust-lang/cargo/pull/14671)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14842](https://github.com/rust-lang/cargo/pull/14842)
+  [rust-lang/cargo#14846](https://github.com/rust-lang/cargo/pull/14846)
+  [rust-lang/cargo#14847](https://github.com/rust-lang/cargo/pull/14847)
+  [rust-lang/cargo#14848](https://github.com/rust-lang/cargo/pull/14848)
+  [rust-lang/cargo#14854](https://github.com/rust-lang/cargo/pull/14854)
 
 ## 2024-11-18
 
+* Completed FCP and stabilized resolver v3 with MSRV-aware dependency resolution for Edition 2024.
+  This represents years of work enabling the Rust ecosystem to handle MSRV constraints automatically during dependency resolution —
+  [rust-lang/cargo#14754](https://github.com/rust-lang/cargo/pull/14754)
+* Reviewed and merged `-Zbuild-std` enhancement to verify target support before attempting to build std.
+  This prevents confusing error cascades by checking target capabilities upfront, improving diagnostics for embedded and bare-metal developers —
+  [rust-lang/cargo#14183](https://github.com/rust-lang/cargo/pull/14183)
+  [rust-lang/wg-cargo-std-aware#87](https://github.com/rust-lang/wg-cargo-std-aware/issues/87)
+* Tracked FCP for future-incompatibility warning on cfg keywords.
+  This prepares the ecosystem for proper handling of reserved identifiers in configuration predicates —
+  [rust-lang/cargo#14671](https://github.com/rust-lang/cargo/pull/14671)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14806](https://github.com/rust-lang/cargo/pull/14806)
+  [rust-lang/cargo#14817](https://github.com/rust-lang/cargo/pull/14817)
+  [rust-lang/cargo#14826](https://github.com/rust-lang/cargo/pull/14826)
+  [rust-lang/cargo#14829](https://github.com/rust-lang/cargo/pull/14829)
+
 ## 2024-11-11
+
+* Closed multiple long-standing issues during triage sweep, reducing backlog and clarifying project direction.
+  This included resolving `cargo tree` artifact dependency questions and LTO warning proposals —
+  [rust-lang/cargo#10593](https://github.com/rust-lang/cargo/issues/10593)
+  [rust-lang/cargo#11260](https://github.com/rust-lang/cargo/issues/11260)
+  [rust-lang/cargo#14693](https://github.com/rust-lang/cargo/issues/14693)
+  [rust-lang/cargo#14768](https://github.com/rust-lang/cargo/issues/14768)
+* Triaged and created issue tracking needed improvements to registry index path stability.
+  This identifies cross-platform hash inconsistencies requiring architectural fixes —
+  [rust-lang/cargo#14804](https://github.com/rust-lang/cargo/issues/14804)
+  [rust-lang/cargo#14795](https://github.com/rust-lang/cargo/issues/14795)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14781](https://github.com/rust-lang/cargo/pull/14781)
+  [rust-lang/cargo#14786](https://github.com/rust-lang/cargo/pull/14786)
+  [rust-lang/cargo#14793](https://github.com/rust-lang/cargo/pull/14793)
+  [rust-lang/cargo#14799](https://github.com/rust-lang/cargo/pull/14799)
+  [rust-lang/cargo#14805](https://github.com/rust-lang/cargo/pull/14805)
 
 ## 2024-11-04
 
+* Reviewed resolver v3 stabilization PR during FCP period, providing feedback on Edition 2024 integration.
+  This ensured the multi-year MSRV resolver work was ready for stable release —
+  [rust-lang/cargo#14754](https://github.com/rust-lang/cargo/pull/14754)
+* Closed multiple stale PRs and issues during triage, including long-pending feature proposals.
+  This maintains project focus by resolving items that no longer align with current direction —
+  [rust-lang/cargo#14058](https://github.com/rust-lang/cargo/pull/14058)
+  [rust-lang/cargo#13207](https://github.com/rust-lang/cargo/pull/13207)
+  [rust-lang/cargo#14771](https://github.com/rust-lang/cargo/issues/14771)
+* Created issue in cc-rs tracking compatibility concerns affecting Cargo's C/C++ integration —
+  [rust-lang/cc-rs#1255](https://github.com/rust-lang/cc-rs/issues/1255)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14772](https://github.com/rust-lang/cargo/pull/14772)
+
 ## 2024-10-28
+
+* Tracked FCP for stabilizing resolver v3, which enables MSRV-aware dependency resolution as part of Edition 2024.
+  This completes the resolver improvements needed for ecosystem-wide MSRV support —
+  [rust-lang/cargo#14754](https://github.com/rust-lang/cargo/pull/14754)
+* Participated in discussion on switching Cargo from bors to GitHub merge queue for improved CI efficiency —
+  [rust-lang.zulipchat.com](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Switch.20from.20bors.20to.20merge.20queue/near/478476009)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14736](https://github.com/rust-lang/cargo/pull/14736)
+  [rust-lang/cargo#14744](https://github.com/rust-lang/cargo/pull/14744)
+  [rust-lang/cargo#14748](https://github.com/rust-lang/cargo/pull/14748)
+  [rust-lang/cargo#14750](https://github.com/rust-lang/cargo/pull/14750)
 
 ## 2024-10-21
 
+* Reviewed and merged Windows Terminal integration using ANSI OSC 9;4 sequences to display build progress in taskbar.
+  This improves build visibility for Windows developers using Windows Terminal and ConEmu, matching the UX of tools like winget —
+  [rust-lang/cargo#14615](https://github.com/rust-lang/cargo/pull/14615)
+  [rust-lang/cargo#11432](https://github.com/rust-lang/cargo/issues/11432)
+* Reviewed and merged fix for `config` `[env]` table tracking in dep-info files.
+  Previously, changes to environment variables in config.toml wouldn't trigger rebuilds, causing stale builds —
+  [rust-lang/cargo#14701](https://github.com/rust-lang/cargo/pull/14701)
+  [rust-lang/cargo#13280](https://github.com/rust-lang/cargo/issues/13280)
+* Reviewed RFC for PR template encouraging inline comments over general comments.
+  This improves code review quality by making feedback more actionable and contextual —
+  [rust-lang/rfcs#3717](https://github.com/rust-lang/rfcs/pull/3717)
+* TODO: Merged jobserver-rs compatibility improvements —
+  [rust-lang/jobserver-rs#107](https://github.com/rust-lang/jobserver-rs/pull/107)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14711](https://github.com/rust-lang/cargo/pull/14711)
+  [rust-lang/cargo#14724](https://github.com/rust-lang/cargo/pull/14724)
+  [rust-lang/cargo#14725](https://github.com/rust-lang/cargo/pull/14725)
+  [rust-lang/cargo#14726](https://github.com/rust-lang/cargo/pull/14726)
+
 ## 2024-10-14
+
+* Reviewed and merged checksum-based freshness detection as alternative to mtime-based rebuild detection.
+  This resolves long-standing issues on filesystems with poor mtime implementations (Docker, network mounts), enabling reliable incremental builds in those environments —
+  [rust-lang/cargo#14137](https://github.com/rust-lang/cargo/pull/14137)
+  [rust-lang/cargo#14136](https://github.com/rust-lang/cargo/issues/14136)
+  [rust-lang/cargo#6529](https://github.com/rust-lang/cargo/issues/6529)
+* Reviewed and merged fix for `cargo tree` panic when displaying cross-compiled artifact dependencies.
+  This fixes crashes affecting developers using artifact dependencies with different target platforms —
+  [rust-lang/cargo#14593](https://github.com/rust-lang/cargo/pull/14593)
+  [rust-lang/cargo#12358](https://github.com/rust-lang/cargo/issues/12358)
+  [rust-lang/cargo#10593](https://github.com/rust-lang/cargo/issues/10593)
+* Tracked FCP for Official API for build scripts proposal.
+  This would provide a stable, versioned interface for build.rs scripts, improving ecosystem stability and reducing breakage —
+  [rust-lang/cargo#12432](https://github.com/rust-lang/cargo/issues/12432)
+* Expanded MSRV documentation to clarify what setting MSRV does and define "support" semantics.
+  This prepares ecosystem for MSRV-aware resolver by establishing shared understanding of MSRV policies —
+  [rust-lang/cargo#14636](https://github.com/rust-lang/cargo/pull/14636)
+* TODO: Dependency bump for gix-path —
+  [rust-lang/cargo#14489](https://github.com/rust-lang/cargo/pull/14489)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14576](https://github.com/rust-lang/cargo/pull/14576)
+  [rust-lang/cargo#14620](https://github.com/rust-lang/cargo/pull/14620)
+  [rust-lang/cargo#14647](https://github.com/rust-lang/cargo/pull/14647)
 
 ## 2024-10-07
 
+* Stabilized MSRV-aware resolver configuration, allowing Cargo to respect minimum supported Rust versions when selecting dependency versions.
+  This enables the ecosystem to maintain compatibility guarantees while still publishing updates, addressing years of toolchain compatibility challenges —
+  [rust-lang/cargo#14639](https://github.com/rust-lang/cargo/pull/14639)
+  [rust-lang/cargo#9930](https://github.com/rust-lang/cargo/issues/9930)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14632](https://github.com/rust-lang/cargo/pull/14632)
+
 ## 2024-09-30
+
+* Stabilized `CARGO_MANIFEST_PATH` environment variable for build scripts and proc macros.
+  This provides the full path to the manifest file, essential for cargo scripts where `CARGO_MANIFEST_DIR` alone is insufficient to identify which script is running —
+  [rust-lang/cargo#14404](https://github.com/rust-lang/cargo/pull/14404)
+  [rust-lang/cargo#12207](https://github.com/rust-lang/cargo/issues/12207)
+* Enhanced `cargo install --lockfile-path` to automatically imply `--locked` behavior.
+  This prevents unexpected dependency updates when using custom lockfile locations, ensuring reproducible installations —
+  [rust-lang/cargo#14556](https://github.com/rust-lang/cargo/pull/14556)
+  [rust-lang/cargo#14421](https://github.com/rust-lang/cargo/issues/14421)
+* Initiated FCP for `autolib` feature, enabling automatic library target inference in Cargo.toml.
+  This reduces boilerplate in package manifests while maintaining explicit control when needed —
+  [rust-lang/cargo#14591](https://github.com/rust-lang/cargo/pull/14591)
+* Initiated FCP to declare support levels for each Cargo crate in the team charter.
+  This formalizes maintenance commitments and helps users understand the stability guarantees of different Cargo components —
+  [rust-lang/cargo#14600](https://github.com/rust-lang/cargo/pull/14600)
+* Initiated FCP to classify new Intentional Artifacts as 'small' changes in the charter.
+  This clarifies the change approval process for artifact-related features —
+  [rust-lang/cargo#14599](https://github.com/rust-lang/cargo/pull/14599)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14588](https://github.com/rust-lang/cargo/pull/14588)
+  [rust-lang/cargo#14590](https://github.com/rust-lang/cargo/pull/14590)
+  [rust-lang/cargo#14592](https://github.com/rust-lang/cargo/pull/14592)
+  [rust-lang/cargo#14619](https://github.com/rust-lang/cargo/pull/14619)
 
 ## 2024-09-23
 
+* Added `--dry-run` flag to `cargo install` command, allowing users to preview installation without modifying the system.
+  This helps users verify package compatibility and installation paths before committing to actual installation —
+  [rust-lang/cargo#14280](https://github.com/rust-lang/cargo/pull/14280)
+  [rust-lang/cargo#11123](https://github.com/rust-lang/cargo/issues/11123)
+* Reviewed RFC for templating `CARGO_TARGET_DIR` to consolidate target directories across workspace members.
+  This addresses long-standing disk space concerns in monorepos by enabling shared build artifact directories —
+  [rust-lang/rfcs#3371](https://github.com/rust-lang/rfcs/pull/3371)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14568](https://github.com/rust-lang/cargo/pull/14568)
+  [rust-lang/cargo#14569](https://github.com/rust-lang/cargo/pull/14569)
+  [rust-lang/cargo#14573](https://github.com/rust-lang/cargo/pull/14573)
+
 ## 2024-09-16
+
+* Shepherded FCP for `CARGO_MANIFEST_PATH` environment variable stabilization.
+  This completed the review process for enabling cargo scripts to reliably identify their own manifest files —
+  [rust-lang/cargo#14404](https://github.com/rust-lang/cargo/pull/14404)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14561](https://github.com/rust-lang/cargo/pull/14561)
+  [rust-lang/cargo#14562](https://github.com/rust-lang/cargo/pull/14562)
+  [rust-lang/cargo#14563](https://github.com/rust-lang/cargo/pull/14563)
+  [rust-lang/cargo#14564](https://github.com/rust-lang/cargo/pull/14564)
 
 ## 2024-09-09
 
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14530](https://github.com/rust-lang/cargo/pull/14530)
+  [rust-lang/cargo#14539](https://github.com/rust-lang/cargo/pull/14539)
+  [rust-lang/cargo#14540](https://github.com/rust-lang/cargo/pull/14540)
+  [rust-lang/cargo#14546](https://github.com/rust-lang/cargo/pull/14546)
+* TODO: Reverted Cargo.lock changes blocking CI —
+  [rust-lang/cargo#14547](https://github.com/rust-lang/cargo/pull/14547)
+
 ## 2024-09-02
+
+* Fixed import library location for Windows gnullvm targets to match gnu targets.
+  This ensures consistent artifact placement across Windows toolchain variants, unblocking downstream build tools that need predictable import library paths —
+  [rust-lang/cargo#14451](https://github.com/rust-lang/cargo/pull/14451)
+* TODO: Bumped Cargo to 0.84.0 with changelog updates —
+  [rust-lang/cargo#14495](https://github.com/rust-lang/cargo/pull/14495)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14499](https://github.com/rust-lang/cargo/pull/14499)
+  [rust-lang/cargo#14503](https://github.com/rust-lang/cargo/pull/14503)
+  [rust-lang/cargo#14507](https://github.com/rust-lang/cargo/pull/14507)
+  [rust-lang/cargo#14515](https://github.com/rust-lang/cargo/pull/14515)
 
 ## 2024-08-26
 
+* TODO: Closed multiple issues during triage sweep —
+  [rust-lang/cargo#14450](https://github.com/rust-lang/cargo/issues/14450)
+  [rust-lang/cargo#14449](https://github.com/rust-lang/cargo/issues/14449)
+  [rust-lang/cargo#14443](https://github.com/rust-lang/cargo/issues/14443)
+  [rust-lang/cargo#14411](https://github.com/rust-lang/cargo/issues/14411)
+* TODO: Merged test migration to snapbox —
+  [rust-lang/cargo#14453](https://github.com/rust-lang/cargo/pull/14453)
+
 ## 2024-08-19
+
+* Fixed `-Cmetadata` hash generation to account for RUSTFLAGS differences between host and target when using `target-applies-to-host=false`.
+  Previously, Cargo could generate conflicting metadata for artifact dependencies built with different flags, causing race conditions where rustc invocations would overwrite each other's outputs —
+  [rust-lang/cargo#14432](https://github.com/rust-lang/cargo/pull/14432)
+  [rust-lang/cargo#14253](https://github.com/rust-lang/cargo/issues/14253)
+* TODO: Updated label triggers for Command-info automation —
+  [rust-lang/cargo#14422](https://github.com/rust-lang/cargo/pull/14422)
 
 ## 2024-08-12
 
+* Stabilized `--lockfile-path` flag allowing users to specify custom locations for `Cargo.lock` files.
+  This unblocks monorepo tooling and build systems that need lockfiles outside the default workspace root, particularly benefiting teams using Bazel and other build orchestrators —
+  [rust-lang/cargo#14326](https://github.com/rust-lang/cargo/pull/14326)
+  [rust-lang/cargo#5707](https://github.com/rust-lang/cargo/issues/5707)
+* Initiated FCP to merge fix for `cargo package` failures with bare commit Git repositories.
+  This ensured the worktree compatibility fix could ship in the next release —
+  [rust-lang/cargo#14359](https://github.com/rust-lang/cargo/pull/14359)
+* Extended `-Ztrim-paths` support to rustdoc diagnostics, ensuring consistent path trimming across compilation and documentation generation.
+  This improves build reproducibility for projects generating documentation in CI environments —
+  [rust-lang/cargo#14389](https://github.com/rust-lang/cargo/pull/14389)
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14377](https://github.com/rust-lang/cargo/pull/14377)
+  [rust-lang/cargo#14401](https://github.com/rust-lang/cargo/pull/14401)
+  [rust-lang/cargo#14410](https://github.com/rust-lang/cargo/pull/14410)
+  [rust-lang/cargo#14417](https://github.com/rust-lang/cargo/pull/14417)
+  [rust-lang/cargo#14418](https://github.com/rust-lang/cargo/pull/14418)
+  [rust-lang/cargo#14423](https://github.com/rust-lang/cargo/pull/14423)
+
 ## 2024-08-05
+
+* Fixed `cargo package` crash when working with bare commit Git repositories.
+  Previously, Cargo would fail when attempting to generate VCS info for repositories without a proper Git directory structure, affecting workflows using git worktrees and other non-standard Git setups —
+  [rust-lang/cargo#14359](https://github.com/rust-lang/cargo/pull/14359)
+  [rust-lang/cargo#14354](https://github.com/rust-lang/cargo/issues/14354)
+* Initiated FCP for stabilizing `--lockfile-path` flag to allow specifying custom lockfile locations.
+  This enables better support for monorepos and alternative build systems that need lockfiles in non-standard locations —
+  [rust-lang/cargo#14326](https://github.com/rust-lang/cargo/pull/14326)
+  [rust-lang/cargo#5707](https://github.com/rust-lang/cargo/issues/5707)
+* Fixed `cargo package` failure on Git repositories with no commit history via beta backport for 1.81 release.
+  Previously, running `cargo package --allow-dirty` on newly initialized Git repos would fail with "revspec 'HEAD' not found".
+  This unblocked developers using fresh Git repositories without initial commits —
+  [rust-lang/cargo#14374](https://github.com/rust-lang/cargo/pull/14374)
+  [rust-lang/cargo#14354](https://github.com/rust-lang/cargo/issues/14354)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14336](https://github.com/rust-lang/cargo/pull/14336)
+  [rust-lang/cargo#14342](https://github.com/rust-lang/cargo/pull/14342)
+  [rust-lang/cargo#14344](https://github.com/rust-lang/cargo/pull/14344)
+  [rust-lang/cargo#14351](https://github.com/rust-lang/cargo/pull/14351)
+  [rust-lang/cargo#14352](https://github.com/rust-lang/cargo/pull/14352)
+  [rust-lang/cargo#14357](https://github.com/rust-lang/cargo/pull/14357)
 
 ## 2024-07-29
 
+* Completed FCP and stabilized automatic garbage collection for Cargo's global cache directory.
+  Cargo will now automatically clean up old, unused cache files once per day by default, deleting network-fetched files after 3 months and generated files after 1 month.
+  This reduces disk usage for all Cargo users without requiring manual intervention, while allowing opt-out via `gc.auto.frequency = "never"` configuration —
+  [rust-lang/cargo#14287](https://github.com/rust-lang/cargo/pull/14287)
+  [rust-lang/cargo#12633](https://github.com/rust-lang/cargo/issues/12633)
+* Removed rustc probe for `--check-cfg` support now that the feature is fully stabilized.
+  Simplifies Cargo's build logic by eliminating runtime capability detection that is no longer needed —
+  [rust-lang/cargo#14302](https://github.com/rust-lang/cargo/pull/14302)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14279](https://github.com/rust-lang/cargo/pull/14279)
+  [rust-lang/cargo#14293](https://github.com/rust-lang/cargo/pull/14293)
+  [rust-lang/cargo#14295](https://github.com/rust-lang/cargo/pull/14295)
+  [rust-lang/cargo#14297](https://github.com/rust-lang/cargo/pull/14297)
+  [rust-lang/cargo#14299](https://github.com/rust-lang/cargo/pull/14299)
+  [rust-lang/cargo#14250](https://github.com/rust-lang/cargo/pull/14250)
+
 ## 2024-07-22
+
+* TODO: Merged jobserver-rs fix for compatibility issues —
+  [rust-lang/jobserver-rs#102](https://github.com/rust-lang/jobserver-rs/pull/102)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14205](https://github.com/rust-lang/cargo/pull/14205)
+  [rust-lang/cargo#14260](https://github.com/rust-lang/cargo/pull/14260)
+  [rust-lang/cargo#14261](https://github.com/rust-lang/cargo/pull/14261)
+  [rust-lang/cargo#14266](https://github.com/rust-lang/cargo/pull/14266)
+  [rust-lang/cargo#14270](https://github.com/rust-lang/cargo/pull/14270)
+  [rust-lang/cargo#14272](https://github.com/rust-lang/cargo/pull/14272)
 
 ## 2024-07-15
 
+* Downgraded jobserver dependency to 0.1.28 as a beta backport to avoid missing the 1.80 release window while a fix for jobserver issues awaits review.
+  Ensures stable Cargo release is not blocked by upstream dependency problems —
+  [rust-lang/cargo#14254](https://github.com/rust-lang/cargo/pull/14254)
+  [rust-lang/jobserver-rs#99](https://github.com/rust-lang/jobserver-rs/issues/99)
+* TODO: Bumped CI tools including cargo-semver-checks to 0.32.0 (rustdoc JSON v30 support) and mdbook to 0.4.40 —
+  [rust-lang/cargo#14257](https://github.com/rust-lang/cargo/pull/14257)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14202](https://github.com/rust-lang/cargo/pull/14202)
+  [rust-lang/cargo#14243](https://github.com/rust-lang/cargo/pull/14243)
+
 ## 2024-07-08
+
+* Reviewed and merged fix for `target-applies-to-host=false` configuration to correctly pass RUSTFLAGS to artifact dependencies when building without explicit `--target` flag.
+  Previously, host build tools (like build scripts and proc macros) would incorrectly receive target RUSTFLAGS, breaking builds that rely on different flags for different compilation units.
+  This resolves a long-standing bug affecting projects using artifact dependencies —
+  [rust-lang/cargo#13900](https://github.com/rust-lang/cargo/pull/13900)
+  [rust-lang/cargo#10744](https://github.com/rust-lang/cargo/issues/10744)
+* Reviewed Rust Project Goal proposal for adding "yank with reason" functionality.
+  This enables crate authors to provide context when yanking versions, improving ecosystem communication —
+  [rust-lang/rust-project-goals#39](https://github.com/rust-lang/rust-project-goals/pull/39)
+* Participated in discussion on introducing `CARGO_RUN_ID` environment variable for identifying related processes and threads.
+  This addresses coordination needs in parallel build scenarios —
+  [internals.rust-lang.org](https://internals.rust-lang.org/t/introduce-env-var-cargo-run-id-for-identifying-related-processes-threads/21134/9)
+* Fixed rustdoc lint name from `broken-intra-doc-links` to `rustdoc::broken_intra_doc_links` for consistency with rustc's naming convention —
+  [rust-lang/cargo#14215](https://github.com/rust-lang/cargo/pull/14215)
+* TODO: Relaxed test output redactions to support rust-lang/rust build environment —
+  [rust-lang/cargo#14203](https://github.com/rust-lang/cargo/pull/14203)
+* TODO: Migrated additional test files to snapbox testing framework —
+  [rust-lang/cargo#14161](https://github.com/rust-lang/cargo/pull/14161)
+  [rust-lang/cargo#14113](https://github.com/rust-lang/cargo/pull/14113)
 
 ## 2024-07-01
 
+* TODO: Fixed test assertions for compatibility with rust-lang/rust build environment —
+  [rust-lang/cargo#14167](https://github.com/rust-lang/cargo/pull/14167)
+* TODO: Fixed test to omit target directory names for better cross-platform compatibility —
+  [rust-lang/cargo#14142](https://github.com/rust-lang/cargo/pull/14142)
+* TODO: Migrated credential_process, cross_compile, cross_publish, and custom_target tests to snapbox —
+  [rust-lang/cargo#14132](https://github.com/rust-lang/cargo/pull/14132)
+* TODO: Removed stray comment from documentation —
+  [rust-lang/cargo#14133](https://github.com/rust-lang/cargo/pull/14133)
+* TODO: Regenerated platform support data for rustsec/platforms crate —
+  [rustsec/rustsec#1204](https://github.com/rustsec/rustsec/pull/1204)
+
 ## 2024-06-24
+
+* Reviewed RFC for structured syntax enabling feature dependencies on specific crates.
+  This improves feature granularity and allows more precise dependency feature activation —
+  [rust-lang/rfcs#3663](https://github.com/rust-lang/rfcs/pull/3663)
+* Reviewed RFC for adding feature descriptions to Cargo.toml.
+  This enhances discoverability by allowing crate authors to document what each feature flag enables —
+  [rust-lang/rfcs#3485](https://github.com/rust-lang/rfcs/pull/3485)
+* TODO: Refactoring cleanup for Rust 1.79.0 release —
+  [rust-lang/cargo#14088](https://github.com/rust-lang/cargo/pull/14088)
+* TODO: Migrated clean tests to snapbox testing framework —
+  [rust-lang/cargo#14096](https://github.com/rust-lang/cargo/pull/14096)
+* TODO: Improved test readability by using raw strings for regex patterns —
+  [rust-lang/cargo#14099](https://github.com/rust-lang/cargo/pull/14099)
 
 ## 2024-06-17
 
+* Tracked FCP for RFC proposing RUSTFLAGS mechanism that applies only to root crate.
+  This enables build customization without affecting dependencies, addressing long-standing workflow limitations —
+  [rust-lang/rfcs#3310](https://github.com/rust-lang/rfcs/pull/3310)
+* Reverted automatic use of `-C strip` flag on MSVC targets after discovering rustc silently ignores it.
+  Prevents Cargo from setting strip options that have no effect, avoiding user confusion about why symbols aren't being stripped on Windows MSVC builds —
+  [rust-lang/cargo#14061](https://github.com/rust-lang/cargo/pull/14061)
+  [rust-lang/rust#115120](https://github.com/rust-lang/rust/pull/115120)
+* TODO: Migrated build tests to snapbox testing framework —
+  [rust-lang/cargo#14068](https://github.com/rust-lang/cargo/pull/14068)
+* TODO: Bumped Cargo to 0.82.0 with changelog updates —
+  [rust-lang/cargo#14040](https://github.com/rust-lang/cargo/pull/14040)
+
 ## 2024-06-10
 
+* Reviewed RFC for templating `CARGO_TARGET_DIR` to consolidate target directories across workspace members.
+  This addresses critical disk space concerns in monorepos and large workspaces by enabling shared build artifact directories —
+  [rust-lang/rfcs#3371](https://github.com/rust-lang/rfcs/pull/3371)
+* Tracked FCP for RFC enabling per-artifact dependency specifications.
+  This supports advanced build scenarios where different artifacts need different dependency configurations —
+  [rust-lang/rfcs#2887](https://github.com/rust-lang/rfcs/pull/2887)
+* Participated in discussion on proc-macro output directory support, exploring solutions for proc macros to generate additional build artifacts —
+  [internals.rust-lang.org](https://internals.rust-lang.org/t/proc-macro-output-dir/21001/10)
+* TODO: Removed temporary `__CARGO_GITOXIDE_DISABLE_LIST_FILES` environment variable that was scheduled for removal before 1.79 release —
+  [rust-lang/cargo#14036](https://github.com/rust-lang/cargo/pull/14036)
+* TODO: Added test to track the behavior of `--precise <prerelease>` for semver checks —
+  [rust-lang/cargo#14013](https://github.com/rust-lang/cargo/pull/14013)
+
 ## 2024-06-03
+
+* Added `cargo update --breaking` command to upgrade dependencies beyond SemVer-compatible versions.
+  Enables users to easily update to major version releases without manually editing `Cargo.toml`,
+  streamlining the dependency upgrade workflow for projects that want to stay current with breaking changes —
+  [rust-lang/cargo#13979](https://github.com/rust-lang/cargo/pull/13979)
+  [rust-lang/cargo#12425](https://github.com/rust-lang/cargo/issues/12425)
+* Renamed `--out-dir` flag to `--artifact-dir` for consistency across Cargo's command-line interface.
+  The old flag remains accepted but deprecated to ease migration —
+  [rust-lang/cargo#13809](https://github.com/rust-lang/cargo/pull/13809)
+* Fixed `cargo package` to generate `.cargo_vcs_info.json` even when the worktree is dirty with `--allow-dirty`.
+  Previously, VCS information was omitted for dirty worktrees, preventing downstream tools from accessing commit information.
+  The file now includes a `dirty` field to indicate repository status —
+  [rust-lang/cargo#13960](https://github.com/rust-lang/cargo/pull/13960)
+  [rust-lang/cargo#13695](https://github.com/rust-lang/cargo/issues/13695)
+* TODO: Added `unknown_lints` to the lints list for better lint configuration —
+  [rust-lang/cargo#14024](https://github.com/rust-lang/cargo/pull/14024)
+* TODO: Added tooling to document lints —
+  [rust-lang/cargo#14025](https://github.com/rust-lang/cargo/pull/14025)
+* TODO: Updated contribution documentation to suggest atomic commits with separate test commits —
+  [rust-lang/cargo#14014](https://github.com/rust-lang/cargo/pull/14014)
 
 ## 2024-05-27
 
