@@ -830,11 +830,92 @@ to an event-based model that captures the build timings. An event-based structur
 
 ## 2024-05-27
 
+* Unblocked CI environments hitting GitHub API rate limits —
+  merged a contributor fix for Git dependency fetching
+  that falls back to direct commit fetch for full hashes.
+  Particularly benefits Homebrew and fork-based workflows
+  where intermittent "object not found" errors blocked builds —
+  [rust-lang/cargo#13946](https://github.com/rust-lang/cargo/pull/13946)
+  [rust-lang/cargo#13555](https://github.com/rust-lang/cargo/issues/13555)
+* Enabled air-gapped and sandboxed production rustc builds
+  by vendoring crates required by opt-dist for profile collection
+  in the source tarball.
+  Distributions building rustc without network access
+  can now produce optimized builds out of the box.
+  This unblocks the bootstrap enviroment at $WORK, which is sandboxed —
+  [rust-lang/rust#125465](https://github.com/rust-lang/rust/pull/125465)
+* Enabled target-specific config overrides in bootstrap,
+  so cross-compilation builds can apply different settings per target triple.
+  This is wanted at $WORK when bootstrapping an optimized compiler —
+  [rust-lang/rust#125515](https://github.com/rust-lang/rust/pull/125515)
+* Reviewed a fix for libsecret credential loading on Linux
+  to use SONAME `libsecret-1.so.0`,
+  so users no longer need -dev packages installed for credential storage —
+  [rust-lang/cargo#13927](https://github.com/rust-lang/cargo/pull/13927)
+* Proposed FCP for pragmatic timestamp comparison
+  to reduce unnecessary rebuilds in Docker and environments
+  with filesystem time precision issues.
+  The PR was ultimately closed,
+  but the discussion helped clarify the design direction —
+  [rust-lang/cargo#13955](https://github.com/rust-lang/cargo/pull/13955)
+  [rust-lang/cargo#12060](https://github.com/rust-lang/cargo/issues/12060)
+
 ## 2024-05-20
+
+* Guided a contributor to fix a bug in `cargo add` and `cargo remove`
+  to preserve original file permissions on Cargo.toml.
+  Previously broke builds where different users write code vs build it —
+  [rust-lang/cargo#13898](https://github.com/rust-lang/cargo/pull/13898)
+* Fixed container infrastructure issue for CI reliability —
+  [rust-lang/cargo#13920](https://github.com/rust-lang/cargo/pull/13920)
 
 ## 2024-05-13
 
+* Fixed `cargo fix` to support IPv6-only networks
+  by binding to both IPv4 and IPv6 localhost addresses.
+  Users on macOS 14.4 and other IPv6-only environments
+  could not run `cargo fix` at all due to hardcoded 127.0.0.1 binding —
+  [rust-lang/cargo#13907](https://github.com/rust-lang/cargo/pull/13907)
+* Fixed proc-macro example targets from dependencies
+  incorrectly affecting feature resolution.
+  This is pretety spooky. A proc-macro examples shouldn't affect or
+  lead to a unexpected feature unification, which is hard to debug on user side —
+  [rust-lang/cargo#13892](https://github.com/rust-lang/cargo/pull/13892)
+  [rust-lang/cargo#13726](https://github.com/rust-lang/cargo/issues/13726)
+* Merged a contributor fix for artifact dependencies
+  to build only the specified library type (staticlib or cdylib)
+  instead of all available types.
+  Eliminates unnecessary builds and incorrect environment variable exposure
+  for users of the unstable artifact dependencies feature —
+  [rust-lang/cargo#13842](https://github.com/rust-lang/cargo/pull/13842)
+  [rust-lang/cargo#12109](https://github.com/rust-lang/cargo/issues/12109)
+* Merged improved build script error messages
+  for `cargo::` syntax used below MSRV 1.77,
+  now suggesting the old `cargo:` syntax.
+  Helps crate maintainers supporting older toolchains
+  adopt check-cfg without breaking their MSRV —
+  [rust-lang/cargo#13874](https://github.com/rust-lang/cargo/pull/13874)
+  [rust-lang/cargo#13868](https://github.com/rust-lang/cargo/issues/13868)
+* Reviewed the cargo-script RFC,
+  providing feedback on the design
+  for running single-file Cargo packages —
+  [rust-lang/rfcs#3502](https://github.com/rust-lang/rfcs/pull/3502)
+
 ## 2024-05-06
+
+* Stabilized `-Zcheck-cfg` as always enabled, completing rustc's conditional compilation configuration checking integration.
+  Enables build-time verification of `#[cfg]` attributes across the entire Rust ecosystem without opt-in flags —
+  [rust-lang/cargo#13571](https://github.com/rust-lang/cargo/pull/13571)
+  [rust-lang/cargo#10554](https://github.com/rust-lang/cargo/issues/10554)
+* Improved `cargo clean -p` performance by optimizing file listing in target directory.
+  Reduced clean time from ~35s to ~6s for large target directories (~250GB), and from ~380ms to ~100ms for typical projects —
+  [rust-lang/cargo#13818](https://github.com/rust-lang/cargo/pull/13818)
+* Fixed lint names to use snake_case (`_`) instead of kebab-case (`-`), with warnings for unknown lints suggesting correct names.
+  Aligns with RFC 344 conventions and mirrors rustc's lint naming —
+  [rust-lang/cargo#13837](https://github.com/rust-lang/cargo/pull/13837)
+* Fixed Cargo version output to show git commit info when built from Rust's source tarball.
+  Enables proper version reporting for distributions built from tarballs without .git directory —
+  [rust-lang/cargo#13832](https://github.com/rust-lang/cargo/pull/13832)
 
 ## 2024-04-29
 
