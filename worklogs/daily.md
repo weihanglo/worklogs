@@ -8,7 +8,7 @@
 * PR reviews
   * Commented https://github.com/rust-lang/cargo/pull/16765#issuecomment-4092857521
   * Merged https://github.com/rust-lang/cargo/pull/16768#pullrequestreview-3979213786
-  
+
 ## 2026-03-18
 
 * Issue triages
