@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2026-03-23
+
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/curl.20on.20macOS/near/581149095
+
 ## 2026-03-22
 
 * Issue triages
