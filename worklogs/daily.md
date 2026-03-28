@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-03-24
+
+* Issue triages
+  * Commented https://github.com/alexcrichton/curl-rust/issues/632#issuecomment-4121055496
+  * Commented https://github.com/mozilla/sccache/issues/2494#issuecomment-4121512735
+  * Created https://github.com/mozilla/sccache/issues/2652
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16785#pullrequestreview-4001665662
+  * Merged https://github.com/rust-lang/cargo/pull/16786#discussion_r2984077098
+  * Merged https://github.com/rust-lang/rust/pull/154346#pullrequestreview-4003643612
+  * Merged https://github.com/rust-lang/rust/pull/154343#pullrequestreview-4003479239
+* PR submissions
+  * Created https://github.com/mozilla/sccache/pull/2651
+
 ## 2026-03-23
 
 * Discussions
