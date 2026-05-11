@@ -1,5 +1,28 @@
 # Daily worklogs
 
+## 2026-04-08
+
+* Issue triages
+  * Commented https://github.com/bmwill/diffy/issues/43#issuecomment-4208001307
+* FCP reviews
+  * Created https://github.com/rust-lang/cargo/pull/16858#issuecomment-4211338214
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16846#pullrequestreview-4075494692
+  * Merged https://github.com/rust-lang/cargo/pull/16855#pullrequestreview-4075029622
+  * Commented https://github.com/rust-lang/cargo/pull/16857#discussion_r3054328251
+  * Merged https://github.com/rust-lang/cargo/pull/16859#pullrequestreview-4079403995
+  * Commented https://github.com/rust-lang/cargo/pull/16858#discussion_r3055216018
+* PR submissions
+  * Merged https://github.com/rust-lang/rust/pull/154987
+  * Merged https://github.com/weihanglo/diffy/pull/43
+  * Merged https://github.com/weihanglo/diffy/pull/44
+  * Merged https://github.com/bmwill/diffy/pull/44
+  * Merged https://github.com/bmwill/diffy/pull/45
+  * Merged https://github.com/bmwill/diffy/pull/46
+  * Merged https://github.com/bmwill/diffy/pull/47
+  * Merged https://github.com/bmwill/diffy/pull/48
+  * Closed https://github.com/bmwill/diffy/pull/49
+
 ## 2026-04-07
 
 * Issue triages
