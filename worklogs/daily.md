@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-04-20
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/16910#issuecomment-4284261801
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16902#pullrequestreview-4141300005
+  * Merged https://github.com/rust-lang/git2-rs/pull/1228#pullrequestreview-4141372026
+  * Merged https://github.com/rust-lang/cargo/pull/16912#pullrequestreview-4143421521
+* PR submissions
+  * Merged https://github.com/bmwill/diffy/pull/76
+  * Merged https://github.com/bmwill/diffy/pull/71 
+  * Created https://github.com/bmwill/diffy/pull/77
+  * Created https://github.com/bmwill/diffy/pull/78
+
 ## 2026-04-19
 
 * Issue triages
