@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-04-03
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/16830#issuecomment-4183628592
+* RFC reviews
+  * Commented https://github.com/rust-lang/rfcs/pull/3874#discussion_r3032695642
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/16742#issuecomment-4183537658
+  * Commented https://github.com/rust-lang/cargo/pull/16832#discussion_r3034478221
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/16833
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/351149-t-libs.2Fcrates/topic/libz-sys.20failed.20to.20build.20on.20FreeBSD/with/583458740
+
 ## 2026-04-02
 
 * Issue triages
