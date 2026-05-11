@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2026-04-25
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/16942#issuecomment-4320054667
+
 ## 2026-04-24
 
 * FCP reviews
