@@ -1,5 +1,14 @@
 # Daily worklogs
 
+## 2026-04-05
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/5376#issuecomment-4188850417
+  * Commented https://github.com/rust-lang/cargo/issues/11857#issuecomment-4188970009
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16832#pullrequestreview-4059433526
+  * Commented https://github.com/rust-lang/libz-sys/pull/266#issuecomment-4188831273
+
 ## 2026-04-04
 
 * Issue triages
