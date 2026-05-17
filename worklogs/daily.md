@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2026-05-17
+
+* PR submissions
+  * Merged https://github.com/rust-lang/git2-rs/pull/1206
+
 ## 2026-05-16
 
 * Issue triages
