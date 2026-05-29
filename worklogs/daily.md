@@ -1,5 +1,62 @@
 # Daily worklogs
 
+## 2026-05-29
+
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17049
+
+## 2026-05-28
+
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17036#pullrequestreview-4372101826
+  * Merged https://github.com/rust-lang/cargo/pull/17038#pullrequestreview-4384235319
+
+## 2026-05-27
+
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17034#discussion_r3310257640
+  * Commented https://github.com/rust-lang/cargo/pull/17036#issuecomment-4554242129
+  * Merged https://github.com/rust-lang/cargo/pull/17037#pullrequestreview-4374099956
+  * Merged https://github.com/rust-lang/cargo/pull/17025#discussion_r3312785741
+  * Merged https://github.com/rust-lang/cargo/pull/17033#pullrequestreview-4375081895
+
+## 2026-05-26
+
+* PR reviews
+ * Commented https://github.com/rust-lang/cargo/pull/17035#discussion_r3302793788
+* PR submissions
+  * Created https://github.com/rust-lang/rust/pull/156997
+
+## 2026-05-25
+
+* PR reviews
+  * Merged https://github.com/rust-lang/git2-rs/pull/1264
+  * Merged https://github.com/rust-lang/cargo/pull/17032
+  * Merged https://github.com/rust-lang/cargo/pull/17031
+  * Merged https://github.com/rust-lang/cargo/pull/17030
+
+## 2026-05-24
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17023#issuecomment-4532545216
+* PR reviews
+  * Merged https://github.com/rust-lang/git2-rs/pull/1260#pullrequestreview-4351485327
+  * Merged https://github.com/rust-lang/git2-rs/pull/1261#pullrequestreview-4351486721
+  * Merged https://github.com/rust-lang/cargo/pull/17027
+
+## 2026-05-20
+
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/1701j6#discussion_r3272481164
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17020
+
+## 2026-05-19
+
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17012
+  * Created https://github.com/rust-lang/cargo/pull/17014
+
 ## 2026-05-17
 
 * PR submissions
