@@ -120,6 +120,17 @@
   * Commented https://github.com/rust-lang/cargo/issues/12441#issuecomment-4367502921
   * Commented https://github.com/rust-lang/rust/issues/155992#issuecomment-4367724912
 
+## 2026-05-02
+
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/16950
+  * Merged https://github.com/rust-lang/cargo/pull/16952
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/16957
+  * Merged https://github.com/rust-lang/rust/pull/156069
+  * Merged https://github.com/st0012/cctop/pull/95
+  * Created https://github.com/st0012/cctop/pull/93
+
 ## 2026-05-01
 
 * FCP reviews
@@ -498,6 +509,7 @@
   * Commented https://github.com/rust-lang/cargo/issues/16805#issuecomment-4163292871
 * PR reviews
   * Merged https://github.com/rust-lang/cargo/pull/16811#pullrequestreview-4039008358
+  * Merged https://github.com/rust-lang/cargo-ghsa-p688-r7jv-fm6f/pull/1#discussion_r3017418625
   * Merged https://github.com/rust-lang/cargo/pull/16813#pullrequestreview-4040052651
 
 ## 2026-03-30
