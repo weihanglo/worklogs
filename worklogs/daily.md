@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-06-10
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17086#issuecomment-4671688077
+* PR reviews
+  * Merged https://github.com/rust-lang/git2-rs/pull/1273#pullrequestreview-4468601368
+  * Merged https://github.com/rust-lang/git2-rs/pull/1271#discussion_r3389849696
+  * Commented https://github.com/rust-lang/cargo/pull/17090#discussion_r3392104185
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17091
+  * Created https://github.com/rust-lang/cargo/pull/17092
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/.60-Zdefault-visibility.60/near/601905515
+
 ## 2026-06-09
 
 * PR reviews
