@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2026-06-02
+
+* Issue triages
+  * Commented https://github.com/rust-lang/rust/issues/141706#issuecomment-4606944684
+  * Commented https://github.com/rust-lang/cargo/issues/7921#issuecomment-4607667533
+* FCP reviews
+  * Commented https://github.com/rust-lang/rust/issues/153863#issuecomment-4061709608
+* PR submissions
+  * Commented https://github.com/rust-lang/rust/pull/157349
+
+
 ## 2026-06-01
 
 * PR reviews
