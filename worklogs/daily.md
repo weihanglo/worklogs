@@ -1,5 +1,10 @@
 # Daily worklogs
 
+## 2026-06-04
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17072#issuecomment-4627555592
+
 ## 2026-06-03
 
 * Issue triages
