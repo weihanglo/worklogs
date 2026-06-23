@@ -1,5 +1,15 @@
 # Daily worklogs
 
+## 2026-06-19
+
+* Issue triages
+  * Commented https://github.com/rust-lang/miri/issues/5101#issuecomment-4756237256
+  * Commented https://github.com/rust-lang/cargo/issues/17120#issuecomment-4755414359
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17119
+  * Created https://github.com/rust-lang/rust/pull/158164
+  * Created https://github.com/rust-lang/cargo/pull/17123
+
 ## 2026-06-18
 
 * Issue triages
