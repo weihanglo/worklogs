@@ -1,5 +1,15 @@
 # Daily worklogs
 
+## 2026-06-25
+
+* Issue triages
+  * Closed https://github.com/rust-lang/cargo/issues/15973#issuecomment-4800932426
+  * Closed https://github.com/rust-lang/cargo/issues/17137#issuecomment-4802261571
+* PR reviews
+  * Closed https://github.com/rust-lang/cargo/pull/17029#issuecomment-4803369811
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Question.3A.20purpose.20of.20executable.20copy.20in.20.60deps.60.3F/near/606537864
+
 ## 2026-06-24
 
 * PR reviews
