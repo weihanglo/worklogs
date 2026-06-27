@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2026-06-26
+
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17140#issuecomment-4812133588
+  * Merged https://github.com/rust-lang/rust/pull/158331#issuecomment-4812488693
+  * Merged https://github.com/rust-lang/cargo/pull/17139#discussion_r3483830653
+* PR submissions
+  * Merged https://github.com/rust-lang/rust/pull/158462
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Reviewing.20the.20linting.20system/near/606840965
+
 ## 2026-06-25
 
 * Issue triages
