@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2026-07-05
+
+* PR reviews
+  * Merged https://github.com/rust-lang/jobserver-rs/pull/120#discussion_r3525948997
+  * Merged https://github.com/rust-lang/cargo/pull/17179#pullrequestreview-4631288260
+  * Merged https://github.com/rust-lang/cargo/pull/17169#issuecomment-4887586977
+  * Commented https://github.com/rust-lang/cargo/pull/17180#discussion_r3526335161
+* PR submissions
+  * Merged https://github.com/rust-lang/jobserver-rs/pull/122
+  * Merged https://github.com/rust-lang/jobserver-rs/pull/123
+
 ## 2026-07-04
 
 * PR reviews
