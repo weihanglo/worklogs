@@ -5,23 +5,24 @@ package.edition = "2024"
 [dependencies]
 ---
 
-//! Commit the oldest uncommitted daily worklog block.
+//! Commit the oldest uncommitted daily worklog block with jj.
 //!
 //! Usage:
 //!   commit-daily-logs.rs [--commit]
 //!
 //! Behavior:
-//! - Requires a clean working tree for commits, except for worklogs/daily.md.
-//! - Finds the oldest uncommitted date block before the latest log commit.
-//! - Reconstructs worklogs/daily.md from HEAD + the target block.
-//! - Commits with message: "log: YYYY-MM-DD" when --commit is provided.
+//! - Finds the oldest uncommitted date block after the latest "log:" commit.
+//! - Reconstructs worklogs/daily.md as @- plus the target block, commits it,
+//!   then restores the full content into the working copy.
+//! - Changes outside worklogs/daily.md stay in the working copy.
+//! - The working copy is snapshotted up front, so any mid-run failure is
+//!   recoverable via `jj op restore`.
 
 use std::env;
 use std::error;
 use std::fmt;
 use std::fmt::Display;
 use std::fs;
-use std::io::Write;
 use std::process;
 use std::process::Command;
 use std::process::Stdio;
@@ -45,22 +46,14 @@ fn error(msg: impl Into<String>) -> Box<Error> {
     Box::new(Error(msg.into()))
 }
 
-fn run(command: &str, args: &[&str], stdin: Option<&str>) -> BoxResult<String> {
-    let mut cmd = Command::new(command);
-    cmd.args(args).stdout(Stdio::piped());
-    if stdin.is_some() {
-        cmd.stdin(Stdio::piped());
-    }
-    let mut child = cmd.spawn()?;
-    if let Some(input) = stdin {
-        child.stdin.take().unwrap().write_all(input.as_bytes())?;
-    }
-    let output = child.wait_with_output()?;
+fn jj(args: &[&str]) -> BoxResult<String> {
+    let output = Command::new("jj")
+        .arg("--quiet")
+        .args(args)
+        .stdout(Stdio::piped())
+        .output()?;
     if !output.status.success() {
-        return Err(error(format!(
-            "command failed: {command} {}",
-            args.join(" ")
-        )));
+        return Err(error(format!("command failed: jj {}", args.join(" "))));
     }
     Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
 }
@@ -138,53 +131,30 @@ fn main() -> BoxResult<()> {
         }
     }
 
-    if !dry_run {
-        let status = run(
-            "git",
-            &["-c", "core.fsmonitor=false", "status", "--porcelain"],
-            None,
-        )?;
-        if !status.is_empty() {
-            let mut disallowed = Vec::new();
-            for line in status.lines() {
-                if line.starts_with("?? ") {
-                    disallowed.push(line.to_string());
-                    continue;
-                }
-                let path = line
-                    .get(2..)
-                    .unwrap_or("")
-                    .trim_start()
-                    .split(" -> ")
-                    .last()
-                    .unwrap_or("")
-                    .trim();
-                if path != DAILY_PATH {
-                    disallowed.push(line.to_string());
-                }
-            }
-            if !disallowed.is_empty() {
-                eprintln!("error: working tree has changes outside {DAILY_PATH}");
-                for line in disallowed {
-                    eprintln!("{line}");
-                }
-                process::exit(1);
-            }
+    // Snapshot the working copy so the full content lands in the operation
+    // log before this script touches the file.
+    jj(&["status"])?;
+
+    let changed = jj(&["diff", "-r", "@", "--name-only"])?;
+    let disallowed = changed
+        .lines()
+        .filter(|path| *path != DAILY_PATH)
+        .collect::<Vec<_>>();
+    if !disallowed.is_empty() {
+        eprintln!("warning: working copy has changes outside {DAILY_PATH} (left uncommitted):");
+        for path in disallowed {
+            eprintln!("  {path}");
         }
     }
 
-    let last_subject = run(
-        "git",
-        &[
-            "log",
-            "--grep",
-            "^log: [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$",
-            "-n",
-            "1",
-            "--format=%s",
-        ],
-        None,
-    )?;
+    let last_subject = jj(&[
+        "log",
+        "--no-graph",
+        "-r",
+        r#"latest(::@ & subject(glob:"log: ????-??-??"))"#,
+        "-T",
+        "description.first_line()",
+    ])?;
 
     if last_subject.is_empty() {
         return Err(error("no prior \"log: YYYY-MM-DD\" commit found"));
@@ -195,13 +165,13 @@ fn main() -> BoxResult<()> {
         .ok_or_else(|| error(format!("failed to parse commit subject: {last_subject}")))?
         .to_string();
 
-    let base_content = run("git", &["show", &format!("HEAD:{DAILY_PATH}")], None)?;
+    let base_content = jj(&["file", "show", "-r", "@-", DAILY_PATH])?;
     let current_content = fs::read_to_string(DAILY_PATH)?;
 
     let (base_lines, base_trailing_newline) = split_lines(&base_content);
     let (current_lines, current_trailing_newline) = split_lines(&current_content);
 
-    validate_header(&base_lines, "HEAD:worklogs/daily.md")?;
+    validate_header(&base_lines, "@-:worklogs/daily.md")?;
     validate_header(&current_lines, DAILY_PATH)?;
 
     let headings = collect_headings(&current_lines)?;
@@ -256,20 +226,17 @@ fn main() -> BoxResult<()> {
         new_content.push('\n');
     }
 
-    // Stage content directly via git plumbing (without modifying working tree)
-    let blob = run("git", &["hash-object", "-w", "--stdin"], Some(&new_content))?;
-    let mode = run(
-        "git",
-        &["ls-files", "--format=%(objectmode)", "--", DAILY_PATH],
-        None,
-    )?;
-    let cacheinfo = format!("{mode},{blob},{DAILY_PATH}");
-    run("git", &["update-index", "--cacheinfo", &cacheinfo], None)?;
-    run(
-        "git",
-        &["commit", "-m", &format!("log: {}", target_heading.date)],
-        None,
-    )?;
+    // jj has no index: write the target content, let `jj commit` snapshot
+    // and split it out by path, then restore the full file. Restore happens
+    // before error propagation so the working copy never keeps a truncated
+    // daily.md.
+    fs::write(DAILY_PATH, &new_content)?;
+    let message = format!("log: {}", target_heading.date);
+    let commit_result = jj(&["commit", DAILY_PATH, "-m", &message]);
+    fs::write(DAILY_PATH, &current_content)?;
+    commit_result?;
+    // Snapshot the restored content into the new working-copy commit.
+    jj(&["status"])?;
 
     Ok(())
 }
