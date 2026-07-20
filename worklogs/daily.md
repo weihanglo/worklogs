@@ -1,5 +1,26 @@
 # Daily worklogs
 
+## 2026-07-16
+
+* Issue triages
+  * Commented https://github.com/rust-lang/git2-rs/issues/1297#issuecomment-4992096728
+* PR reviews
+  * Merged https://github.com/rust-lang/git2-rs/pull/1293#pullrequestreview-4713741845
+  * Merged https://github.com/rust-lang/git2-rs/pull/1294#pullrequestreview-4713833504
+  * Commented https://github.com/rust-lang/git2-rs/pull/1295#discussion_r3595712680
+  * Commented https://github.com/rust-lang/cargo/pull/17216#discussion_r3596259250
+  * Commented https://github.com/rust-lang/cargo/pull/17214#issuecomment-4993077656
+  * Commented https://github.com/rust-lang/blog.rust-lang.org/pull/1891#discussion_r3596847261
+  * Merged https://github.com/rust-lang/cargo/pull/17225#pullrequestreview-4716669748
+  * Merged https://github.com/rust-lang/cargo/pull/17216#pullrequestreview-4716717852
+  * Commented https://github.com/rust-lang/cargo/pull/17226#pullrequestreview-4717687712
+  * Merged https://github.com/rust-lang/cargo/pull/17226#pullrequestreview-4718354347
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17223
+  * Created https://github.com/rust-lang/cc-rs/pull/1794
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/187312-wg-async/topic/.E2.9C.94.20futures-rs.200.2E3.2E33.3F/near/611129864
+
 ## 2026-07-15
 
 * Issue triages
