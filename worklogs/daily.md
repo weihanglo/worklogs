@@ -1,5 +1,13 @@
 # Daily worklogs
 
+## 2026-07-26
+
+* Issue triages
+  * Commented https://github.com/NixOS/nixpkgs/issues/545180#issuecomment-5083660400
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17263#discussion_r3652588264
+  * Closed https://github.com/rust-lang/cargo/pull/17241#issuecomment-5083734746
+
 ## 2026-07-25
 
 * Issue triages
