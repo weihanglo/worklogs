@@ -1,5 +1,19 @@
 # Daily worklogs
 
+## 2026-07-29
+
+* PR reviews
+  * Commented https://github.com/rust-lang/rust/pull/159857#issuecomment-5119325932
+  * Merged https://github.com/rust-lang/cargo/pull/17272#pullrequestreview-4810176409
+  * Commented https://github.com/rust-lang/rust/pull/160098#discussion_r3677227230
+  * Merged https://github.com/rust-lang/cargo/pull/17269#pullrequestreview-4812894382
+  * Commented https://github.com/rust-lang/cargo/pull/17273#discussion_r3678640671
+  * Commented https://github.com/astral-sh/uv/pull/20805#issuecomment-5125795520
+  * Commented https://github.com/rust-lang/cargo/pull/17274#discussion_r3679766587
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo-team/pull/1
+  * Created https://github.com/rust-lang/cargo/pull/17275
+
 ## 2026-07-28
 
 * PR reviews
