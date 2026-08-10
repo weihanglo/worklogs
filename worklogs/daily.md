@@ -1,5 +1,11 @@
 # Daily worklogs
 
+## 2026-08-09
+
+* PR reviews
+  * Commented https://github.com/mozilla/sccache/pull/2794#discussion_r3745850087
+  * Commented https://github.com/rust-lang/cargo/pull/17335#discussion_r3745915289
+
 ## 2026-08-08
 
 * Issue triages
