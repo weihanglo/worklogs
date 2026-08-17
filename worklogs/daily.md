@@ -1,5 +1,21 @@
 # Daily worklogs
 
+## 2026-08-11
+
+* Issue triages
+  * Commented https://github.com/RalfJung/cargo-careful/issues/55#issuecomment-5252916497
+  * Created https://github.com/rust-lang/cargo/issues/17351
+  * Commented https://github.com/rust-lang/cargo/issues/17122#issuecomment-5255325903
+  * Created https://github.com/libgit2/libgit2/issues/7342
+  * Commented https://github.com/rust-lang/rust/issues/160528#issuecomment-5261143795
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17322#pullrequestreview-4905366074
+* PR submissions
+  * Merged https://github.com/aws/aws-lc-rs/pull/1208
+  * Created https://github.com/rust-lang/rust/pull/160938
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/.5Bregistry.5D.20vs.20.5Bregistries.2Ecrates-io.5D/with/615985096
+
 ## 2026-08-10
 
 * Issue triages
