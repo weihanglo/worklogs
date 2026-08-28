@@ -1,5 +1,22 @@
 # Daily worklogs
 
+## 2026-08-27
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/14157#issuecomment-5438811032
+* FCP reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17388#issuecomment-5447990857
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17396#pullrequestreview-5042625355
+  * Commented https://github.com/rust-lang/rust-clippy/pull/17641#discussion_r3875112379
+  * Merged https://github.com/rust-lang/cargo/pull/17400#discussion_r3874878132
+* PR submissions
+  * Created https://github.com/rust-lang/rust-clippy/pull/17639
+  * Created https://github.com/rust-lang/rust-clippy/pull/17643
+  * Created https://github.com/rust-lang/rust/pull/161899
+  * Merged https://github.com/rust-lang/cargo/pull/17403
+  * Created https://github.com/rust-lang/rust/pull/161899
+
 ## 2026-08-26
 
 * Issue triages
