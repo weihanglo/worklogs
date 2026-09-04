@@ -1,5 +1,18 @@
 # Daily worklogs
 
+## 2026-09-03
+
+* Issue triages
+  * Created https://github.com/rust-lang/cargo/issues/17438
+* FCP reviews
+  * Created https://github.com/rust-lang/cargo/pull/17329#issuecomment-5531132786
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17436#pullrequestreview-5105667970
+  * Merged https://github.com/rust-lang/cargo/pull/17437#pullrequestreview-5106125434
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17432
+  * Created https://github.com/rust-lang/cargo/pull/17433
+
 ## 2026-09-02
 
 * FCP reviews
