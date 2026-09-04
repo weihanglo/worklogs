@@ -1,5 +1,20 @@
 # Daily worklogs
 
+## 2026-09-01
+
+* Issue triages
+  * Closed https://github.com/rust-lang/cargo/issues/14419#issuecomment-5502914821
+  * Commented https://github.com/rust-lang/cargo/issues/17423#issuecomment-5504115306
+  * Commented https://github.com/rust-lang/cargo/issues/12137#issuecomment-5504081313
+  * Closed https://github.com/rust-lang/cargo/issues/15376#issuecomment-5504857718
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17422#pullrequestreview-5080934419
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17424
+  * Created https://github.com/rust-lang/cargo/pull/17425
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/stabilization.20plan.20for.20.60-Ztrim-paths.60/with/620855966
+
 ## 2026-08-31
 
 * Issue triages
