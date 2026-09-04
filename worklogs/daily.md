@@ -1,5 +1,20 @@
 # Daily worklogs
 
+## 2026-08-31
+
+* Issue triages
+  * Closed https://github.com/rust-lang/cargo/issues/17309#issuecomment-5479865593
+  * Commented https://github.com/rust-lang/cargo/issues/15805#issuecomment-5485472432
+  * Commented https://github.com/rust-lang/cargo/issues/10049#issuecomment-5486453170
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17410#pullrequestreview-5068565935
+  * Commented https://github.com/rust-lang/cargo/pull/17416#pullrequestreview-5071678836
+  * Merged https://github.com/rust-lang/cargo/pull/17417#pullrequestreview-5073663893
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17415
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Revive.20.60-Zprecise-pre-release.60.20flag/with/620429329
+
 ## 2026-08-30
 
 * PR reviews
