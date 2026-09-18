@@ -1,5 +1,69 @@
 # Weekly summaries
 
+## 2026-08-17
+
+* Started migrating rustc bootstrap to Cargo's `-Ztrim-paths`,
+  replacing bootstrap's hand-written remap rules
+  so the compiler and standard library get the same reversible remaps as everyone else.
+  On the Cargo side,
+  added an internal env contract so workspace sources remap to `/rustc/<sha>`,
+  and fixed workspace-relative member paths (like `library/std/src/lib.rs`) escaping the remap entirely.
+  Bumped `cc` to 1.4.3 in Cargo and rust-analyzer
+  so C dependencies such as `rustc_llvm` inherit the remaps for free,
+  proposed where bootstrap should apply LTO cflags,
+  merged the fix removing unremap files on `cargo clean -p` in the new layout,
+  and reviewed rust-lldb's nightly-only unremap support —
+  [rust-lang/rust#161049](https://github.com/rust-lang/rust/pull/161049),
+  [rust-lang/cargo#17309](https://github.com/rust-lang/cargo/issues/17309),
+  [rust-lang/cargo#17349](https://github.com/rust-lang/cargo/pull/17349),
+  [rust-lang/cargo#17366](https://github.com/rust-lang/cargo/pull/17366),
+  [rust-lang/rust-analyzer#23146](https://github.com/rust-lang/rust-analyzer/pull/23146)
+* Created FCP to stabilize `min-publish-age` (RFC 3923),
+  the dependency cooldown that gives scanners time to catch malicious crates
+  before Cargo picks them up.
+  Drove the drifts from the RFC:
+  kicked off a Zulip discussion on the overlapping meanings of `[registry]` and `[registries.crates-io]`,
+  proposing `[registry]` as cross-registry defaults with `[registries.crates-io]` as the canonical crates.io home,
+  weighed the options for the `global-` prefix and kept it,
+  then removed `registry.min-publish-age` so only the `global-` prefixed setting stabilizes,
+  and clarified that `cargo install` is unaffected.
+  Argued for decoupling a default cooldown from stabilization
+  while still naming a candidate value early to gather feedback.
+  Also merged docs for config env variables the review turned up missing —
+  [rust-lang/cargo#17335](https://github.com/rust-lang/cargo/pull/17335),
+  [rust-lang/cargo#17353](https://github.com/rust-lang/cargo/pull/17353),
+  [#t-cargo > `[registry]` vs `[registries.crates-io]`](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/.5Bregistry.5D.20vs.20.5Bregistries.2Ecrates-io.5D/with/615985096)
+* Reviewed and approved re-stabilizing the build-dir layout v2
+  after two weeks on nightly without reports,
+  the first attempt having been rolled back for performance issues;
+  caught that `cargo clean -p` missed unremap files in the new layout.
+  Continued reviewing `-Zembed-metadata=no` on nightly,
+  asking to precompute the rustc channel instead of threading `Rustc` everywhere.
+  Both merged the following week —
+  [rust-lang/cargo#17354](https://github.com/rust-lang/cargo/pull/17354),
+  [rust-lang/cargo#15010](https://github.com/rust-lang/cargo/issues/15010),
+  [rust-lang/cargo#17267](https://github.com/rust-lang/cargo/pull/17267)
+* Fixed an infinite loop in libgit2 when reading truncated loose objects,
+  uncovered by Cargo's corrupt-git tests once fetching moved to the git CLI;
+  upstream merged it within days.
+  Also started making Cargo's `git gc` set an explicit `GIT_DIR`
+  so it keeps working under Git 3.0's `safe.bareRepository=explicit` default —
+  [libgit2/libgit2#7342](https://github.com/libgit2/libgit2/issues/7342),
+  [libgit2/libgit2#7346](https://github.com/libgit2/libgit2/pull/7346),
+  [rust-lang/cargo#17370](https://github.com/rust-lang/cargo/pull/17370),
+  [rust-lang/cargo#17329](https://github.com/rust-lang/cargo/pull/17329)
+* Diagnosed a nightly regression breaking `cargo careful test` on proc-macro crates:
+  the sysroot-lookup refactor stopped passing rustflags to `rustc --print=sysroot`,
+  so a custom `--sysroot` was ignored when computing proc-macro runtime library paths.
+  Filed the Cargo issue laying out the options (revert versus respecting rustflags)
+  and coordinated with the build-std author on a fix —
+  [RalfJung/cargo-careful#55](https://github.com/RalfJung/cargo-careful/issues/55),
+  [rust-lang/cargo#17351](https://github.com/rust-lang/cargo/issues/17351)
+* Contributed a fix to aws-lc-rs so its system-library build path exports `cargo:root`,
+  unblocking downstream `-sys` crates that read `DEP_AWS_LC_*_ROOT` unconditionally
+  when building against a pre-installed AWS-LC —
+  [aws/aws-lc-rs#1208](https://github.com/aws/aws-lc-rs/pull/1208)
+
 ## 2026-08-10
 
 * Created FCP to stabilize the `[lints.cargo]` linting system,
