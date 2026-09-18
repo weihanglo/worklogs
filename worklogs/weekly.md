@@ -1,5 +1,85 @@
 # Weekly summaries
 
+## 2026-08-31
+
+* Completed FCP and merged the stabilization of Cargo's linting system.
+  `[lints.cargo]` in manifests and workspaces now controls a first batch of manifest lints
+  (`manual_readme`, `non_kebab_case_bins`, `unused_dependencies`, and friends),
+  finally giving users a way to configure which Cargo warnings fire —
+  [rust-lang/cargo#17298](https://github.com/rust-lang/cargo/pull/17298),
+  [rust-lang/cargo#12235](https://github.com/rust-lang/cargo/issues/12235)
+* Coordinated the fallout of the new lints across rust-lang repositories.
+  Syncing the Cargo submodule into rust-lang/rust turned the new warnings into deny-warnings failures
+  in rustc's own tree, Clippy, and rustfmt.
+  Fixed `manual_readme`, `non_kebab_case_bins`, and an unused dependency across all three,
+  and resolved a conflict between `cargo::manual_readme` and `clippy::cargo_common_metadata`
+  by dropping the latter's readme check,
+  in line with the plan to migrate Clippy's cargo lints into Cargo —
+  [rust-lang/rust#161789](https://github.com/rust-lang/rust/pull/161789),
+  [rust-lang/rust-clippy#17634](https://github.com/rust-lang/rust-clippy/pull/17634),
+  [rust-lang/rustfmt#7074](https://github.com/rust-lang/rustfmt/pull/7074)
+* Completed FCP and merged the stabilization of `min-publish-age`.
+  Users can now require dependencies to have been published for a minimum time
+  (for example `global-min-publish-age = "7 days"`) before the resolver picks them,
+  giving scanners a window to catch malicious releases,
+  with an escape hatch to force critical updates through.
+  Also clarified the accepted duration format
+  and deferred ISO 8601 durations so they would not block stabilization —
+  [rust-lang/cargo#17335](https://github.com/rust-lang/cargo/pull/17335),
+  [rust-lang/cargo#17009](https://github.com/rust-lang/cargo/issues/17009)
+* Tracked FCP for making `cargo install` honor a package's shipped `Cargo.lock` by default,
+  implementing the team decision on a long-standing issue
+  and closing the supply-chain gap the arrayref incident made concrete.
+  Guided the first-time contributor through PR hygiene and CI fixes along the way —
+  [rust-lang/cargo#17388](https://github.com/rust-lang/cargo/pull/17388),
+  [rust-lang/cargo#7169](https://github.com/rust-lang/cargo/issues/7169)
+* Reviewed and merged the implementation of RFC 3416 `feature-metadata`,
+  a PR opened in early 2025 and picked up by a new contributor.
+  `[features]` entries can now be tables (`{ enables = [...] }`) behind an unstable gate,
+  the groundwork for feature documentation and other per-feature metadata.
+  Also let the docs.rs maintainer know RFC 3485 was in FCP so that work could resume —
+  [rust-lang/cargo#15056](https://github.com/rust-lang/cargo/pull/15056),
+  [rust-lang/cargo#14157](https://github.com/rust-lang/cargo/issues/14157)
+* Merged the `-Ztrim-paths` fix for workspace-relative member paths under rustc bootstrap's custom remap prefix,
+  the last blocker for bootstrap adopting trim-paths instead of hand-written remaps.
+  Got it beta-nominated and backported to 1.99,
+  then bumped bootstrap's stage0 to that beta
+  so the bootstrap integration could be tested end to end —
+  [rust-lang/cargo#17366](https://github.com/rust-lang/cargo/pull/17366),
+  [rust-lang/cargo#17309](https://github.com/rust-lang/cargo/issues/17309),
+  [rust-lang/rust#162040](https://github.com/rust-lang/rust/pull/162040),
+  [rust-lang/rust#161049](https://github.com/rust-lang/rust/pull/161049)
+* Shepherded the `--sysroot`-from-rustflags regression to resolution.
+  A sysroot lookup refactor had broken `cargo careful test` for proc-macro crates (own report).
+  Reviewed the proposed fix, found it still failed in `--target` mode,
+  and agreed with the author to revert the refactor to buy time for a proper design,
+  pending input from xargo-style cross-compilation users.
+  Backported the revert together with the trim-paths fix to beta 1.99 —
+  [rust-lang/cargo#17351](https://github.com/rust-lang/cargo/issues/17351),
+  [rust-lang/cargo#17401](https://github.com/rust-lang/cargo/pull/17401),
+  [rust-lang/rust#161899](https://github.com/rust-lang/rust/pull/161899)
+* Kicked off a new `wg-build-script` working group under the Cargo team
+  to tackle build script security, build determinism, and performance,
+  after discussing it in team meetings.
+  Also connected the "reduce the need for build scripts" tracking issue with the vcs-info request —
+  [rust-lang/team#2709](https://github.com/rust-lang/team/pull/2709),
+  [rust-lang/cargo#14948](https://github.com/rust-lang/cargo/issues/14948),
+  [rust-lang/cargo#11456](https://github.com/rust-lang/cargo/issues/11456)
+* Gave design feedback on the first PR of the build-std stack,
+  which introduces a `builtin` source kind for standard library crates
+  (RFC 3874 `build-std=always` and RFC 3875 explicit builtin dependencies),
+  questioning how builtin sources should hash and compare across Rust versions.
+  The author later withdrew it to re-expose the design through a new Cargo API —
+  [rust-lang/cargo#17396](https://github.com/rust-lang/cargo/pull/17396)
+* Looped the Cargo team into the draft `rustup ci` subcommand,
+  which came out of an All Hands discussion and would set Cargo-related environment variables for CI.
+  The thread surfaced that most of the team had not seen it,
+  and converged on keeping what Cargo takes from rustup to a minimum,
+  with CI defaults such as incremental, color, and backtraces decided on the Cargo side instead —
+  [#t-cargo > `rustup ci` environment variables](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/.60rustup.20ci.60.20environment.20variables),
+  [rust-lang/rustup#5021](https://github.com/rust-lang/rustup/pull/5021),
+  [rust-lang/rustup#5011](https://github.com/rust-lang/rustup/issues/5011)
+
 ## 2026-08-24
 
 * Merged the change enabling `-Zembed-metadata=no` by default on nightly Cargo,
