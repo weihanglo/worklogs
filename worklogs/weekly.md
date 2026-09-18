@@ -1,5 +1,49 @@
 # Weekly summaries
 
+## 2026-06-01
+
+* Coordinated the public landing of two Cargo security fixes:
+  CVE-2026-5222, where sparse registry URL normalization
+  could let an attacker on a shared registry host obtain other users' credentials,
+  and CVE-2026-5223, where symlinks in `.crate` tarballs from third-party registries
+  could override the cached source of other crates.
+  Reviewed the first fix privately in April,
+  then merged both fixes on master together with the 1.96 stable
+  and 1.97 beta backports so every channel shipped the same day —
+  [rust-lang/cargo#17031](https://github.com/rust-lang/cargo/pull/17031),
+  [rust-lang/cargo#17030](https://github.com/rust-lang/cargo/pull/17030),
+  [rust-lang/cargo#17032](https://github.com/rust-lang/cargo/pull/17032),
+  [CVE-2026-5222](https://blog.rust-lang.org/2026/05/25/cve-2026-5222/),
+  [CVE-2026-5223](https://blog.rust-lang.org/2026/05/25/cve-2026-5223/)
+* Continued the groundwork for RFC 3923 `min-publish-age`
+  by dropping `yanked_whitelist` from source loading.
+  Clarified with the reviewer that removing yank knowledge from `Source`
+  is needed regardless of the larger design once yank policy moves into the resolver,
+  so this smaller refactor keeps the later diff contained.
+  It merged the following week —
+  [rust-lang/cargo#17014](https://github.com/rust-lang/cargo/pull/17014),
+  [rust-lang/cargo#17012](https://github.com/rust-lang/cargo/pull/17012)
+* Reviewed and approved an unstable `--output-format=json` for `cargo doc`,
+  so tools can request rustdoc JSON for a whole workspace in one invocation
+  instead of driving `rustdoc` per crate.
+  Tools such as C header generators benefit from first-class support
+  even while the artifact naming conflict in the target directory stays an open question —
+  [rust-lang/cargo#17025](https://github.com/rust-lang/cargo/pull/17025)
+* Reviewed and approved automatic edition injection for cargo scripts
+  whenever Cargo is already editing the manifest,
+  and two more lint-system steps toward stabilization:
+  a `cargo::default` lint group and `unused_dependencies` honoring `build.warnings` —
+  [rust-lang/cargo#17038](https://github.com/rust-lang/cargo/pull/17038),
+  [rust-lang/cargo#17033](https://github.com/rust-lang/cargo/pull/17033),
+  [rust-lang/cargo#17034](https://github.com/rust-lang/cargo/pull/17034)
+* Shaped a fix for `build.warnings = "deny"` being silently ignored by `cargo clippy`,
+  since the outer `cargo` never forwards resolved config to external subcommands.
+  Forwarding it as an environment variable is useful for CI,
+  but raised for team discussion whether to scope it to clippy-like binaries
+  rather than widen the stable interface for every external command,
+  and asked for a before-fix test snapshot —
+  [rust-lang/cargo#17035](https://github.com/rust-lang/cargo/pull/17035)
+
 ## 2026-05-25
 
 * Shipped git2 0.21.0 with the unstable SHA256 support,
