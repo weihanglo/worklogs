@@ -1,5 +1,91 @@
 # Weekly summaries
 
+## 2026-04-20
+
+* Completed the `-m` shorthand for `--manifest-path`,
+  merging it after the FCP proposed the previous week.
+  This trims the most verbose part of `cargo -Zscript` workflows (`cargo fix -m foo.rs`)
+  and helps everyone who types `--manifest-path` daily.
+  Also mentored the first-time contributor through the follow-up zsh and bash completion update,
+  including how to test completions locally —
+  [rust-lang/cargo#16858](https://github.com/rust-lang/cargo/pull/16858),
+  [rust-lang/cargo#16888](https://github.com/rust-lang/cargo/pull/16888)
+* Tracked FCP for stabilizing `build.warnings`,
+  a config to hide or deny warnings without invalidating caches
+  the way `RUSTFLAGS=-Dwarnings` does.
+  Asked for the notion of "hard warnings" to be written down,
+  surveyed how existing enum-valued configs treat unknown values
+  to ground the forward-compatibility discussion,
+  and suggested the CI docs steer users away from `RUSTFLAGS=-Dwarnings` —
+  [rust-lang/cargo#16796](https://github.com/rust-lang/cargo/pull/16796),
+  [rust-lang/cargo#14802](https://github.com/rust-lang/cargo/issues/14802)
+* Completed review and merged the fix for `cargo rustdoc --output-format=json`
+  not rebuilding when two versions of the same crate are in the graph.
+  Along the way caught that the fix should not depend on the new fine-grained locking feature.
+  Tools consuming rustdoc JSON now get correct output for every version —
+  [rust-lang/cargo#16773](https://github.com/rust-lang/cargo/pull/16773),
+  [rust-lang/cargo#16291](https://github.com/rust-lang/cargo/issues/16291)
+* Reviewed and approved the next batch of the `http_async` migration,
+  which moves Cargo's networking off direct `curl` handles
+  toward an HTTP-client-agnostic layer:
+  crate downloads now process as a queue for determinism,
+  `effective_url` is captured so errors after redirects name the real URL,
+  and a sparse registry progress regression was fixed —
+  [rust-lang/cargo#16898](https://github.com/rust-lang/cargo/pull/16898),
+  [rust-lang/cargo#16899](https://github.com/rust-lang/cargo/pull/16899),
+  [rust-lang/cargo#16900](https://github.com/rust-lang/cargo/pull/16900),
+  [rust-lang/cargo#16845](https://github.com/rust-lang/cargo/issues/16845)
+* Fixed Cargo failing to build on 32-bit tier-2 targets,
+  found when `dist-powerpc-linux` broke while landing the Cargo submodule update.
+  `AtomicU64`/`AtomicI64` are unavailable there,
+  so switched to `portable-atomic`, already a transitive dependency,
+  and dropped the now-unneeded 64-bit atomic gates —
+  [rust-lang/cargo#16906](https://github.com/rust-lang/cargo/pull/16906),
+  [rust-lang/rust#155470](https://github.com/rust-lang/rust/pull/155470)
+* Continued triage of `cargo publish` false-positive "uncommitted changes" errors
+  when `package.include` picks up gitignored files.
+  Brought the team meeting outcome back to the issues:
+  a proposed warning when `include` matches gitignored paths,
+  the negated-pattern workaround (`!**/generated/**`),
+  and notes on publishing from isolated CI jobs.
+  Also made the docs state explicitly that `include` does not apply the repository's gitignore —
+  [rust-lang/cargo#16872](https://github.com/rust-lang/cargo/issues/16872),
+  [rust-lang/cargo#16873](https://github.com/rust-lang/cargo/issues/16873),
+  [rust-lang/cargo#16890](https://github.com/rust-lang/cargo/pull/16890),
+  [rust-lang/cargo#16889](https://github.com/rust-lang/cargo/issues/16889)
+* Continued the SHA256 Git support effort.
+  Fixed libgit2 not propagating the object format on local clones,
+  which Cargo relies on heavily for its git database cache;
+  the maintainer agreed to backport it to v1.9.x.
+  Also added per-backend (libgit2, gitoxide, Git CLI) status tracking to the Cargo issue
+  so anyone can see where things stand —
+  [libgit2/libgit2#7226](https://github.com/libgit2/libgit2/pull/7226),
+  [rust-lang/cargo#14942](https://github.com/rust-lang/cargo/issues/14942)
+* Continued upstreaming multi-file patch support into `bmwill/diffy`.
+  Landed git diff application,
+  raw-byte `PatchSet` parsing so non-UTF8 hunks are no longer skipped,
+  an error instead of a panic on non-UTF8 filenames,
+  and a 4-16x faster history replay test;
+  git binary patch support (literal and delta) went through its final review round and merged on the 20th.
+  Also added `cargo-fuzz` targets with a fuzz CI workflow,
+  which surfaced an integer overflow after billions of runs,
+  and filed issues for docs polish, fuzzing coverage, and the v0.5 release —
+  [bmwill/diffy#59](https://github.com/bmwill/diffy/pull/59),
+  [bmwill/diffy#61](https://github.com/bmwill/diffy/pull/61),
+  [bmwill/diffy#71](https://github.com/bmwill/diffy/pull/71),
+  [bmwill/diffy#68](https://github.com/bmwill/diffy/issues/68)–[#70](https://github.com/bmwill/diffy/issues/70)
+* Signed off on the FCP for the build-std "explicit dependencies" RFC,
+  part of the build-std project goal.
+  It lets crates declare standard library dependencies in `Cargo.toml`
+  so Cargo can determine which std crates to build from the crate graph —
+  [rust-lang/rfcs#3875](https://github.com/rust-lang/rfcs/pull/3875)
+* Started reviewing the rust-lang/rust bootstrap change adopting Cargo's new build-dir layout.
+  Questioned bootstrap reaching into Cargo's internal directory structure
+  to find hashed artifact names,
+  arguing that if bootstrap needs it, it should be a Cargo feature, even a perma-unstable one.
+  Also pointed the author at `citool` for reproducing the Miri CI job locally —
+  [rust-lang/rust#155439](https://github.com/rust-lang/rust/pull/155439)
+
 ## 2026-04-13
 
 * Started upstreaming the multi-file patch work from the `diffy` fork into the original crate.
