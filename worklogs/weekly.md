@@ -1,5 +1,58 @@
 # Weekly summaries
 
+## 2026-03-09
+
+* Completed the beta backport of the `cargo package` truncation fix from last week.
+  Beta CI exposed a new warn-by-default `unused_features` lint from rustc
+  firing on every `cargo script` file without frontmatter,
+  because Cargo injects `#![feature(frontmatter)]` unconditionally;
+  suppressed the lint and nominated that fix for beta as well —
+  [rust-lang/cargo#16688](https://github.com/rust-lang/cargo/pull/16688),
+  [rust-lang/cargo#16713](https://github.com/rust-lang/cargo/pull/16713),
+  [rust-lang/cargo#16714](https://github.com/rust-lang/cargo/pull/16714),
+  [rust-lang/rust#153515](https://github.com/rust-lang/rust/pull/153515)
+* Kicked off a design discussion on configuring where `-Zbuild-analysis` writes its structured logs,
+  one of the open questions on the path to stabilization.
+  Today logs always land in `$CARGO_HOME/log`,
+  which breaks read-only `CARGO_HOME` setups such as crater's Docker sandbox
+  and gives build orchestrators and IDEs no dedicated location.
+  Also worked through how a log directory relates to `--message-format=json` as an orthogonal sink —
+  [rust-lang/cargo#16696](https://github.com/rust-lang/cargo/issues/16696)
+* Started reviewing a contributor's implementation of the long-requested safety check
+  that `cargo clean --target-dir` refuses to delete a directory without a valid `CACHEDIR.TAG`,
+  protecting users from wiping unrelated files through a typo.
+  Tightened error wording and file reading,
+  and flagged that this behavior change needs an FCP —
+  [rust-lang/cargo#16712](https://github.com/rust-lang/cargo/pull/16712),
+  [rust-lang/cargo#9192](https://github.com/rust-lang/cargo/issues/9192)
+* Reviewed and approved a round of diagnostics work:
+  `build.warnings = "deny"` now turns warning summaries into hard errors so the lone error line is not missed,
+  `cargo fix` moved to structured warnings,
+  and git2-rs returns libgit2's error instead of asserting when another git process races `Repository::submodules` —
+  [rust-lang/cargo#16721](https://github.com/rust-lang/cargo/pull/16721),
+  [rust-lang/cargo#16711](https://github.com/rust-lang/cargo/pull/16711),
+  [rust-lang/git2-rs#1220](https://github.com/rust-lang/git2-rs/pull/1220)
+* Raised two design points on the migration from the `--lockfile-path` flag
+  to the `resolver.lockfile-path` config:
+  there is currently no way to unset a globally configured lockfile path,
+  and if rust-analyzer's cargo version comparison bug cannot be fixed in time,
+  the flag should stay a little longer while the config stabilizes separately.
+  The config benefits rust-analyzer and workflows juggling multiple lockfiles,
+  such as MSRV checks or read-only checkouts —
+  [rust-lang/cargo#16694](https://github.com/rust-lang/cargo/pull/16694),
+  [rust-lang/cargo#16621](https://github.com/rust-lang/cargo/pull/16621)
+* Reviewed and approved splitting the `build-dir` lock from the `artifact-dir` lock,
+  so fine-grained locking works even in the default layout where the two directories coincide.
+  Analyzed the cross-toolchain impact,
+  concluding that parallel nightlies sharing one target dir are rare in practice —
+  [rust-lang/cargo#16708](https://github.com/rust-lang/cargo/pull/16708)
+* Steered a proposal for `cargo doc --output-format=markdown`,
+  aimed at feeding version-exact API docs to AI coding agents,
+  toward third-party tooling for now.
+  The toolchain's stability guarantee is a poor fit for output that needs tuning per agent,
+  and the rustdoc team had reached a similar conclusion a year earlier —
+  [rust-lang/cargo#16720](https://github.com/rust-lang/cargo/issues/16720)
+
 ## 2026-03-02
 
 * Shepherded a fix for a reported `cargo package` regression
