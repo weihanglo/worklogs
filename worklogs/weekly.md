@@ -1,5 +1,96 @@
 # Weekly summaries
 
+## 2026-08-03
+
+* Landed the `-Ztrim-paths` remap redesign agreed at the 2026 All-Hands,
+  part of the trim-paths tracking issue toward reproducible builds.
+  Every source kind now maps to a distinct virtual prefix
+  (`/rustc/<sha>`, `/cargo/registry/<id>`, `/cargo/git/<id>/<rev>`, `/cargo/build-dir`)
+  instead of being stripped to an empty string,
+  making remaps unambiguous and reversible.
+  Cargo also emits an "unremap" file next to final artifacts,
+  so debuggers and symbolication tooling can map virtual paths back to local checkouts.
+  As a follow-up, made git checkout directory names independent of the user's `core.abbrev`,
+  so Cargo's cache layout and remapped paths are stable across machines —
+  [rust-lang/cargo#17302](https://github.com/rust-lang/cargo/pull/17302),
+  [rust-lang/cargo#17303](https://github.com/rust-lang/cargo/pull/17303),
+  [rust-lang/cargo#17289](https://github.com/rust-lang/cargo/pull/17289),
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137)
+* Continued the nightly build-dir layout rollout.
+  Proposed the approach that unblocked the rust-lang/rust submodule update
+  (opting out in Cargo's test support instead of touching bootstrap),
+  reviewed and merged that rework,
+  and handled the first wave of downstream breakage:
+  cargo-miri and other rustc wrappers hitting argfiles
+  (approved an env var so wrappers can test argfile handling without huge dependency trees),
+  cc-rs and libc test suites assuming the old target-dir layout,
+  and use cases for stable access to intermediate artifacts
+  (custom test runners like yk, trybuild) collected in a tracking issue —
+  [rust-lang/cargo#17272](https://github.com/rust-lang/cargo/pull/17272),
+  [rust-lang/rust#159857](https://github.com/rust-lang/rust/pull/159857),
+  [rust-lang/miri#5234](https://github.com/rust-lang/miri/issues/5234),
+  [rust-lang/cargo#17287](https://github.com/rust-lang/cargo/issues/17287)
+* Reviewed and merged a fix passing `RUSTDOCFLAGS` to rustdoc's final CCI merge step,
+  which had broken search-index filenames in rust-lang/rust docs,
+  and flagged whether all flags belong on both invocations as an open question
+  on the `-Zrustdoc-mergeable-info` tracking issue.
+  Helped bootstrap dogfood mergeable CCI for std and compiler docs (a 3x doc build speedup),
+  and probed how rustdoc's finalize mode interacts with `--out-dir` and `--emit`.
+  Continued the `-Zrustdoc-depinfo` stabilization,
+  holding that comma-in-path breakage is a hard blocker
+  (paths like `MyCompany, LLC` are not rare),
+  with rustdoc changes plus the new build-dir layout offering a way out —
+  [rust-lang/cargo#17269](https://github.com/rust-lang/cargo/pull/17269),
+  [rust-lang/cargo#16306](https://github.com/rust-lang/cargo/issues/16306),
+  [rust-lang/rust#160098](https://github.com/rust-lang/rust/pull/160098),
+  [rust-lang/rust#159473](https://github.com/rust-lang/rust/pull/159473),
+  [rust-lang/cargo#17020](https://github.com/rust-lang/cargo/pull/17020)
+* Started reviewing enabling `-Zembed-metadata=no` by default on nightly,
+  which stops embedding crate metadata in rlibs and dylibs to shrink artifacts.
+  Merged the config-side prerequisite
+  and laid out the rollout order relative to the new build-dir layout
+  so nightly defaults do not ping-pong —
+  [rust-lang/cargo#17266](https://github.com/rust-lang/cargo/pull/17266),
+  [rust-lang/cargo#17267](https://github.com/rust-lang/cargo/pull/17267)
+* Attempted a fix for a long-standing bug
+  where a lockfile pinning one git URL at several revisions
+  collapses into a single `GitSource` because `SourceId`'s hash ignores `precise`,
+  causing "failed to find ... in path source" errors
+  or silently compiling the wrong revision.
+  Withdrew it after review agreed it added obscure interactions,
+  landed the tests pinning current behavior instead,
+  and pointed to the `SourceId` identity redesign as the real fix —
+  [rust-lang/cargo#17275](https://github.com/rust-lang/cargo/pull/17275),
+  [rust-lang/cargo#17279](https://github.com/rust-lang/cargo/pull/17279),
+  [rust-lang/cargo#8101](https://github.com/rust-lang/cargo/issues/8101)
+* Handled a wave of LLM-driven performance PRs:
+  closed one whose author never engaged with reviewer questions,
+  asked for atomic commits and real-world profiling data on others,
+  and merged the human-authored lockfile fast path
+  that skips deserializing unchanged lockfiles under `--locked` and `--frozen`.
+  Also nudged a `-Zscript` frontmatter panic fix toward the test-first commit pattern
+  so the diff proves the bug —
+  [rust-lang/cargo#17294](https://github.com/rust-lang/cargo/pull/17294),
+  [rust-lang/cargo#17296](https://github.com/rust-lang/cargo/pull/17296),
+  [rust-lang/cargo#17281](https://github.com/rust-lang/cargo/pull/17281),
+  [rust-lang/cargo#17301](https://github.com/rust-lang/cargo/pull/17301),
+  [rust-lang/cargo#17274](https://github.com/rust-lang/cargo/pull/17274),
+  [rust-lang/cargo#17292](https://github.com/rust-lang/cargo/pull/17292)
+* Revived the `cargo -C <dir>` design discussion
+  by pulling in the current rustup maintainers,
+  since rustup's proxy needs to honor the flag for `rust-toolchain.toml` lookup.
+  That restarted the design exchange on the issue —
+  [rust-lang/cargo#10098](https://github.com/rust-lang/cargo/issues/10098)
+* Took over as the reviewer and mention target for the cargo submodule in rust-lang/rust,
+  and imported the cargo-tracker and cargo-meetings tools into the cargo-team repo
+  so they live with the team —
+  [rust-lang/rust#160093](https://github.com/rust-lang/rust/pull/160093),
+  [rust-lang/cargo-team#1](https://github.com/rust-lang/cargo-team/pull/1)
+* Handled a venue-moderation matter on a rust-lang/rust tracking issue,
+  and reviewed and approved the updated venue-specific moderation policy —
+  [rust-lang/rust#152409](https://github.com/rust-lang/rust/issues/152409),
+  [rust-lang/moderation-team#4](https://github.com/rust-lang/moderation-team/pull/4)
+
 ## 2026-07-27
 
 * Started the "scream test" for the new build-dir layout
