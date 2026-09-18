@@ -1,5 +1,36 @@
 # Weekly summaries
 
+## 2026-07-06
+
+* Completed the 1.96.1 follow-through:
+  replaced the temporary vendored `libssh2-sys` patch with the official `libssh2-sys@0.3.2` release
+  on master and on the 1.97 beta branch, landed the beta submodule update,
+  and merged the 1.96.1 release notes —
+  [rust-lang/cargo#17152](https://github.com/rust-lang/cargo/pull/17152),
+  [rust-lang/cargo#17153](https://github.com/rust-lang/cargo/pull/17153),
+  [rust-lang/cargo#17170](https://github.com/rust-lang/cargo/pull/17170)
+* Reviewed and merged a series of Cargo performance improvements
+  found while profiling bors and Zed builds:
+  switching hash maps and sets to `FxHasher`
+  (about 4% wall time and 9% fewer instructions on `cargo test --no-run`),
+  a set-based visited check in workspace member discovery (about 1.5% on Zed),
+  and dropping unnecessary clones when parsing the package index.
+  Pushed back on less idiomatic pre-allocation tweaks and suggested `IndexSet` as a follow-up.
+  Short-lived invocations from IDEs and CI benefit the most —
+  [rust-lang/cargo#17169](https://github.com/rust-lang/cargo/pull/17169),
+  [rust-lang/cargo#17180](https://github.com/rust-lang/cargo/pull/17180),
+  [rust-lang/cargo#17178](https://github.com/rust-lang/cargo/pull/17178),
+  [rust-lang/cargo#17177](https://github.com/rust-lang/cargo/pull/17177)
+* Released `jobserver` 0.1.35, the crate behind Cargo's and `cc`'s build parallelism:
+  landed the Windows `getrandom` 0.4 update after asking for a reverse-dependency MSRV analysis
+  to justify raising the MSRV from 1.63 to 1.85,
+  bumped the conflicting `nix` dev-dependency,
+  and cut the release.
+  This drops stale duplicate crates from many downstream dependency trees —
+  [rust-lang/jobserver-rs#120](https://github.com/rust-lang/jobserver-rs/pull/120),
+  [rust-lang/jobserver-rs#122](https://github.com/rust-lang/jobserver-rs/pull/122),
+  [rust-lang/jobserver-rs#123](https://github.com/rust-lang/jobserver-rs/pull/123)
+
 ## 2026-06-29
 
 * Coordinated the Cargo side of the Rust 1.96.1 point release:
