@@ -1,5 +1,52 @@
 # Weekly summaries
 
+## 2026-03-23
+
+* Reviewed and approved a fix for git dependencies pinned to non-standard refs,
+  such as Gerrit's `refs/changes/...`:
+  once a lockfile existed Cargo fetched only the default refspecs
+  and missed the commit on hosts without GitHub's fetch-by-commit fast path.
+  Also helped triage the original report against the Zulip thread —
+  [rust-lang/cargo#16768](https://github.com/rust-lang/cargo/pull/16768),
+  [rust-lang/cargo#16767](https://github.com/rust-lang/cargo/issues/16767)
+* Continued shepherding `cargo clean` target-dir validation:
+  with the `CACHEDIR.TAG` check in FCP,
+  split the less controversial "target-dir is a file" check into its own PR and merged it,
+  keeping existing behavior for non-existent paths and symlinks so scripts don't break —
+  [rust-lang/cargo#16765](https://github.com/rust-lang/cargo/pull/16765),
+  [rust-lang/cargo#16712](https://github.com/rust-lang/cargo/pull/16712)
+* Tracked FCP for a new `frame-pointers` profile option mapping to `-C force-frame-pointers`,
+  which lets projects get reliable stack traces for profilers and observability tooling
+  from a profile setting instead of ad-hoc `RUSTFLAGS`.
+  Flagged the manifest schema semver bump
+  and pushed for clearer docs on the target-dependent default —
+  [rust-lang/cargo#16742](https://github.com/rust-lang/cargo/pull/16742),
+  [rust-lang/cargo#15333](https://github.com/rust-lang/cargo/issues/15333)
+* Started reviewing a fix for `cargo rustdoc --output-format=json` not rebuilding
+  when two versions of the same crate name are documented,
+  pointing the contributor to past discussions and the per-unit build-dir layout
+  so rustdoc JSON and doc-parts output get a coherent, hash-scoped home —
+  [rust-lang/cargo#16773](https://github.com/rust-lang/cargo/pull/16773),
+  [rust-lang/cargo#16291](https://github.com/rust-lang/cargo/issues/16291)
+* Contributed benchmark findings to the stabilization discussion
+  for rustdoc's mergeable cross-crate info,
+  arguing against having Cargo hardlink per-crate docs into the final output:
+  a prototype took about a minute for 305 crates and 75k files on APFS,
+  and Cargo lacks rustdoc's knowledge of how to maintain the out-dir —
+  [rust-lang/rust#130676](https://github.com/rust-lang/rust/issues/130676),
+  [weihanglo/cargo#87](https://github.com/weihanglo/cargo/pull/87)
+* Kicked off a team discussion on supporting `target.'cfg(..)'.rustdocflags` for parity with `rustflags`,
+  raised by the cargo-semver-checks maintainer after repeatedly debugging projects
+  that pass `cargo check` but fail under rustdoc due to missing `--cfg` flags.
+  Sensible, but it expands the stable config surface, so it warrants a team decision —
+  [rust-lang/cargo#16761](https://github.com/rust-lang/cargo/issues/16761)
+* Continued unstable SHA256 support in git2-rs:
+  landed the logical `Oid::as_bytes` semantics plus a new `raw_bytes` accessor for the backing buffer,
+  and confirmed for libgit2 that its move to zero-padded SHA1 object IDs
+  is compatible with the Rust bindings, which already zero-initialize OIDs —
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206),
+  [libgit2/libgit2#7220](https://github.com/libgit2/libgit2/pull/7220)
+
 ## 2026-03-16
 
 * Fixed a 1.94 regression where git dependencies whose `.gitmodules` use SCP-like URLs
