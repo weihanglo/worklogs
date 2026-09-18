@@ -1,5 +1,89 @@
 # Weekly summaries
 
+## 2026-07-27
+
+* Started the "scream test" for the new build-dir layout
+  by enabling it by default on nightly ahead of re-stabilization.
+  Reviewed and merged the Cargo side,
+  raising the case of stable toolchains that set `RUSTC_BOOTSTRAP=1`,
+  then drove the rust-lang/rust submodule update through CI,
+  updating run-make tests for the new layout.
+  That surfaced rustc-perf's `rustc-fake` shim not understanding `@argfile`,
+  which was fixed upstream so perf runs keep working —
+  [rust-lang/cargo#17258](https://github.com/rust-lang/cargo/pull/17258),
+  [rust-lang/rust#159857](https://github.com/rust-lang/rust/pull/159857),
+  [rust-lang/rustc-perf#2509](https://github.com/rust-lang/rustc-perf/pull/2509)
+* Shipped libgit2 1.9.5 and 1.9.6 security fixes to Cargo users.
+  1.9.5 fixes several CVEs,
+  including credentials leaking to redirected hosts,
+  an out-of-bounds read in the smart protocol,
+  unbounded allocation from delta headers,
+  and submodule path traversal.
+  Updated the libgit2-sys 0.18 maintenance branch,
+  cherry-picked the releases onto git2-rs master,
+  and bumped Cargo —
+  [rust-lang/git2-rs#1302](https://github.com/rust-lang/git2-rs/pull/1302),
+  [rust-lang/git2-rs#1304](https://github.com/rust-lang/git2-rs/pull/1304),
+  [rust-lang/git2-rs#1305](https://github.com/rust-lang/git2-rs/pull/1305),
+  [rust-lang/cargo#17259](https://github.com/rust-lang/cargo/pull/17259)
+* Found that `--remap-path-scope=object` leaks un-remapped source paths
+  into the `.rustc` metadata section of dylibs and proc-macros,
+  while experimenting with caching byte-identical artifacts on top of `-Ztrim-paths`.
+  The compiler team confirmed metadata must keep local paths for diagnostics,
+  so reviewed and approved the rustc book clarification instead.
+  Also contributed `clang-cl.exe` support for trim-paths remap flags in cc-rs,
+  so Windows users of the LLVM toolchain no longer expose checkout paths in C objects,
+  and shepherded gating of trim-paths split-debuginfo tests on unsupported hosts,
+  unblocking riscv64 test runs in rust-lang/rust —
+  [rust-lang/rust#159621](https://github.com/rust-lang/rust/issues/159621),
+  [rust-lang/rust#159690](https://github.com/rust-lang/rust/pull/159690),
+  [rust-lang/cc-rs#1799](https://github.com/rust-lang/cc-rs/pull/1799),
+  [rust-lang/cargo#17255](https://github.com/rust-lang/cargo/issues/17255),
+  [rust-lang/cargo#17256](https://github.com/rust-lang/cargo/pull/17256)
+* Filed a rustc/rustdoc bug that `--emit KIND=PATH` cannot handle commas in paths,
+  with no escape mechanism.
+  A reviewer caught this on the `-Zrustdoc-depinfo` stabilization PR,
+  since `cargo doc` would pass an absolute dep-info path under the target directory.
+  This is now the hard blocker for that stabilization —
+  [rust-lang/rust#159743](https://github.com/rust-lang/rust/issues/159743),
+  [rust-lang/cargo#17020](https://github.com/rust-lang/cargo/pull/17020)
+* Contributed a prior-art survey (pnpm, Deno, Dependabot, VS Code)
+  to the discussion on a default cooldown value for `min-publish-age`,
+  noting that none document a rationale
+  and that matching crates.io's 72-hour deletion window keeps things consistent.
+  Also triaged a request for CI enforcement of the cooldown,
+  clarifying that not-yet-locked dependencies are already rejected
+  and the real gap is versions already in the lockfile —
+  [rust-lang/cargo#17254](https://github.com/rust-lang/cargo/issues/17254),
+  [rust-lang/cargo#17246](https://github.com/rust-lang/cargo/issues/17246)
+* Reviewed and approved a batch of git source changes
+  preparing for the migration to CLI git fetching:
+  hiding `git fetch` output unless progress is shown,
+  suggesting the libgit2 fallback when the git CLI fails,
+  tests demonstrating Cargo is not exposed to the git argument-injection class
+  described in the "end of options" write-up,
+  and a naming cleanup of the remote registry source.
+  Raised the question of Cargo's minimum supported Git version
+  for `--end-of-options` hardening —
+  [rust-lang/cargo#17243](https://github.com/rust-lang/cargo/pull/17243),
+  [rust-lang/cargo#17252](https://github.com/rust-lang/cargo/pull/17252),
+  [rust-lang/cargo#17253](https://github.com/rust-lang/cargo/pull/17253),
+  [rust-lang/cargo#17240](https://github.com/rust-lang/cargo/pull/17240)
+* Reviewed and approved two lint-system fixes ahead of stabilization:
+  bounding the `unused_dependencies` transitive traversal
+  that could make Cargo retain over 100 GiB of memory on large workspaces,
+  and removing the `new_implicit_minimum_version_req` lint after concerns raised on Zulip —
+  [rust-lang/cargo#17251](https://github.com/rust-lang/cargo/pull/17251),
+  [rust-lang/cargo#17249](https://github.com/rust-lang/cargo/pull/17249)
+* Laid out the remaining blockers for stabilizing `resolver.feature-unification = "workspace"`
+  when a user of a 100+ member workspace offered to help:
+  the `cargo tree` bug,
+  the `--workspace --exclude` interaction,
+  tests pinning behavior across resolver versions and `default-members`,
+  and naming.
+  The contributor picked up the test work —
+  [rust-lang/cargo#14774](https://github.com/rust-lang/cargo/issues/14774)
+
 ## 2026-07-20
 
 * Pushed `-Ztrim-paths` toward stabilization on the testing and ecosystem fronts:
