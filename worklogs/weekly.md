@@ -1,5 +1,77 @@
 # Weekly summaries
 
+## 2026-03-16
+
+* Fixed a 1.94 regression where git dependencies whose `.gitmodules` use SCP-like URLs
+  (`git@host:path/repo.git`) failed to fetch with "relative URL without a base".
+  Mentored a first-time contributor through the initial fix converting them to `ssh://`,
+  supplying a test strategy that works without a reachable SSH server,
+  then filed and fixed the remaining edge case:
+  the two URL forms differ in path semantics (home-relative versus absolute),
+  so Cargo now keeps the original URL for the actual fetch
+  and only converts it where `SourceId` requires a WHATWG URL.
+  Raised the remaining cache-ident question with gitoxide —
+  [rust-lang/cargo#16727](https://github.com/rust-lang/cargo/pull/16727),
+  [rust-lang/cargo#16740](https://github.com/rust-lang/cargo/issues/16740),
+  [rust-lang/cargo#16744](https://github.com/rust-lang/cargo/pull/16744),
+  [GitoxideLabs/gitoxide#2467](https://github.com/GitoxideLabs/gitoxide/issues/2467)
+* Created FCP for `cargo clean --target-dir` validation,
+  so Cargo hard-errors instead of deleting a directory that lacks a valid `CACHEDIR.TAG`.
+  The team had agreed in a meeting last year,
+  but a behavior change like this deserves a formal record and time to think offline —
+  [rust-lang/cargo#16712](https://github.com/rust-lang/cargo/pull/16712)
+* Advanced the stabilization of `rustdoc --emit`,
+  which Cargo needs for `-Zrustdoc-depinfo` (precise rebuild tracking for docs)
+  and `-Zrustdoc-mergeable-info`,
+  and which docs.rs relies on to avoid copying toolchain static files per crate.
+  Wrote the stabilization report requested by the rustdoc team,
+  proposed reserving room to extend the default emit set later (mirroring `--remap-path-scope`),
+  and updated Cargo to the renamed `--emit` options —
+  [rust-lang/rust#146220](https://github.com/rust-lang/rust/pull/146220),
+  [rust-lang/cargo#16739](https://github.com/rust-lang/cargo/pull/16739),
+  [rust-lang/rust#153460](https://github.com/rust-lang/rust/pull/153460)
+* Attempted a rustc fix for the query depth limit overflow hit by deeply nested async fns
+  after 1.94 added a layer to `ManuallyDrop`.
+  At $WORK this broke builds across many packages using `aws-sdk-*` and other tokio/async crates,
+  and `tracing::instrument` amplifies it by generating extra coroutines per call.
+  The attempt, dropping the `MaybeUninit` wrapper in coroutine layout,
+  was withdrawn after review showed that wrapper is load-bearing for operational semantics;
+  consolidated the depth measurements back to 1.76 and the `#[instrument]` reproducer
+  into the tracking issue to inform a proper fix —
+  [rust-lang/rust#153620](https://github.com/rust-lang/rust/pull/153620),
+  [rust-lang/rust#152942](https://github.com/rust-lang/rust/issues/152942)
+* Reviewed and approved smaller user-facing changes:
+  `build.warnings = "deny"` stops the build immediately unless `--keep-going`,
+  `target/` is excluded from iCloud Drive sync on macOS alongside the Time Machine exclusion,
+  and a git2-rs `Config` constructor that crashed and exposed `sys`-level types was reverted before it shipped —
+  [rust-lang/cargo#16725](https://github.com/rust-lang/cargo/pull/16725),
+  [rust-lang/cargo#16728](https://github.com/rust-lang/cargo/pull/16728),
+  [rust-lang/git2-rs#1227](https://github.com/rust-lang/git2-rs/pull/1227)
+* Coordinated Cargo team input on a proposed rustc lint `misleading_cfg_in_build_script`,
+  which warns on `cfg!(target_*)` in build scripts, a classic cross-compilation pitfall.
+  rustc has no clean way to know it is compiling a build script,
+  so the question of whether Cargo should enable the lint went on the t-cargo meeting agenda —
+  [rust-lang/rust#153721](https://github.com/rust-lang/rust/pull/153721),
+  [rust-lang/rust#125441](https://github.com/rust-lang/rust/issues/125441)
+* Continued unstable SHA256 support in git2-rs,
+  working through whether `Oid::as_bytes` should expose the logical object ID
+  or libgit2's raw backing buffer once SHA256 is enabled,
+  leaning toward the logical bytes as the less surprising API —
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206)
+* Contributed the release of `openssl` v0.10.76 and `openssl-sys` v0.9.112,
+  compiling changelogs for months of accumulated changes
+  (LibreSSL 4.3.0 support, an `aws-lc-sys` bump with CVE fixes, HKDF bindings)
+  so downstream users including Cargo can pick them up —
+  [rust-openssl/rust-openssl#2582](https://github.com/rust-openssl/rust-openssl/pull/2582)
+* Gave design direction on two feature requests:
+  showing active features of installed packages belongs in a machine-readable `cargo install --list`,
+  not `cargo info`;
+  and asked for benchmark numbers before making `target/` bit-for-bit deterministic
+  by swapping `HashMap` for ordered maps in dep-info handling,
+  a request from the reproducible-builds community —
+  [rust-lang/cargo#16750](https://github.com/rust-lang/cargo/issues/16750),
+  [rust-lang/cargo#16693](https://github.com/rust-lang/cargo/issues/16693)
+
 ## 2026-03-09
 
 * Completed the beta backport of the `cargo package` truncation fix from last week.
