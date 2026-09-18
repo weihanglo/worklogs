@@ -1,5 +1,60 @@
 # Weekly summaries
 
+## 2026-06-22
+
+* Completed `-Zmin-publish-age` (RFC 3923), now merged as an unstable feature.
+  Users can require that a registry version has been public for a configurable period
+  before the resolver or `cargo add` will pick it,
+  giving the ecosystem time to catch malicious or broken releases before they spread.
+  Followed up with the diagnostics the RFC asks for:
+  the resolver and `cargo add` now list the too-new candidates with their publish age
+  and hint at the override.
+  Also pinned down cross-registry `--precise` behavior with a test
+  so future policy work cannot regress it unnoticed —
+  [rust-lang/cargo#17012](https://github.com/rust-lang/cargo/pull/17012),
+  [rust-lang/cargo#17117](https://github.com/rust-lang/cargo/pull/17117),
+  [rust-lang/cargo#17118](https://github.com/rust-lang/cargo/pull/17118),
+  [rust-lang/cargo#17119](https://github.com/rust-lang/cargo/pull/17119),
+  [rust-lang/cargo#17009](https://github.com/rust-lang/cargo/issues/17009),
+  [rust-lang/rfcs#3923](https://github.com/rust-lang/rfcs/pull/3923)
+* Fixed `-Zhost-config` leaking `[target.'cfg(...)']` linker and runner settings into host artifacts,
+  which surfaced as `cargo miri test` running build scripts under Miri's runner
+  and failing on proc-macro crates.
+  Host units now take their config only from `[host]`,
+  matching how `rustflags` already behaved.
+  This continues the `host.runner` fixes from February
+  that $WORK wants for wrapping build script execution —
+  [rust-lang/cargo#17123](https://github.com/rust-lang/cargo/pull/17123),
+  [rust-lang/miri#5101](https://github.com/rust-lang/miri/issues/5101)
+* Reviewed and approved `build.warnings` support for Cargo's own lints,
+  so `warnings = "deny"` and `"allow"` now govern manifest lints (including in `cargo fetch`)
+  the same way they govern rustc warnings,
+  plus its prerequisite of running Cargo lints for `cargo install` like rustc lints,
+  capped for non-local packages —
+  [rust-lang/cargo#17112](https://github.com/rust-lang/cargo/pull/17112),
+  [rust-lang/cargo#17107](https://github.com/rust-lang/cargo/pull/17107),
+  [rust-lang/cargo#12235](https://github.com/rust-lang/cargo/issues/12235)
+* Shaped two MSRV-related efforts:
+  requested test coverage for the new `-Zhint-msrv` flag,
+  which forwards `package.rust-version` to rustc
+  so the compiler can warn about library usage newer than the declared MSRV;
+  and suggested implementing the dependency `rust-version` incompatibility check
+  as an unstable lint right away rather than waiting on lint-system stabilization —
+  [rust-lang/cargo#17106](https://github.com/rust-lang/cargo/pull/17106),
+  [rust-lang/cargo#17120](https://github.com/rust-lang/cargo/issues/17120)
+* Coordinated git2-rs security and hygiene work:
+  confirmed the accuracy of two RustSec advisories for `git2`
+  (UB from `Remote::list()` with an empty list,
+  and null pointers from buffer-created `BlameHunk`),
+  merged the MSRV 1.87 declaration with a CI job to enforce it,
+  and started reviewing clippy-in-CI, suggesting `[lints.clippy]` over per-module allows —
+  [rustsec/advisory-db#2888](https://github.com/rustsec/advisory-db/pull/2888),
+  [rustsec/advisory-db#2889](https://github.com/rustsec/advisory-db/pull/2889),
+  [rust-lang/git2-rs#1277](https://github.com/rust-lang/git2-rs/pull/1277)
+* Unblocked jobserver-rs CI after GCC 15's C23 default broke building GNU Make from source,
+  switching to the distro package —
+  [rust-lang/jobserver-rs#121](https://github.com/rust-lang/jobserver-rs/pull/121)
+
 ## 2026-06-15
 
 * Continued the RFC 3923 `min-publish-age` implementation through its first full review round:
