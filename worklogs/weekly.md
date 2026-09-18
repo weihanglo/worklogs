@@ -1,5 +1,72 @@
 # Weekly summaries
 
+## 2026-04-27
+
+* Stabilized `build.warnings` after its FCP completed.
+  Users can now set `build.warnings = "deny"` or `"allow"` in config
+  (or `CARGO_BUILD_WARNINGS=deny` in CI)
+  to fail on or hide lint warnings
+  without the cache invalidation that `RUSTFLAGS=-Dwarnings` causes.
+  rust-lang/rust had been dogfooding it and its feedback shaped the final semantics —
+  [rust-lang/cargo#16796](https://github.com/rust-lang/cargo/pull/16796),
+  [rust-lang/cargo#14802](https://github.com/rust-lang/cargo/issues/14802)
+* Started wiring SHA256 Git repository support into Cargo, gated behind `-Zgit=sha256`.
+  Cargo guesses the object format from the lockfile, the local git db, or a remote probe,
+  and keeps SHA1 and SHA256 databases side by side;
+  gitoxide falls back to libgit2 until it catches up.
+  The end-to-end run flushed out two more libgit2 segfaults,
+  in peeling a loose `FETCH_HEAD` pseudoref and in querying the object format on local transports,
+  both fixed upstream within a day.
+  Also endorsed cutting a `git2` 0.21 release ahead of the next libgit2 release
+  to bundle the accumulated bindings work, offering to review it —
+  [rust-lang/cargo#16939](https://github.com/rust-lang/cargo/pull/16939),
+  [rust-lang/cargo#14942](https://github.com/rust-lang/cargo/issues/14942),
+  [libgit2/libgit2#7227](https://github.com/libgit2/libgit2/pull/7227),
+  [libgit2/libgit2#7229](https://github.com/libgit2/libgit2/pull/7229),
+  [rust-lang/git2-rs#1090](https://github.com/rust-lang/git2-rs/issues/1090)
+* Continued the `http_async` migration.
+  Reviewed and merged `.crate` downloads moving off `curl::Multi`
+  and the GitHub fast path using a blocking request that avoids spinning up an executor.
+  Created FCP for making the `crates-io` crate HTTP-client agnostic,
+  a breaking change for library users that removes the hard `curl` dependency,
+  and suggested using the major bump to mark public error enums `#[non_exhaustive]` —
+  [rust-lang/cargo#16902](https://github.com/rust-lang/cargo/pull/16902),
+  [rust-lang/cargo#16912](https://github.com/rust-lang/cargo/pull/16912),
+  [rust-lang/cargo#16936](https://github.com/rust-lang/cargo/pull/16936),
+  [rust-lang/cargo#16845](https://github.com/rust-lang/cargo/issues/16845)
+* Reviewed and merged the `gix` 0.82 update carrying security fixes and hardened parsers,
+  keeping Cargo's gitoxide backend current —
+  [rust-lang/cargo#16941](https://github.com/rust-lang/cargo/pull/16941)
+* Reviewed and merged two quick fixes:
+  `cargo help <cmd>` failing on NetBSD because its `man` refused an extension-less temp file,
+  and `cargo clean --target-dir` erroring on a missing directory,
+  a regression from the March `CACHEDIR.TAG` validation —
+  [rust-lang/cargo#16917](https://github.com/rust-lang/cargo/pull/16917),
+  [rust-lang/cargo#16934](https://github.com/rust-lang/cargo/pull/16934)
+* Reviewed and approved further unused-dependency lint work under `-Zcargo-lints`:
+  debug logging of every ignored unused extern to help users hunt transitive unused deps,
+  linting the `build-rs` crate, and pruning Cargo's own unused deps.
+  Suggested Cargo start dogfooding `-Zcargo-lints` on itself,
+  and flagged that `-Zcargo-lints` is not fingerprinted, so stale caches can hide results —
+  [rust-lang/cargo#16920](https://github.com/rust-lang/cargo/pull/16920),
+  [rust-lang/cargo#16930](https://github.com/rust-lang/cargo/pull/16930),
+  [rust-lang/cargo#16938](https://github.com/rust-lang/cargo/pull/16938)
+* Signed off on the FCP for the RFC allowing `default-features = false`
+  when inheriting a workspace dependency,
+  which errors today and is a long-standing papercut for workspace users —
+  [rust-lang/rfcs#3945](https://github.com/rust-lang/rfcs/pull/3945),
+  [rust-lang/cargo#12162](https://github.com/rust-lang/cargo/issues/12162)
+* Completed the multi-file patch work in `bmwill/diffy` and prepared its 0.5 release.
+  Fixed two panics found by the new fuzzers
+  (a multi-byte char boundary split and a hunk range overflow),
+  made `Patch::from_str` strict by default to slim the API,
+  documented every public API with examples and multi-file patch guidance,
+  and added an `apply`-like example CLI.
+  The maintainer published diffy 0.5.0 on the 27th —
+  [bmwill/diffy#71](https://github.com/bmwill/diffy/pull/71),
+  [bmwill/diffy#76](https://github.com/bmwill/diffy/pull/76)–[#78](https://github.com/bmwill/diffy/pull/78),
+  [bmwill/diffy#70](https://github.com/bmwill/diffy/issues/70)
+
 ## 2026-04-20
 
 * Completed the `-m` shorthand for `--manifest-path`,
