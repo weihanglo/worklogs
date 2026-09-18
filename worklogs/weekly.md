@@ -1,5 +1,77 @@
 # Weekly summaries
 
+## 2026-04-06
+
+* Completed review and merged the large async refactor of Cargo's registry network operations.
+  It replaces the awkward `Poll` + `block_until_ready` model with `async`,
+  lets sparse registry requests start earlier,
+  and opens a migration path to HTTP backends other than curl.
+  Pushed it into nightly the same day via a submodule update
+  to give the change the longest possible test window before it reaches stable —
+  [rust-lang/cargo#16745](https://github.com/rust-lang/cargo/pull/16745)
+* Coordinated fixes to keep the Cargo submodule syncing into rust-lang/rust.
+  Bumped `curl-sys` to unblock the sync,
+  then when the sync failed on FreeBSD with the new `libz-sys` release,
+  diagnosed a `_POSIX_SOURCE` define hiding `EWOULDBLOCK` on that platform,
+  fixed it upstream in `libz-sys` and asked the libs team for a release,
+  validated the fix with try builds across tier-2 platforms,
+  and pinned Cargo to the previous release in the meantime.
+  Also suggested a simpler safeguard for the `libz-sys` release tooling
+  after a follow-up release shipped without its vendored zlib sources —
+  [rust-lang/cargo#16808](https://github.com/rust-lang/cargo/pull/16808),
+  [rust-lang/rust#154734](https://github.com/rust-lang/rust/pull/154734),
+  [rust-lang/libz-sys#264](https://github.com/rust-lang/libz-sys/pull/264),
+  [rust-lang/cargo#16833](https://github.com/rust-lang/cargo/pull/16833),
+  [rust-lang/libz-sys#266](https://github.com/rust-lang/libz-sys/pull/266),
+  [#t-libs/crates > libz-sys failed to build on FreeBSD](https://rust-lang.zulipchat.com/#narrow/channel/351149-t-libs.2Fcrates/topic/libz-sys.20failed.20to.20build.20on.20FreeBSD/with/583458740)
+* Shepherded a fix for `CARGO` not being set during the `rustc -vV` probe,
+  which broke sccache users whenever a `RUSTC_WORKSPACE_WRAPPER` was present
+  (for example the Dioxus CLI).
+  Brought it to the Cargo team meeting, got it accepted,
+  and merged the contributor's fix the same day.
+  Also pointed sccache at the option of not caching unrelated Cargo environment variables —
+  [rust-lang/cargo#16805](https://github.com/rust-lang/cargo/issues/16805),
+  [rust-lang/cargo#16811](https://github.com/rust-lang/cargo/pull/16811),
+  [mozilla/sccache#2494](https://github.com/mozilla/sccache/issues/2494)
+* Reviewed and approved sending a `Content-Type` header with `cargo publish` requests.
+  Third-party registry implementations built on frameworks that pick a body parser from the header
+  (such as Django REST Framework) could not accept publishes without it.
+  Checked compatibility with the crates.io team before landing it
+  and asked for the registry web API docs to be updated alongside —
+  [rust-lang/cargo#16830](https://github.com/rust-lang/cargo/issues/16830),
+  [rust-lang/cargo#16832](https://github.com/rust-lang/cargo/pull/16832)
+* Completed the FCP for the `frame-pointers` profile option,
+  which maps to `-C force-frame-pointers` so a single profile can enable frame pointers
+  for fast `perf` call graphs instead of a global `RUSTFLAGS` setting,
+  and signed off on stabilizing the `resolver.lockfile-path` config
+  once the `cargo install` inconsistency was resolved by ignoring the setting there —
+  [rust-lang/cargo#16742](https://github.com/rust-lang/cargo/pull/16742),
+  [rust-lang/cargo#16694](https://github.com/rust-lang/cargo/pull/16694)
+* Started reviewing the stabilization of build-dir layout v2,
+  which reorganizes intermediate artifacts by package and hash rather than by artifact type.
+  A crater run and a public call for testing found no issues,
+  and the plan is to ship on nightly right after the 1.96 beta branch
+  with a temporary opt-out so a revert stays cheap —
+  [rust-lang/cargo#16807](https://github.com/rust-lang/cargo/pull/16807),
+  [rust-lang/cargo#15010](https://github.com/rust-lang/cargo/issues/15010)
+* Reviewed the `build-std = "always"` RFC, part of the build-std project goal,
+  raising that a locally built `libstd.rlib` should be treated as an intermediate artifact in the build directory
+  so `build-std` does not become a way to build and distribute standard library artifacts.
+  The RFC entered and completed FCP for merge —
+  [rust-lang/rfcs#3874](https://github.com/rust-lang/rfcs/pull/3874)
+* Contributed deterministic archive output to `cc-rs`.
+  GNU `ar` embeds timestamps in archive member headers,
+  so identical inputs produced different `.a` files and defeated content-addressed build caches.
+  Filed the issue with a reproduction and landed a fix that tries the `D` modifier
+  and falls back gracefully where unsupported —
+  [rust-lang/cc-rs#1696](https://github.com/rust-lang/cc-rs/issues/1696),
+  [rust-lang/cc-rs#1697](https://github.com/rust-lang/cc-rs/pull/1697)
+* Reviewed and merged, in the private advisory fork,
+  the fix for Cargo being coerced into sharing credentials between registries,
+  published in May as CVE-2026-5222 —
+  [rust-lang/cargo-ghsa-p688-r7jv-fm6f#1](https://github.com/rust-lang/cargo-ghsa-p688-r7jv-fm6f/pull/1),
+  [GHSA-p688-r7jv-fm6f](https://github.com/rust-lang/cargo/security/advisories/GHSA-p688-r7jv-fm6f)
+
 ## 2026-03-30
 
 * Coordinated the curl-sys recovery that shipped in Rust 1.94.1.
