@@ -1,5 +1,48 @@
 # Weekly summaries
 
+## 2026-05-25
+
+* Shipped git2 0.21.0 with the unstable SHA256 support,
+  closed the 2024 SHA-256 request in favor of a stabilization tracking issue that waits on libgit2 v2,
+  and opened an issue to prepare for Git's reftable reference backend,
+  which Git v3 will default to and libgit2 has already merged on `main`.
+  On the Cargo side, posted a status update:
+  the remaining blocker for SHA256 Git dependencies is that the integration
+  would force Cargo to always vendor libgit2,
+  which downstream packagers will push back on,
+  to be discussed at Rust All Hands —
+  [rust-lang/git2-rs#1256](https://github.com/rust-lang/git2-rs/pull/1256),
+  [rust-lang/git2-rs#1090](https://github.com/rust-lang/git2-rs/issues/1090),
+  [rust-lang/git2-rs#1258](https://github.com/rust-lang/git2-rs/issues/1258),
+  [rust-lang/git2-rs#1259](https://github.com/rust-lang/git2-rs/issues/1259),
+  [rust-lang/cargo#14942](https://github.com/rust-lang/cargo/issues/14942),
+  [rust-lang/cargo#16939](https://github.com/rust-lang/cargo/pull/16939)
+* Started implementing RFC 3923 min-publish-age as `-Zmin-publish-age`,
+  the day after the RFC merged.
+  The policy lives in the resolver as a `PublishAgePolicy`,
+  with an audit of every version-selection site outside the resolver
+  (`cargo add`, `cargo install`, `cargo update --breaking`, future-incompat, `cargo info`)
+  to decide which must apply the filter.
+  Split off a refactor dropping `yanked_whitelist` from source loading to keep the review focused,
+  which prompted a broader discussion about lifting yanked handling out of `Source`
+  into version preferences —
+  [rust-lang/cargo#17012](https://github.com/rust-lang/cargo/pull/17012),
+  [rust-lang/cargo#17014](https://github.com/rust-lang/cargo/pull/17014),
+  [rust-lang/cargo#17009](https://github.com/rust-lang/cargo/issues/17009),
+  [rust-lang/rfcs#3923](https://github.com/rust-lang/rfcs/pull/3923)
+* Opened the stabilization PR for `-Zrustdoc-depinfo`,
+  making `cargo doc` track rebuilds through rustdoc's dep-info
+  instead of walking the package directory,
+  so changes to `include_str!` files, `#[path]` modules, and `env!` doc inputs
+  outside the package root are detected.
+  Hit a snag right away, since the change would force every `cargo doc` test to be nightly-only —
+  [rust-lang/cargo#17020](https://github.com/rust-lang/cargo/pull/17020),
+  [rust-lang/cargo#15370](https://github.com/rust-lang/cargo/issues/15370)
+* Reviewed and merged the removal of the artifact-dependency env var compat mode,
+  reducing the risk of accidentally stabilizing legacy behavior with `-Zbindeps`,
+  and noted the unstable docs never covered the compat layer to begin with —
+  [rust-lang/cargo#17016](https://github.com/rust-lang/cargo/pull/17016)
+
 ## 2026-05-18
 
 * Completed unstable SHA256 support in git2-rs after four months of iteration.
