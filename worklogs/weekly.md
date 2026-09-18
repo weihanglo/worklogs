@@ -1,5 +1,60 @@
 # Weekly summaries
 
+## 2026-03-30
+
+* Coordinated the curl-sys recovery that shipped in Rust 1.94.1.
+  Identified the upstream curl change behind the FreeBSD certificate-validation failure
+  that had kept Cargo pinned on curl-sys 0.4.83 since December (confirmed by revert),
+  merged the bump to 0.4.86 on master and the downgrade on the stable branch with its changelog,
+  and approved the release-team backport and announcement PRs —
+  [alexcrichton/curl-rust#632](https://github.com/alexcrichton/curl-rust/issues/632),
+  [rust-lang/cargo#16786](https://github.com/rust-lang/cargo/pull/16786),
+  [rust-lang/cargo#16787](https://github.com/rust-lang/cargo/pull/16787),
+  [rust-lang/rust#154343](https://github.com/rust-lang/rust/pull/154343),
+  [rust-lang/blog.rust-lang.org#1827](https://github.com/rust-lang/blog.rust-lang.org/pull/1827)
+* Fixed a Windows link failure in curl-rust that the curl-sys bump exposed in rust-lang/rust CI,
+  where Cargo is built with `raw-dylib` and so gets no import-library safety net:
+  upstream curl now calls `if_nametoindex` unconditionally, so `iphlpapi` must always be linked.
+  Contributed the fix upstream and bumped Cargo to curl-sys 0.4.87 to unblock the submodule sync —
+  [alexcrichton/curl-rust#643](https://github.com/alexcrichton/curl-rust/pull/643),
+  [rust-lang/cargo#16808](https://github.com/rust-lang/cargo/pull/16808),
+  [rust-lang/rust#154482](https://github.com/rust-lang/rust/pull/154482)
+* Started reviewing the migration of registry network operations to `async`,
+  which replaces the awkward `Poll` + `block_until_ready` model,
+  opens a path to HTTP backends beyond curl,
+  and already starts sparse-registry requests slightly sooner.
+  The first pass asked for the benchmark methodology,
+  flagged `RefCell` borrows across await points as a runtime-panic footgun,
+  and kept header handling consistent with the existing sparse registry code —
+  [rust-lang/cargo#16745](https://github.com/rust-lang/cargo/pull/16745)
+* Continued shepherding `cargo clean` target-dir validation through FCP:
+  resolved the concern about a non-suppressible future-incompat warning
+  for config- or env-set target dirs by deferring that part to a later discussion,
+  and approved the trimmed-down PR —
+  [rust-lang/cargo#16712](https://github.com/rust-lang/cargo/pull/16712)
+* Contributed cache-key hygiene fixes to sccache,
+  motivated by remote caching experiments at $WORK:
+  stopped hashing `CARGO_ENCODED_RUSTFLAGS`, which is redundant with the rustc arguments
+  and often carries build-specific `--remap-path-prefix` paths that defeat cache hits across checkouts,
+  and filed an issue to wire `SCCACHE_BASEDIRS` path normalization into the Rust hasher —
+  [mozilla/sccache#2651](https://github.com/mozilla/sccache/pull/2651),
+  [mozilla/sccache#2652](https://github.com/mozilla/sccache/issues/2652),
+  [mozilla/sccache#2494](https://github.com/mozilla/sccache/issues/2494)
+* Diagnosed the git dependency failure with `init.defaultBranch` set via `includeIf`:
+  libgit2 opens the default config without a repository context when computing the initial HEAD,
+  so conditional includes are silently skipped.
+  Marked it blocked on upstream libgit2 and asked for a standalone reproducer —
+  [rust-lang/cargo#16751](https://github.com/rust-lang/cargo/issues/16751)
+* Weighed in on whether Cargo can require libcurl 7.68 or newer,
+  which the async registry work wants for `Multi::poll`.
+  Cargo links curl statically except on macOS, where the age of the stock libcurl is unclear,
+  so dug out the existing macOS version check and the curl-rust history behind it,
+  argued for not blocking on old tier-2 systems, as with the FreeBSD pin,
+  and asked for a tracking issue on libcurl compatibility
+  once a build against an old distro's system curl confirmed the failure mode —
+  [#t-cargo > requiring curl 7.68?](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/curl.20on.20macOS/near/581149095),
+  [rust-lang/cargo#16783](https://github.com/rust-lang/cargo/issues/16783)
+
 ## 2026-03-23
 
 * Reviewed and approved a fix for git dependencies pinned to non-standard refs,
