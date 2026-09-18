@@ -1,5 +1,69 @@
 # Weekly summaries
 
+## 2026-08-10
+
+* Created FCP to stabilize the `[lints.cargo]` linting system,
+  giving users control over Cargo's own warnings for the first time.
+  Raised a concern that `blanket_hint_mostly_unused` must stay behind `-Zprofile-hint-mostly-unused`
+  (resolved by a gating PR),
+  questioned stabilizing empty lint groups
+  (`complexity`, `perf`, and `nursery` were dropped as a result),
+  and merged a fix so diagnostic titles render without snippets in short and no-graphics modes.
+  Also pointed pushback on hyphenated lint names to the naming rationale —
+  [rust-lang/cargo#17298](https://github.com/rust-lang/cargo/pull/17298),
+  [rust-lang/cargo#12235](https://github.com/rust-lang/cargo/issues/12235),
+  [rust-lang/cargo#17341](https://github.com/rust-lang/cargo/issues/17341)
+* Started preparing `min-publish-age` (RFC 3923) for stabilization.
+  Pushed back on adding `registry.min-publish-age`
+  given the confusing `[registry]` vs `[registries.crates-io]` split,
+  merged the lock message reporting which cooldown is in effect
+  and the "highest" instead of "latest" wording fix that a time dimension demands,
+  and created FCP to remove the half-working unstable `cargo update --breaking`
+  so it stops holding up the cooldown feature while a better upgrade interface is designed.
+  Also merged a man page fix for the `--breaking` option —
+  [rust-lang/cargo#17335](https://github.com/rust-lang/cargo/pull/17335),
+  [rust-lang/cargo#17328](https://github.com/rust-lang/cargo/pull/17328),
+  [rust-lang/cargo#17333](https://github.com/rust-lang/cargo/pull/17333)
+* Completed FCP and merged RFC 3924 `hints.min-opt-level`,
+  letting crates such as RSA, cargo-semver-checks, and candle
+  hint that they should be optimized even in dev builds
+  while the top-level crate keeps control.
+  Created the tracking issue,
+  which a contributor picked up right away,
+  and fixed the RFC's tracking link —
+  [rust-lang/rfcs#3924](https://github.com/rust-lang/rfcs/pull/3924),
+  [rust-lang/cargo#17334](https://github.com/rust-lang/cargo/issues/17334),
+  [rust-lang/rfcs#3994](https://github.com/rust-lang/rfcs/pull/3994)
+* Created FCP to adopt rust-lang/rust's LLM usage policy for Cargo contributions,
+  after the team agreed adopting an existing policy beats writing one from scratch.
+  Kept it lean with the Cargo team having the final say on conflicts,
+  and held the FCP a week for members on vacation —
+  [rust-lang/cargo#17330](https://github.com/rust-lang/cargo/pull/17330)
+* Continued `-Ztrim-paths` work on top of last week's remap redesign.
+  Closed the three-year-old remap-rules design issue now that the rules landed,
+  added CI tests exercising unremap files with real gdb and lldb sessions,
+  fixed the workspace remap leaking absolute paths under `-Zroot-dir`
+  and renamed the fallback prefix to `/cargo/deps`
+  (both found while experimenting with rustc bootstrap adoption),
+  and reviewed rust-gdb's nightly-only support for reading unremap files —
+  [rust-lang/cargo#13171](https://github.com/rust-lang/cargo/issues/13171),
+  [rust-lang/cargo#17326](https://github.com/rust-lang/cargo/pull/17326),
+  [rust-lang/cargo#17337](https://github.com/rust-lang/cargo/pull/17337),
+  [rust-lang/rust#160560](https://github.com/rust-lang/rust/pull/160560)
+* Merged the new built-in `debug` profile,
+  which inherits from `dev` and backs `cargo install --debug`.
+  This is the first step toward letting `dev` evolve for faster builds
+  while `debug` keeps debugger-friendly settings —
+  [rust-lang/cargo#17214](https://github.com/rust-lang/cargo/pull/17214),
+  [rust-lang/cargo#15931](https://github.com/rust-lang/cargo/issues/15931)
+* Reverted forwarding `--verbose` to rustc for local crates
+  and backported it to beta 1.98,
+  fixing the `CARGO_TERM_VERBOSE` and `RUSTFLAGS=--verbose` conflict triaged last week,
+  then drove the beta submodule update —
+  [rust-lang/cargo#17314](https://github.com/rust-lang/cargo/pull/17314),
+  [rust-lang/cargo#17316](https://github.com/rust-lang/cargo/pull/17316),
+  [rust-lang/rust#160596](https://github.com/rust-lang/rust/pull/160596)
+
 ## 2026-08-03
 
 * Landed the `-Ztrim-paths` remap redesign agreed at the 2026 All-Hands,
