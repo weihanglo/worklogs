@@ -1,5 +1,70 @@
 # Weekly summaries
 
+## 2026-04-13
+
+* Started upstreaming the multi-file patch work from the `diffy` fork into the original crate.
+  After the maintainer agreed to take the changes rather than see a competing crate,
+  split the fork's 43 layered pull requests into reviewable pieces:
+  error types with offset-based spans, GNU-patch-compatible lenient parsing,
+  correct octal escapes in quoted filenames, an `anstyle` migration behind a `color` feature,
+  a streaming `PatchSet` parser for `git diff` and `git format-patch` output,
+  git binary patch support,
+  and GNU patch compatibility plus git history replay test suites
+  (the replay passes the full history of rust-lang/rust, over 925k patches).
+  Fourteen of them landed within the week.
+  This is groundwork for Cargo patch workflows spanning multiple files —
+  [bmwill/diffy#43](https://github.com/bmwill/diffy/issues/43),
+  [bmwill/diffy#44](https://github.com/bmwill/diffy/pull/44)–[#61](https://github.com/bmwill/diffy/pull/61),
+  [rust-lang/cargo#4648](https://github.com/rust-lang/cargo/issues/4648)
+* Created FCP to stabilize build-dir layout v2.
+  Although technically a two-way door,
+  the change is disruptive enough to warrant formal team sign-off.
+  Also reviewed and merged a follow-up fix so build script executables never carry the metadata hash,
+  even under `__CARGO_DEFAULT_LIB_METADATA`,
+  which had broken `rustc-build-sysroot` on the new layout —
+  [rust-lang/cargo#16807](https://github.com/rust-lang/cargo/pull/16807),
+  [rust-lang/cargo#16855](https://github.com/rust-lang/cargo/pull/16855),
+  [rust-lang/cargo#16854](https://github.com/rust-lang/cargo/issues/16854)
+* Shepherded a nightly regression from the async registry refactor.
+  Approved migrating the GitHub fast path to the async HTTP client,
+  which turned out to nest executors and panic on any Git dependency update (reported via diesel).
+  Confirmed the regression on rust-lang/rust, merged the revert,
+  and verified the fix landed in the next submodule sync —
+  [rust-lang/cargo#16847](https://github.com/rust-lang/cargo/pull/16847),
+  [rust-lang/cargo#16860](https://github.com/rust-lang/cargo/issues/16860),
+  [rust-lang/rust#155048](https://github.com/rust-lang/rust/issues/155048),
+  [rust-lang/cargo#16861](https://github.com/rust-lang/cargo/pull/16861)
+* Created FCP for `-m` as a shorthand of `--manifest-path`.
+  The team had agreed in the weekly meeting,
+  but an FCP keeps a formal public record and gives members time to think it through.
+  Also coached the first-time contributor on keeping every commit green with regenerated snapshots —
+  [rust-lang/cargo#16858](https://github.com/rust-lang/cargo/pull/16858),
+  [rust-lang/cargo#16726](https://github.com/rust-lang/cargo/issues/16726)
+* Completed `target.'cfg(..)'.rustdocflags` support, at parity with `rustflags`.
+  Got the request accepted at the team meeting and merged the implementation the next day.
+  This removes a sharp edge that cargo-semver-checks users hit
+  when `--cfg` flags set via `rustflags` silently did not reach rustdoc —
+  [rust-lang/cargo#16761](https://github.com/rust-lang/cargo/issues/16761),
+  [rust-lang/cargo#16846](https://github.com/rust-lang/cargo/pull/16846)
+* Caught a behavior-breaking fix for `cargo publish` reporting `.gitignore`d files as uncommitted
+  when `package.include` is set.
+  The proposed change would have silently dropped files users explicitly include from ignored directories.
+  Clarified that `include` opts out of the gitignore heuristics by design
+  and steered the reporter to separate the distinct cases before any fix —
+  [rust-lang/cargo#16864](https://github.com/rust-lang/cargo/pull/16864),
+  [rust-lang/cargo#16872](https://github.com/rust-lang/cargo/issues/16872),
+  [rust-lang/cargo#16547](https://github.com/rust-lang/cargo/issues/16547)
+* Continued reviewing the `cargo rustdoc --output-format=json` rebuild fix,
+  steering the JSON uplift onto Cargo's existing `OutputFile` hard-link mechanism
+  instead of a bespoke copy step —
+  [rust-lang/cargo#16773](https://github.com/rust-lang/cargo/pull/16773)
+* Reviewed the RFC for a minimum publish age ("cooldown") on dependency versions,
+  a supply-chain mitigation most other package ecosystems already offer.
+  Argued for keeping every knob expressible in Cargo config rather than one-off CLI flags,
+  and against a `cargo update --publish-time` style escape hatch —
+  [rust-lang/rfcs#3923](https://github.com/rust-lang/rfcs/pull/3923),
+  [rust-lang/cargo#15973](https://github.com/rust-lang/cargo/issues/15973)
+
 ## 2026-04-06
 
 * Completed review and merged the large async refactor of Cargo's registry network operations.
