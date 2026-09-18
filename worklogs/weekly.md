@@ -1,5 +1,63 @@
 # Weekly summaries
 
+## 2026-05-18
+
+* Completed unstable SHA256 support in git2-rs after four months of iteration.
+  The bindings ship `ObjectFormat` accessors and `*_ext` API variants unconditionally,
+  with the actual SHA256 wiring behind an `unstable-sha256` feature
+  so the public API stays additive until libgit2 v2 stabilizes it upstream.
+  While chasing flaky CI, found that libgit2's builtin SHA-256 backend
+  kept a shared static in its RFC 6234 reference code
+  and produced wrong digests under concurrent hashing;
+  fixed it upstream the same day, slated for libgit2 1.9.4.
+  This unblocks the Cargo integration so SHA256 Git dependencies can eventually work —
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206),
+  [rust-lang/git2-rs#1255](https://github.com/rust-lang/git2-rs/issues/1255),
+  [libgit2/libgit2#7266](https://github.com/libgit2/libgit2/pull/7266)
+* Kicked off stabilization of `-Zrustdoc-depinfo`.
+  With rustdoc's `--emit` flag now stable, the last blocker on the tracking issue is gone,
+  so proposed moving forward and dropped the `-Zunstable-options` gate Cargo passed for `--emit`.
+  Stabilizing lets `cargo doc` rebuild correctly when doc inputs live outside the package root,
+  such as `include_str!` files or `#[path]` modules —
+  [rust-lang/cargo#15370](https://github.com/rust-lang/cargo/issues/15370),
+  [rust-lang/cargo#17002](https://github.com/rust-lang/cargo/pull/17002),
+  [rust-lang/rust#146220](https://github.com/rust-lang/rust/pull/146220)
+* Reviewed and merged the revert of the `frame-pointers` profile option
+  on master and the 1.96 beta branch,
+  after a concern that `force-off` reads as forcing frame pointers off
+  when it only cancels `force-on`.
+  Pulling it from beta avoids locking a confusing option into stable —
+  [rust-lang/cargo#16999](https://github.com/rust-lang/cargo/pull/16999),
+  [rust-lang/cargo#16998](https://github.com/rust-lang/cargo/pull/16998),
+  [rust-lang/cargo#16742](https://github.com/rust-lang/cargo/pull/16742)
+* Continued shepherding the `build-dir` layout v2 rollout:
+  approved the rust-lang/rust bootstrap switch
+  after confirming miri, compiletest, rustfmt, and cranelift had signed off,
+  and asked who owns merging it,
+  since it gates lifting the concern on the Cargo stabilization —
+  [rust-lang/rust#155439](https://github.com/rust-lang/rust/pull/155439),
+  [rust-lang/cargo#16807](https://github.com/rust-lang/cargo/pull/16807)
+* Reviewed and merged two steps toward a unified Cargo diagnostics system,
+  tracking warning and error counts for Cargo's own diagnostics the way rustc does,
+  groundwork for stabilizing user control over Cargo warnings —
+  [rust-lang/cargo#16981](https://github.com/rust-lang/cargo/pull/16981),
+  [rust-lang/cargo#12235](https://github.com/rust-lang/cargo/issues/12235)
+* Reviewed and merged git2-rs soundness fixes for undefined behavior in `Remote::list` with an empty list
+  and null pointer dereferences on `BlameHunk` signatures,
+  and agreed to switch UTF-8 accessors from `Option` to `Result` as a breaking change now
+  rather than waiting on libgit2 v2 —
+  [rust-lang/git2-rs#1250](https://github.com/rust-lang/git2-rs/pull/1250),
+  [rust-lang/git2-rs#1254](https://github.com/rust-lang/git2-rs/pull/1254),
+  [rust-lang/git2-rs#1241](https://github.com/rust-lang/git2-rs/pull/1241)
+* Connected a request to expose build unit counts in JSON output
+  to the existing structured logging work:
+  `-Zbuild-analysis` already emits unit-registered events during the build,
+  and the missing piece is associating those logs with the running invocation,
+  which the pending `build-started` message addresses —
+  [rust-lang/cargo#16943](https://github.com/rust-lang/cargo/issues/16943),
+  [rust-lang/cargo#16632](https://github.com/rust-lang/cargo/pull/16632),
+  [rust-lang/cargo#16576](https://github.com/rust-lang/cargo/issues/16576)
+
 ## 2026-05-11
 
 * Continued the SHA256 work across the libgit2 stack.
