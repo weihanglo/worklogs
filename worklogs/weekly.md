@@ -1,5 +1,84 @@
 # Weekly summaries
 
+## 2026-07-20
+
+* Pushed `-Ztrim-paths` toward stabilization on the testing and ecosystem fronts:
+  added GDB-based debugger tests on windows-gnu and re-enabled the windows-msvc ones,
+  re-enabled the lldb tests disabled a year ago,
+  and contributed path-remap inheritance to the `cc` crate
+  so build scripts forward Cargo's `CARGO_TRIM_PATHS_*` scopes to C/C++ compilers
+  as `-fmacro-prefix-map` and `-fdebug-prefix-map`.
+  Without the `cc` part, C dependencies kept leaking absolute build paths into binaries
+  even when the Rust side was trimmed, undermining reproducible builds —
+  [rust-lang/cargo#17221](https://github.com/rust-lang/cargo/pull/17221),
+  [rust-lang/cargo#17223](https://github.com/rust-lang/cargo/pull/17223),
+  [rust-lang/cc-rs#1794](https://github.com/rust-lang/cc-rs/pull/1794),
+  [rust-lang/cc-rs#593](https://github.com/rust-lang/cc-rs/issues/593),
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137)
+* Kept the 1.98 beta on track:
+  backported the host-config regression fix to the beta branch
+  and landed the beta submodule update through several CI retries,
+  merged dropping proc-macro dependencies from rustc `-L` arguments
+  (about 16% shorter search-path arguments on Zed under the new `build-dir` layout),
+  and identified rustc wrappers such as sccache as the remaining blocker for the beta bootstrap bump,
+  since they neither handle nor report the longer command lines —
+  [rust-lang/cargo#17211](https://github.com/rust-lang/cargo/pull/17211),
+  [rust-lang/cargo#17236](https://github.com/rust-lang/cargo/pull/17236),
+  [rust-lang/rust#158888](https://github.com/rust-lang/rust/pull/158888)
+* Shepherded a `cargo test --timings` regression since 1.95
+  where zero-second "(doc test)" units cluttered the report:
+  pointed the reporter at the timing refactor PRs to bisect,
+  then reviewed and merged the fix that only reports units the job queue actually ran —
+  [rust-lang/cargo#17212](https://github.com/rust-lang/cargo/issues/17212),
+  [rust-lang/cargo#17238](https://github.com/rust-lang/cargo/pull/17238)
+* Shepherded the fix making `-Zsbom` outputs part of unit fingerprints,
+  so enabling `CARGO_BUILD_SBOM=true` on an existing build produces the SBOM files instead of reusing the cache.
+  Laid out the invariants to keep (precursors uplifted, SBOM as a unit output),
+  accepted the issue, asked for a recompilation assertion in the test, and merged —
+  [rust-lang/cargo#15695](https://github.com/rust-lang/cargo/issues/15695),
+  [rust-lang/cargo#17216](https://github.com/rust-lang/cargo/pull/17216)
+* Started reviewing the built-in `debug` profile,
+  the first step of splitting `dev` and `debug` agreed at the team sync meeting
+  so `dev` can later favor faster builds without breaking debugger workflows.
+  Also merged the prep work: consistent docs and tests for built-in profiles,
+  and disabling incremental compilation by default when `CI` is set,
+  which avoids wasted cache serialization and bloated CI caches for anyone not using a CI action —
+  [rust-lang/cargo#17214](https://github.com/rust-lang/cargo/pull/17214),
+  [rust-lang/cargo#17213](https://github.com/rust-lang/cargo/pull/17213),
+  [rust-lang/cargo#17220](https://github.com/rust-lang/cargo/pull/17220),
+  [rust-lang/cargo#11853](https://github.com/rust-lang/cargo/issues/11853),
+  [rust-lang/cargo#15931](https://github.com/rust-lang/cargo/issues/15931)
+* Completed bringing clippy into git2-rs CI and merged the follow-up cleanup campaign
+  across production, test, example, and `libgit2-sys` code,
+  asking for `#[expect]` over `#[allow]` so stale suppressions get flagged
+  and pushing back on pedantic lints that add API surface without value.
+  Also merged two fixes that stop `is_valid_name()` from panicking on interior NULs,
+  and weighed in on whether the remaining CString conversions should return `Result` (breaking)
+  or document a panic —
+  [rust-lang/git2-rs#1280](https://github.com/rust-lang/git2-rs/pull/1280),
+  [rust-lang/git2-rs#1297](https://github.com/rust-lang/git2-rs/issues/1297)
+* Reviewed and merged the Cargo repository re-organization that flattens `src/cargo` into `src`
+  and regroups modules (`resolver`, `compiler`, `workspace`, `context`),
+  flagging that `workspace` risks becoming the new catch-all `core`,
+  fixed the book deployment broken by the doc folder move,
+  and merged the follow-up aligning `cargo metadata` op names —
+  [rust-lang/cargo#17230](https://github.com/rust-lang/cargo/pull/17230),
+  [rust-lang/cargo#17231](https://github.com/rust-lang/cargo/pull/17231),
+  [rust-lang/cargo#17233](https://github.com/rust-lang/cargo/pull/17233),
+  [rust-lang/cargo#17235](https://github.com/rust-lang/cargo/pull/17235)
+* Got a `futures` 0.3.33 release out carrying the `FuturesUnordered::IntoIter` memory leak fix
+  that had sat merged for a month.
+  Tracked down the current release owner after the original maintainer had stepped back,
+  which also got the `rust-lang-owner` account added to every futures crate,
+  and asked for the trusted-publishing setup guide to repeat elsewhere,
+  prompting the infra team to configure it for futures-rs.
+  Also approved trusted publishing for the `jobserver` crate,
+  removing long-lived crates.io tokens from its release process —
+  [#wg-async > futures-rs 0.3.33?](https://rust-lang.zulipchat.com/#narrow/channel/187312-wg-async/topic/.E2.9C.94.20futures-rs.200.2E3.2E33.3F/near/611129864),
+  [rust-lang/futures-rs#3005](https://github.com/rust-lang/futures-rs/pull/3005),
+  [rust-lang/team#2594](https://github.com/rust-lang/team/pull/2594),
+  [rust-lang/jobserver-rs#124](https://github.com/rust-lang/jobserver-rs/pull/124)
+
 ## 2026-07-13
 
 * Merged the `build-dir` layout v2 stabilization after its FCP, crater run, and call for testing,
