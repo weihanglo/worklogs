@@ -1,5 +1,82 @@
 # Weekly summaries
 
+## 2026-09-07
+
+* Completed FCP and merged RFC 3485, feature descriptions in `Cargo.toml`, three years after it was opened.
+  Packages can document individual features with a `doc` key,
+  which Cargo, docs.rs, and `cargo add` can surface instead of leaving users to read source.
+  Filed the tracking issue,
+  proposed keeping it under the `feature-metadata` umbrella and stabilizing each metadata field separately,
+  and started reviewing both the manifest-schema implementation
+  and the book rewrite that makes the table syntax the primary way to declare features —
+  [rust-lang/rfcs#3485](https://github.com/rust-lang/rfcs/pull/3485),
+  [rust-lang/cargo#4956](https://github.com/rust-lang/cargo/issues/4956),
+  [rust-lang/cargo#17445](https://github.com/rust-lang/cargo/issues/17445),
+  [rust-lang/cargo#17447](https://github.com/rust-lang/cargo/pull/17447),
+  [rust-lang/cargo#17446](https://github.com/rust-lang/cargo/pull/17446)
+* Kicked off the stabilization plan for `-Ztrim-paths`,
+  now that rustc bootstrap builds the toolchain with it.
+  Posted the checklist on the tracking issue and a t-cargo Zulip thread,
+  and landed the preparatory pieces:
+  limiting `profile.trim-paths` to `none|object|all`
+  after the thread showed `true` reads as `all` when it means `object`,
+  removing the implicit `object` default from the release profile
+  (profiles are config-scoped, so an edition cannot fix a default later),
+  documenting limitations such as macOS OSO stub leaks,
+  and clarifying the `.`-prefixed workspace remap.
+  Closed the bootstrap custom-remap request as resolved,
+  closed a Windows mixed-separator report as a pre-existing rustc remap after verifying CDB still debugs fine,
+  and flagged to the debugging-survey post that trim-paths was designed to preserve the debugging experience —
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137),
+  [#t-cargo > stabilization plan for `-Ztrim-paths`](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/stabilization.20plan.20for.20.60-Ztrim-paths.60/with/620855966),
+  [rust-lang/cargo#17432](https://github.com/rust-lang/cargo/pull/17432),
+  [rust-lang/cargo#17424](https://github.com/rust-lang/cargo/pull/17424),
+  [rust-lang/cargo#17309](https://github.com/rust-lang/cargo/issues/17309)
+* Created FCP to make the Git CLI Cargo's default fetch backend when `git` is present,
+  falling back to libgit2 otherwise.
+  This gives users their own git config and credentials for free, fetches faster,
+  and is the first step toward removing the libgit2 and curl dependencies.
+  Reviewed and approved the surrounding fixes:
+  relying on git's own HTTP 429 retry when available (arguing it needed no FCP),
+  a shorter fetch error message,
+  and PR-dependency hints for the CLI path —
+  [rust-lang/cargo#17329](https://github.com/rust-lang/cargo/pull/17329),
+  [rust-lang/cargo#17227](https://github.com/rust-lang/cargo/issues/17227),
+  [rust-lang/cargo#17422](https://github.com/rust-lang/cargo/pull/17422)
+* Created FCP for the `build.profile` and `install.profile` configs,
+  insta-stabilizing a way to pick the default profile per scope
+  ahead of the `dev`/`debug` profile split.
+  Pointed a cargo-script user asking for `--release` in the shebang at the same mechanism
+  as room for a future `script.profile` —
+  [rust-lang/cargo#17215](https://github.com/rust-lang/cargo/pull/17215),
+  [rust-lang/cargo#15931](https://github.com/rust-lang/cargo/issues/15931),
+  [rust-lang/cargo#17423](https://github.com/rust-lang/cargo/issues/17423)
+* Announced two new Cargo team members on Inside Rust,
+  and supported moving Cargo's crates to crates.io trusted publishing,
+  noting that `home` is the only crate still published by hand —
+  [rust-lang/blog.rust-lang.org#1939](https://github.com/rust-lang/blog.rust-lang.org/pull/1939),
+  [rust-lang/cargo#17426](https://github.com/rust-lang/cargo/pull/17426)
+* Reviewed and approved dropping redundant `-L` search paths for dependencies already passed via `--extern`,
+  cutting rustc argument counts by 5-20% on large workspaces such as Zed,
+  and triaged an "early cutoff" proposal for fingerprinting on outputs rather than inputs,
+  noting the mtime expectations of external build systems like Make —
+  [rust-lang/cargo#17410](https://github.com/rust-lang/cargo/pull/17410),
+  [rust-lang/cargo#17439](https://github.com/rust-lang/cargo/issues/17439)
+* Merged a soundness fix in git2-rs:
+  `Remote::get_refspec()` had a lifetime bound that let safe code use a freed refspec,
+  now fixed with `trybuild` regression tests —
+  [rust-lang/git2-rs#1287](https://github.com/rust-lang/git2-rs/pull/1287),
+  [rust-lang/git2-rs#1286](https://github.com/rust-lang/git2-rs/issues/1286)
+* Kicked off a t-cargo Zulip thread on reviving a dedicated `-Zprecise-pre-release` flag,
+  so the lockfile consumption fix for pinned pre-releases
+  can be opted into on every command instead of hiding behind `-Zunstable-options` —
+  [#t-cargo > Revive `-Zprecise-pre-release` flag](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Revive.20.60-Zprecise-pre-release.60.20flag/with/620429329),
+  [rust-lang/cargo#13290](https://github.com/rust-lang/cargo/issues/13290)
+* Enabled `@rustbot merge` and `@rustbot delegate` in Cargo's triagebot config,
+  so reviewers can queue a merge that lands once CI passes instead of babysitting it,
+  and added the LLM policy to the new-PR welcome comment —
+  [rust-lang/cargo#17415](https://github.com/rust-lang/cargo/pull/17415)
+
 ## 2026-08-31
 
 * Completed FCP and merged the stabilization of Cargo's linting system.
