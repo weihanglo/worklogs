@@ -1,5 +1,55 @@
 # Weekly summaries
 
+## 2026-06-08
+
+* Fixed a 1.96 regression that locked Windows users out of alternate registries
+  such as AWS CodeArtifact.
+  Credential helpers there emit tokens ending in `\r\n`,
+  and once the registry network refactor switched to `http::HeaderValue`
+  the leftover `\r` was rejected with a cryptic "failed to parse header value".
+  Triaged the report down to the root cause and landed a fix that trims the `\r`,
+  which also closes a long-standing report of the same symptom —
+  [rust-lang/cargo#17081](https://github.com/rust-lang/cargo/pull/17081),
+  [rust-lang/cargo#17072](https://github.com/rust-lang/cargo/issues/17072),
+  [rust-lang/cargo#14073](https://github.com/rust-lang/cargo/issues/14073)
+* Moved yank policy from the source layer into the resolver,
+  auditing every `Source::query` call site
+  for whether yanked versions must be filtered or kept.
+  This makes `Source` yank-naive and leaves one place for version policies,
+  which RFC 3923 `min-publish-age` and any future resolution hooks build on.
+  Along the way pinned down some odd `cargo update --precise` behaviors with tests
+  so the refactor could not change them silently —
+  [rust-lang/cargo#17083](https://github.com/rust-lang/cargo/pull/17083),
+  [rust-lang/cargo#17082](https://github.com/rust-lang/cargo/pull/17082),
+  [rust-lang/cargo#17012](https://github.com/rust-lang/cargo/pull/17012)
+* Shepherded the Solaris file-locking fallout.
+  The `fcntl`-based `File::lock` emulation contributed to std last year
+  turned out to be process-scoped rather than handle-scoped,
+  so agreed with T-libs to remove it and return `Unsupported` instead.
+  Then filed a heads-up that Cargo would silently lose inter-process locking on Solaris
+  from the next nightly, a tier-2 regression, and laid out the options,
+  which led the Solaris maintainer to re-add an `fcntl` fallback inside Cargo —
+  [rust-lang/rust#157390](https://github.com/rust-lang/rust/issues/157390),
+  [rust-lang/rust#146269](https://github.com/rust-lang/rust/pull/146269),
+  [rust-lang/cargo#17084](https://github.com/rust-lang/cargo/issues/17084),
+  [rust-lang/cargo#17110](https://github.com/rust-lang/cargo/pull/17110)
+* Signed off on the cross-team FCP (lang, compiler, cargo)
+  to rename crate types `dylib` to `rdylib` and `staticlib` to `cstaticlib`,
+  ending the long-standing confusion between Rust-style and C-style libraries.
+  The Cargo team's position is to pass the names through as written in the manifest
+  rather than translating them,
+  so tooling that reads manifests or `cargo metadata` will need a loud heads-up when this ships —
+  [rust-lang/rust#153863](https://github.com/rust-lang/rust/issues/153863)
+* Reviewed and approved unblocking Cargo builds on Redox OS,
+  upstreaming a patch the project had carried downstream for years,
+  and pushed for clearer test modelling on the fix for the false
+  "no packages ready to publish" internal error that broke `cargo publish --workspace` for projects like uv —
+  [rust-lang/cargo#17064](https://github.com/rust-lang/cargo/pull/17064),
+  [rust-lang/cargo#17071](https://github.com/rust-lang/cargo/pull/17071)
+* Offered bandwidth to unstick the stalled `-Zno-link` rustc fix
+  so that Cargo can build on it to separate compiling from linking —
+  [rust-lang/rust#141706](https://github.com/rust-lang/rust/issues/141706)
+
 ## 2026-06-01
 
 * Coordinated the public landing of two Cargo security fixes:
