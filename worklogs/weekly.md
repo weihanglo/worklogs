@@ -1,5 +1,63 @@
 # Weekly summaries
 
+## 2026-05-04
+
+* Prepared the min-publish-age RFC for FCP by revising its text directly:
+  clarified `deny` semantics across the guide, reference, and rationale,
+  spelled out why `cargo install` is out of scope,
+  de-emphasized `cargo update --precise` as the escape hatch,
+  and moved the exclude-list and fallback ideas into rationale.
+  The Cargo team proposed FCP the same week.
+  This gives users a knob to wait out freshly published versions,
+  a mitigation for supply chain attacks that rely on immediate adoption.
+  Also corrected Cargo's resolver docs,
+  which still described `--precise <yanked>` as unstable —
+  [rust-lang/rfcs#3923](https://github.com/rust-lang/rfcs/pull/3923),
+  [rust-lang/cargo#15973](https://github.com/rust-lang/cargo/issues/15973),
+  [rust-lang/cargo#16944](https://github.com/rust-lang/cargo/pull/16944)
+* Fixed `[env]` relative paths resolving against the wrong directory
+  when the same variable is shadowed across config-include files.
+  Merging a shadowed `[env]` table kept the included file's stale source definition,
+  so a `relative = true` path set in the including config resolved relative to the included file instead.
+  This matters for anyone layering shared config through `include` —
+  [rust-lang/cargo#16957](https://github.com/rust-lang/cargo/pull/16957),
+  [rust-lang/cargo#16954](https://github.com/rust-lang/cargo/issues/16954)
+* Proposed an alternative in the Pre-RFC discussion on bounding Cargo's upward config discovery.
+  Tool wrappers like Pixi want to stop parent `.cargo/config.toml` files from leaking into builds.
+  Instead of a new search-ceiling primitive,
+  suggested a plain `config-discovery = false` config key,
+  which gets TOML, `CARGO_CONFIG_DISCOVERY`, and `--config` forms for free,
+  combined with the now-stable `include` to opt back into specific files.
+  Also noted that templated include paths like `{workspace-root}` would need config and manifest loading interleaved,
+  which is a non-trivial architecture change —
+  [Pre-RFC: bound Cargo's implicit upward discovery for config.toml files](https://internals.rust-lang.org/t/pre-rfc-proposal-bound-cargos-implicit-upward-discovery-for-config-toml-files/24210/9)
+* Tracked the `build-dir` layout v2 stabilization FCP to completion,
+  then blocked the merge with a formal concern
+  until rustc's bootstrap is switched over to the new layout,
+  so the stabilization does not break the compiler's own build.
+  The new layout reorganizes intermediate artifacts by package and hash
+  and is a prerequisite for fine-grain locking —
+  [rust-lang/cargo#16807](https://github.com/rust-lang/cargo/pull/16807),
+  [rust-lang/rust#155439](https://github.com/rust-lang/rust/pull/155439),
+  [rust-lang/cargo#15010](https://github.com/rust-lang/cargo/issues/15010)
+* Completed FCP and merged the change making the `crates-io` crate HTTP client agnostic.
+  Requests now go through a trait instead of a hard `curl` dependency,
+  so downstream tools embedding the crate can bring their own HTTP stack,
+  and it is one step toward Cargo's own async HTTP migration —
+  [rust-lang/cargo#16936](https://github.com/rust-lang/cargo/pull/16936),
+  [rust-lang/cargo#16845](https://github.com/rust-lang/cargo/issues/16845)
+* Reviewed and merged deny-by-default `text_direction_codepoint_in_{comment,literal}` manifest lints,
+  mirroring rustc's Trojan Source protections in `Cargo.toml`.
+  This lands the lint first reviewed in January under its final two-lint design,
+  since comments are stripped on publish but literals keep the code points unescaped —
+  [rust-lang/cargo#16950](https://github.com/rust-lang/cargo/pull/16950),
+  [rust-lang/cargo#16452](https://github.com/rust-lang/cargo/pull/16452)
+* Contributed Kitty terminal support, multiplexer pane focusing, and a CPU-usage fix
+  to cctop, a menubar app for switching between AI coding sessions —
+  [st0012/cctop#90](https://github.com/st0012/cctop/pull/90),
+  [st0012/cctop#93](https://github.com/st0012/cctop/pull/93),
+  [st0012/cctop#95](https://github.com/st0012/cctop/pull/95)
+
 ## 2026-04-27
 
 * Stabilized `build.warnings` after its FCP completed.
