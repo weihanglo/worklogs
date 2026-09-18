@@ -1,5 +1,11 @@
 # Daily worklogs
 
+## 2026-09-16
+
+* PR reviews
+  * Closed https://github.com/rust-lang/cargo/pull/16584#issuecomment-5698250388
+  * Commented https://github.com/hsivonen/encoding_rs/pull/143#issuecomment-5708498149
+
 ## 2026-09-15
 
 * Issue triages
