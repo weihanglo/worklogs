@@ -1,5 +1,41 @@
 # Weekly summaries
 
+## 2026-09-14
+
+* Started implementing the consumption side of pre-release version pinning.
+  `cargo update --precise <prerelease>` could write a pre-release into the lockfile,
+  but every subsequent build silently re-resolved it away,
+  the bug found while triaging the tracking issue.
+  Pinned pre-releases are now honored by every command that reads the lockfile,
+  behind a dedicated `-Zprerelease` flag instead of `-Zunstable-options`,
+  via an explicit version-request match mode so stable users never get pre-releases by accident —
+  [rust-lang/cargo#17464](https://github.com/rust-lang/cargo/pull/17464),
+  [rust-lang/cargo#13290](https://github.com/rust-lang/cargo/issues/13290)
+* Posted the call for testing for `-Ztrim-paths` ahead of stabilization,
+  asking nightly users for real-world reports of leaked paths and of the debugging experience —
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137#issuecomment-5607218160),
+  [#t-cargo > stabilization plan for `-Ztrim-paths`](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/stabilization.20plan.20for.20.60-Ztrim-paths.60/with/620855966)
+* Continued the FCP on defaulting Git fetches to the Git CLI.
+  Raised a concern that a dynamically detected default no longer fits a boolean `net.git-fetch-with-cli`,
+  since `cargo config get` could not reflect the real state,
+  and resolved it once the config gained an explicit `auto-detect` value like other `term.*` settings —
+  [rust-lang/cargo#17329](https://github.com/rust-lang/cargo/pull/17329)
+* Continued reviewing manifest support for `feature-documentation`,
+  a `doc` key on feature tables gated under the existing `feature-metadata` unstable feature,
+  asking for the unstable docs to present it as a sub-feature rather than a separate one.
+  It merged on 2026-09-14 —
+  [rust-lang/cargo#17447](https://github.com/rust-lang/cargo/pull/17447),
+  [rust-lang/cargo#17445](https://github.com/rust-lang/cargo/issues/17445)
+* Triaged a report that `OUT_DIR` is also set when running binaries, contradicting the docs.
+  Confirmed it started in 1.77 with an older build-script change,
+  classified it as an accidental stable-to-stable regression,
+  and nominated it for team discussion —
+  [rust-lang/cargo#17456](https://github.com/rust-lang/cargo/issues/17456),
+  [rust-lang/cargo#13204](https://github.com/rust-lang/cargo/pull/13204)
+* Shepherded the `crossbeam-epoch` bump addressing RUSTSEC-2026-0204 into Cargo,
+  asking for the bump to land on the latest 0.9.21 before approving —
+  [rust-lang/cargo#17427](https://github.com/rust-lang/cargo/pull/17427)
+
 ## 2026-09-07
 
 * Completed FCP and merged RFC 3485, feature descriptions in `Cargo.toml`, three years after it was opened.
