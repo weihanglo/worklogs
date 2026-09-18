@@ -1,5 +1,60 @@
 # Weekly summaries
 
+## 2026-06-15
+
+* Continued the RFC 3923 `min-publish-age` implementation through its first full review round:
+  dropped the `cargo install` and `cargo update --breaking` handling
+  once the RFC's intent was clarified,
+  simplified the "published N ago" display,
+  and landed follow-up cleanups that make `Source` fully yank-naive
+  and remove the easy-to-misuse `Summary::{as_summary,into_summary}` accessors.
+  Also added a missing test that `cargo install --path` honors MSRV,
+  found while auditing version selection paths —
+  [rust-lang/cargo#17012](https://github.com/rust-lang/cargo/pull/17012),
+  [rust-lang/cargo#17091](https://github.com/rust-lang/cargo/pull/17091),
+  [rust-lang/cargo#17092](https://github.com/rust-lang/cargo/pull/17092),
+  [rust-lang/cargo#17102](https://github.com/rust-lang/cargo/pull/17102)
+* Extended `trim-paths` to build scripts by exposing Cargo's `<from>=<to>` remap pairs
+  as `CARGO_TRIM_PATHS_REMAP`.
+  C/C++ compilers invoked from `build.rs` embed absolute paths that `trim-paths` could not reach,
+  so this lets `cc-rs` forward them via `-ffile-prefix-map`
+  and closes a reproducible-builds gap identified at this year's All Hands —
+  [rust-lang/cargo#17104](https://github.com/rust-lang/cargo/pull/17104),
+  [rust-lang/cargo#12137](https://github.com/rust-lang/cargo/issues/12137),
+  [rust-lang/cc-rs#593](https://github.com/rust-lang/cc-rs/issues/593),
+  [rust-lang/all-hands-2026#38](https://github.com/rust-lang/all-hands-2026/issues/38)
+* Shepherded the `cargo publish --workspace` false-deadlock fix into beta 1.97,
+  judging the minimal change safe to backport,
+  and closed a duplicate report pointing users at the fixed nightly —
+  [rust-lang/cargo#17094](https://github.com/rust-lang/cargo/pull/17094),
+  [rust-lang/cargo#17071](https://github.com/rust-lang/cargo/pull/17071),
+  [rust-lang/cargo#17100](https://github.com/rust-lang/cargo/issues/17100)
+* Triaged the 1.96 fallout for alternate registries:
+  publishes to JFrog Artifactory failing with `415` because Cargo now sends `Content-Type`,
+  where the header is correct per RFC 9110
+  and the reporter escalated to JFrog for a server-side fix;
+  a `registry+https` canonicalization change from the CVE fix
+  that turned out to be a misconfigured migration tool rather than a Cargo bug;
+  and a `cargo-credential` build break caused by an upstream `time` crate regression —
+  [rust-lang/cargo#17086](https://github.com/rust-lang/cargo/issues/17086),
+  [rust-lang/cargo#17096](https://github.com/rust-lang/cargo/issues/17096),
+  [rust-lang/cargo#17099](https://github.com/rust-lang/cargo/issues/17099)
+* Reviewed and approved further lint-system work,
+  reporting every manifest error in order instead of stopping at the first,
+  and a batch of git2-rs soundness fixes
+  (an unsound `slice::from_raw_parts` on empty binary diffs, panics on empty pathspecs),
+  settling that crate's MSRV at 1.87 —
+  [rust-lang/cargo#17095](https://github.com/rust-lang/cargo/pull/17095),
+  [rust-lang/git2-rs#1279](https://github.com/rust-lang/git2-rs/pull/1279),
+  [rust-lang/git2-rs#1276](https://github.com/rust-lang/git2-rs/issues/1276)
+* Kicked off a t-compiler discussion on stabilizing `-Zdefault-visibility`,
+  unstable for over 20 months, asking what blocks it and how to help.
+  The sticking point is `protected` visibility breaking links with GNU ld older than 2.40,
+  so floated stabilizing the explicitly set non-`protected` options first,
+  with RFC 3834 covering the `cdylib` side —
+  [#t-compiler > `-Zdefault-visibility`](https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/.60-Zdefault-visibility.60/near/601905515),
+  [rust-lang/rust#131090](https://github.com/rust-lang/rust/issues/131090)
+
 ## 2026-06-08
 
 * Fixed a 1.96 regression that locked Windows users out of alternate registries
