@@ -1,5 +1,59 @@
 # Weekly summaries
 
+## 2026-07-13
+
+* Merged the `build-dir` layout v2 stabilization after its FCP, crater run, and call for testing,
+  then coordinated the rollback once nightly exposed real regressions:
+  large workspaces such as Zed failed with "argument list too long"
+  because the per-package `out` directories blew up the library search path.
+  Per the Cargo team meeting, merged the revert of the stabilization commit
+  so the fixes are not on a shot clock, keeping the layout available behind `-Zbuild-dir-new-layout`,
+  reviewed and merged the fix restricting the search path to dylib crates,
+  approved the 1.98 beta backport of the layout fixes, and landed the beta submodule update.
+  Also dug into the `STATUS_NO_MEMORY` failure in rust-lang/rust's Windows dist job
+  caused by a 44k-character `PATH`, exploring `AddDllDirectory` as a way off `PATH` —
+  [rust-lang/cargo#16807](https://github.com/rust-lang/cargo/pull/16807),
+  [rust-lang/cargo#15010](https://github.com/rust-lang/cargo/issues/15010),
+  [rust-lang/cargo#17183](https://github.com/rust-lang/cargo/issues/17183),
+  [rust-lang/cargo#17187](https://github.com/rust-lang/cargo/pull/17187),
+  [rust-lang/cargo#17191](https://github.com/rust-lang/cargo/pull/17191),
+  [rust-lang/cargo#17207](https://github.com/rust-lang/cargo/pull/17207),
+  [rust-lang/rust#159076](https://github.com/rust-lang/rust/issues/159076)
+* Fixed a stable-behavior regression in 1.98 beta introduced by the June host-config fix:
+  `target.cfg(…)` runner and linker settings stopped applying to proc-macro and build-script compilation
+  under `--target <host>` even without `-Zhost-config`, while `target.<triple>` still did.
+  Narrowed the gate to `target-applies-to-host = false`, restored the 1.97 behavior,
+  and added a large table of tests so no edge case slips again; nominated for beta.
+  Along the way documented how proc-macro test binaries inconsistently pick up target runners
+  across `-Ztarget-applies-to-host` and `-Zhost-config`,
+  which Miri must predict to decide whether a crate is host or target,
+  and filed it as a design issue with Miri maintainers engaged —
+  [rust-lang/cargo#17198](https://github.com/rust-lang/cargo/pull/17198),
+  [rust-lang/cargo#17200](https://github.com/rust-lang/cargo/issues/17200),
+  [rust-lang/cargo#17123](https://github.com/rust-lang/cargo/pull/17123)
+* Dogfooded the newly stabilized `build.warnings` in Cargo's own CI,
+  replacing `-D warnings` passed to clippy and rustdoc with `CARGO_BUILD_WARNINGS=deny` plus `--keep-going`
+  so all warnings surface in a single run —
+  [rust-lang/cargo#17195](https://github.com/rust-lang/cargo/pull/17195)
+* Started the stabilization review of Cargo's lint system:
+  merged the docs clarification on how lints interact with MSRV raised during the Zulip review,
+  and filed a `redundant_readme` false positive when several README candidates exist,
+  which a contributor fixed shortly after —
+  [rust-lang/cargo#17184](https://github.com/rust-lang/cargo/pull/17184),
+  [rust-lang/cargo#17206](https://github.com/rust-lang/cargo/issues/17206),
+  [rust-lang/cargo#17208](https://github.com/rust-lang/cargo/pull/17208)
+* Filed a rustdoc bug where `--output-format=json` with an explicit `--emit=dep-info`
+  silently drops the JSON output while exiting 0,
+  which blocks Cargo from getting correct rebuild detection for rustdoc JSON
+  as part of stabilizing `-Zrustdoc-depinfo` —
+  [rust-lang/rust#158869](https://github.com/rust-lang/rust/issues/158869),
+  [rust-lang/cargo#17020](https://github.com/rust-lang/cargo/pull/17020)
+* Reviewed and merged user-facing fixes,
+  including the published manifest JSON schema's wrong `debug` variant casing that broke `taplo` validation,
+  and the `-Zno-embed-metadata` flag renamed to `-Zembed-metadata=no` so it can later be toggled both ways —
+  [rust-lang/cargo#17202](https://github.com/rust-lang/cargo/pull/17202),
+  [rust-lang/cargo#17149](https://github.com/rust-lang/cargo/pull/17149)
+
 ## 2026-07-06
 
 * Completed the 1.96.1 follow-through:
