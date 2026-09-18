@@ -1,5 +1,44 @@
 # Weekly summaries
 
+## 2026-05-11
+
+* Continued the SHA256 work across the libgit2 stack.
+  Updated libgit2-sys to libgit2 1.9.3 (picking up `git_remote_oid_type`) and released it,
+  prepared the git2 0.21.0 changelog,
+  and pushed a new revision of the unstable SHA256 bindings
+  that tracks the 1.9.3 release instead of libgit2 `main`
+  and keeps the public API additive via `*_ext` variants behind an `unstable-sha256` feature.
+  The Cargo integration got a matching revision,
+  still blocked on a git2 release before it can be tested end-to-end —
+  [rust-lang/git2-rs#1242](https://github.com/rust-lang/git2-rs/pull/1242),
+  [rust-lang/git2-rs#1247](https://github.com/rust-lang/git2-rs/pull/1247),
+  [rust-lang/git2-rs#1248](https://github.com/rust-lang/git2-rs/pull/1248),
+  [rust-lang/git2-rs#1206](https://github.com/rust-lang/git2-rs/pull/1206),
+  [rust-lang/cargo#16939](https://github.com/rust-lang/cargo/pull/16939)
+* Completed the config-include relative path fixes
+  by splitting out path normalization for included config files.
+  `Definition::root()` walked `parent().parent()` over un-normalized `..` segments,
+  so paths from an include one level up resolved to the wrong directory.
+  Both this and the `[env]` shadowing fix landed —
+  [rust-lang/cargo#16964](https://github.com/rust-lang/cargo/pull/16964),
+  [rust-lang/cargo#16957](https://github.com/rust-lang/cargo/pull/16957),
+  [rust-lang/cargo#16954](https://github.com/rust-lang/cargo/issues/16954)
+* Clarified that `.cargo-checksum.json` is not a security mechanism,
+  after the security response team asked for help
+  with a stream of LLM-driven reports that the file in vendored crates is mutable.
+  Took it to the Cargo team meeting, updated the `cargo vendor` docs,
+  added a `$comment` key to the generated file itself (the JSON Schema convention),
+  and asked whether the doc change was worth backporting so the wording reaches readers sooner —
+  [#t-cargo > adding a comment on `.cargo-checksum.json`](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/adding.20a.20comment.20on.20.60.2Ecargo-checksum.2Ejson.60),
+  [rust-lang/cargo#16966](https://github.com/rust-lang/cargo/pull/16966),
+  [rust-lang/cargo#16967](https://github.com/rust-lang/cargo/pull/16967)
+* Mentored a contributor fixing `-Zpublic-dependency` not invalidating the build cache:
+  toggling the flag changes the `--extern priv:` arguments passed to rustc,
+  but the fingerprint did not account for it, leaving stale artifacts.
+  Guided them through the test-first commit structure and the fingerprint documentation table, then merged —
+  [rust-lang/cargo#16965](https://github.com/rust-lang/cargo/pull/16965),
+  [rust-lang/cargo#16962](https://github.com/rust-lang/cargo/issues/16962)
+
 ## 2026-05-04
 
 * Prepared the min-publish-age RFC for FCP by revising its text directly:
