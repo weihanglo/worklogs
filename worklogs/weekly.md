@@ -1,5 +1,59 @@
 # Weekly summaries
 
+## 2026-06-29
+
+* Coordinated the Cargo side of the Rust 1.96.1 point release:
+  merged a temporary vendored copy of `libssh2-sys` carrying three CVE fixes onto the 1.96.0 branch,
+  merged the backport restoring pre-async HTTP timeout and retry behavior for spurious `curl` errors,
+  and approved the 1.96.1 release PR in rust-lang/rust.
+  Stable users get the security fixes and the registry networking fix without waiting for 1.97 —
+  [rust-lang/cargo#17140](https://github.com/rust-lang/cargo/pull/17140),
+  [rust-lang/cargo#17131](https://github.com/rust-lang/cargo/pull/17131),
+  [rust-lang/rust#158331](https://github.com/rust-lang/rust/pull/158331)
+* Fixed inter-process file locking on Solaris for `-Zfine-grain-locking`
+  by routing `LockManager` through the OS-aware flock shim,
+  closing the last gap after Solaris `fcntl` locking landed.
+  Without it, 1.98 nightly would silently lose cross-process exclusion on platforms without `flock` —
+  [rust-lang/cargo#17128](https://github.com/rust-lang/cargo/pull/17128),
+  [rust-lang/cargo#17084](https://github.com/rust-lang/cargo/issues/17084)
+* Kicked off design questions on how the newly stabilized `build.warnings`
+  should interact with rustc's `linker_messages` lint,
+  which deliberately ignores `-Dwarnings` while `build.warnings=deny` still fails the build.
+  The release team raised it days before 1.97 shipped with both features in the announcement.
+  Asked how an "ignores deny-warnings" property could be generalized across rustc, clippy, and Cargo lints
+  (for example, encoded in JSON diagnostics),
+  found that `build.warnings` also does not honor `--force-warn` for any lint,
+  and suggested hardcoding `linker_messages` short term while the mechanism is designed as a whole —
+  [rust-lang/cargo#17142](https://github.com/rust-lang/cargo/issues/17142)
+* Joined the team-wide review of Cargo's linting system ahead of its stabilization FCP.
+  Proposed borrowing Clippy's lint review checklist and running the FCP as a per-lint sign-off sheet,
+  pointed at the in-progress Clippy-style lint listing page for the docs,
+  defended mirroring Clippy's lint groups for consistency,
+  and flagged that the lint docs never say what "MSRV" means for a lint,
+  which led to a documentation clarification the following week —
+  [#t-cargo > Reviewing the linting system](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Reviewing.20the.20linting.20system/near/606840965),
+  [rust-lang/cargo#17184](https://github.com/rust-lang/cargo/pull/17184)
+* Started reviewing a resolver fix from a uv maintainer
+  that stops `cargo update -p` from churning unrelated dependency edges,
+  where packages with multiple lockfile versions and wide ranges (such as `windows-*`)
+  toggle back and forth on every unrelated update.
+  Asked for the test-first commit structure so the snapshot diff proves the behavior change —
+  [rust-lang/cargo#17148](https://github.com/rust-lang/cargo/pull/17148),
+  [rust-lang/cargo#5529](https://github.com/rust-lang/cargo/issues/5529)
+* Reviewed and merged `-Zhint-msrv`,
+  which forwards `package.rust-version` to rustc so future MSRV-aware compiler lints have the data,
+  and the removal of unreliable auto-fix suggestions from Cargo's manifest lints
+  until a token-stream based approach exists —
+  [rust-lang/cargo#17106](https://github.com/rust-lang/cargo/pull/17106),
+  [rust-lang/cargo#17139](https://github.com/rust-lang/cargo/pull/17139)
+* Explained why `target/debug/deps` keeps a copy of every executable next to the uplifted binary:
+  `deps` is Cargo's private build cache so switching branches does not rebuild,
+  and on Linux the uplifted binary is a hardlink rather than a second copy,
+  so the apparent duplication of 400 MiB executables costs no disk.
+  The reporter then found the existing report of `cargo clean` miscounting those hardlinked files —
+  [#t-cargo > Question: purpose of executable copy in `deps`?](https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Question.3A.20purpose.20of.20executable.20copy.20in.20.60deps.60.3F/near/606537864),
+  [rust-lang/cargo#15823](https://github.com/rust-lang/cargo/issues/15823)
+
 ## 2026-06-22
 
 * Completed `-Zmin-publish-age` (RFC 3923), now merged as an unstable feature.
