@@ -1,5 +1,68 @@
 # Weekly summaries
 
+## 2026-08-24
+
+* Merged the change enabling `-Zembed-metadata=no` by default on nightly Cargo,
+  after reviewing it over several weeks.
+  Crate metadata is no longer duplicated into `.rlib` files,
+  which shrinks `target/` substantially for every nightly user
+  and lets the team observe the behavior in the wild before stabilization.
+  When the rust-lang/rust submodule sync failed under the new default,
+  fixed Cargo's test snapshots to be agnostic to it,
+  and reviewed the Inside Rust post announcing the change —
+  [rust-lang/cargo#17267](https://github.com/rust-lang/cargo/pull/17267),
+  [rust-lang/cargo#17374](https://github.com/rust-lang/cargo/pull/17374),
+  [rust-lang/blog.rust-lang.org#1910](https://github.com/rust-lang/blog.rust-lang.org/pull/1910)
+* Merged the re-stabilization of the new build-dir layout
+  after its first stabilization was rolled back for performance and scaling issues.
+  The mitigations had baked on nightly for two weeks without reports
+  and most well-known tools had already migrated,
+  so confirmed the original FCP still stood rather than running a new one —
+  [rust-lang/cargo#17354](https://github.com/rust-lang/cargo/pull/17354),
+  [rust-lang/cargo#15010](https://github.com/rust-lang/cargo/issues/15010)
+* Reviewed and approved the new `build.fingerprint` config,
+  which turns `-Zchecksum-freshness` from an on/off switch into a proper config field (`fingerprint = "content"`),
+  one step toward stabilizing checksum-based rebuild detection
+  for users on filesystems with unreliable mtimes.
+  Also reviewed the preparatory de-duplication of the freshness test suites,
+  and suggested leaving room for an `"auto"` value so the default is not locked to mtime —
+  [rust-lang/cargo#17382](https://github.com/rust-lang/cargo/pull/17382),
+  [rust-lang/cargo#17376](https://github.com/rust-lang/cargo/pull/17376),
+  [rust-lang/cargo#14136](https://github.com/rust-lang/cargo/issues/14136)
+* Reviewed and approved switching Cargo's own docs to recommend `cargo install --locked`,
+  prompted by the arrayref supply-chain attack,
+  noting the team had already accepted making the locked behavior the default —
+  [rust-lang/cargo#17377](https://github.com/rust-lang/cargo/pull/17377),
+  [rust-lang/cargo#7169](https://github.com/rust-lang/cargo/issues/7169)
+* Shipped the libgit2 1.9.7 security update on the git2-rs 0.18 maintenance branch
+  (a command-injection fix in the libssh2 transport, CVE-2026-5917),
+  released as `libgit2-sys 0.18.8` so users of the current line get the fix without a major bump —
+  [rust-lang/git2-rs#1310](https://github.com/rust-lang/git2-rs/pull/1310)
+* Merged the fix making Cargo's `git gc` work under `safe.bareRepository=explicit`
+  by setting `GIT_DIR` explicitly.
+  Git 3.0 will enforce this setting,
+  and without the fix Cargo silently reinitializes its whole git database on the next fetch.
+  Good to have in place before Git CLI fetch becomes the default —
+  [rust-lang/cargo#17370](https://github.com/rust-lang/cargo/pull/17370),
+  [rust-lang/cargo#17329](https://github.com/rust-lang/cargo/pull/17329)
+* Bumped `cc` to 1.4.3 in rustc bootstrap and Miri
+  so C dependencies get path remapping for free,
+  a prerequisite for the `-Ztrim-paths` bootstrap integration.
+  Newer `cc` gates LTO behind `-Clinker-plugin-lto`,
+  so made bootstrap pass `-flto` explicitly to keep LTO mode.
+  That incidentally enabled LTO on aarch64-linux and broke Miri's rustc-dev consumers,
+  which cannot assume an LTO-capable linker,
+  until a follow-up disabled C LTO on that target —
+  [rust-lang/rust#161260](https://github.com/rust-lang/rust/pull/161260),
+  [rust-lang/rust#161689](https://github.com/rust-lang/rust/pull/161689),
+  [rust-lang/rust#161049](https://github.com/rust-lang/rust/pull/161049)
+* Started digging into why pre-release versions pinned via `cargo update --precise`
+  are silently replaced on the next build.
+  Traced it to the lockfile consumption path in the resolver
+  never applying pre-release matching to manifest requirements,
+  which poisons the registry entry and re-resolves the dependency —
+  [rust-lang/cargo#13290](https://github.com/rust-lang/cargo/issues/13290)
+
 ## 2026-08-17
 
 * Started migrating rustc bootstrap to Cargo's `-Ztrim-paths`,
