@@ -1,5 +1,18 @@
 # Daily worklogs
 
+## 2026-09-25
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17494#issuecomment-5833667801
+  * Closed https://github.com/rust-lang/cargo/issues/10857#issuecomment-5834244748
+  * Closed https://github.com/rust-lang/cargo/issues/16528#issuecomment-5835206082
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17513#discussion_r4107520457
+  * Merged https://github.com/rust-lang/cargo/pull/17215#pullrequestreview-5321387813
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/A.20naive.20rustc.20.60--job-frontend.60.20integration/with/626893138
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Transitioning.20from.20mtimes.20to.20checksums/near/626895157
+
 ## 2026-09-24
 
 * Issue triages
