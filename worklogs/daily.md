@@ -1,5 +1,14 @@
 # Daily worklogs
 
+## 2026-10-09
+
+* Issue triages
+  * Created https://github.com/rust-lang/cargo/issues/17571
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17573#pullrequestreview-5473781769
+* PR submissions
+  * Created https://github.com/mozilla/sccache/pull/2894
+
 ## 2026-10-08
 
 * RFC reviews
