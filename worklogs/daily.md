@@ -1,5 +1,29 @@
 # Daily worklogs
 
+## 2026-10-14
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17586#issuecomment-6170387434
+  * Closed https://github.com/rust-lang/cargo/issues/17581#issuecomment-6173163879
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17588
+  * Merged https://github.com/rust-lang/git2-rs/pull/1315#pullrequestreview-5526557409
+  * Closed https://github.com/rust-lang/git2-rs/pull/635#issuecomment-6181777092
+  * Closed https://github.com/rust-lang/git2-rs/pull/1270#issuecomment-6181993561
+  * Closed https://github.com/rust-lang/git2-rs/pull/525#issuecomment-6182127537
+  * Merged https://github.com/rust-lang/git2-rs/pull/1308#pullrequestreview-5526869598
+  * Commented https://github.com/rust-lang/git2-rs/pull/1234#issuecomment-6182319627
+  * Merged https://github.com/rust-lang/git2-rs/pull/1249#pullrequestreview-5526969495
+  * Commented https://github.com/rust-lang/git2-rs/pull/1238#pullrequestreview-5527745464
+  * Merged https://github.com/rust-lang/git2-rs/pull/1306#pullrequestreview-5527789441
+* PR submissions
+  * Commented https://github.com/rust-lang/rust/pull/163910#issuecomment-6169443580
+  * Merged https://github.com/rust-lang/cargo/pull/17589
+  * Merged https://github.com/rust-lang/cargo/pull/17590
+  * Created https://github.com/rust-lang/rust/pull/164324
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Breakage.20from.20.28probably.29.20build-dir.20v2/near/631643337
+
 ## 2026-10-13
 
 * Issue triages
