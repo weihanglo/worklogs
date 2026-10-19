@@ -1,5 +1,16 @@
 # Daily worklogs
 
+## 2026-10-16
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17601#issuecomment-6219142122
+  * Commented https://github.com/rust-lang/cargo/issues/17448#issuecomment-6219689826
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17574#discussion_r4296787351
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Usage.20of.20-Zno-embed-metadata/near/632300105
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Cargo.20remote.20cache.20.2F.20deduplication.20design/near/632294345
+
 ## 2026-10-15
 
 * Issue triages
