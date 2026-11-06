@@ -1,5 +1,17 @@
 # Daily worklogs
 
+## 2026-10-28
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17626#issuecomment-6487626042
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17657#discussion_r4403759009
+  * Merged https://github.com/rust-lang/cargo/pull/17608#pullrequestreview-5688782663
+* PR submissions
+  * Merged https://github.com/rust-lang/libz-sys/pull/280
+  * Merged https://github.com/rust-lang/libz-sys/security/advisories/GHSA-8p3x-q3q3-q3v5#event-1245648
+  * Created https://github.com/rustsec/advisory-db/pull/3458
+
 ## 2026-10-27
 
 * PR reviews
