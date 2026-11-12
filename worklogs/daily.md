@@ -1,5 +1,17 @@
 # Daily worklogs
 
+## 2026-11-10
+
+* PR reviews
+  * Commented https://github.com/jlizen/goals/pull/1#pullrequestreview-5845125851
+  * Commented https://github.com/rust-lang/blog.rust-lang.org/pull/2001#discussion_r4525952888
+  * Merged https://github.com/rust-lang/cargo/pull/17705#pullrequestreview-5846322595
+  * Merged https://github.com/rust-lang/cargo/pull/17707#pullrequestreview-5849508301
+* PR submissions
+  * Created https://github.com/rust-lang/cargo/pull/17709
+* Discussions
+  * Commmented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Interaction.20of.20Cargo.20jobserver.20tests.20and.20parallel.20frontend/near/639152114
+
 ## 2026-11-09
 
 * PR reviews
