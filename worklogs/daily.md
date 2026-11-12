@@ -1,5 +1,22 @@
 # Daily worklogs
 
+## 2026-11-11
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17278#issuecomment-6814022959
+* FCP reviews
+  * Created https://github.com/rust-lang/cargo/pull/17715#issuecomment-6814645045
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17711/changes#r4538137402
+  * Merged https://github.com/rust-lang/rust/pull/165820#issuecomment-6801579376
+  * Merged https://github.com/rust-lang/cargo/pull/17708#pullrequestreview-5859694462
+  * Merged https://github.com/rust-lang/cargo/pull/17713#pullrequestreview-5869342924
+  * Commented https://github.com/rust-lang/cargo/pull/17567#discussion_r4546539517
+* PR submissions
+  * https://github.com/rust-lang/cargo/pull/17715
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Should.20t-cargo.20continue.20using.20FCP.3F/with/639508317
+
 ## 2026-11-10
 
 * PR reviews
