@@ -1,5 +1,13 @@
 # Daily worklogs
 
+## 2026-11-13
+
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17524#pullrequestreview-5886570575
+  * Merged https://github.com/rust-lang/cargo/pull/17732#pullrequestreview-5897706858
+* Discussions
+  * Created https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/.60--job-frontend.3D2.60.20by.20default.20on.20nightly.20and.20blogpost.20review/with/640154545
+
 ## 2026-11-12
 
 * FCP reviews
