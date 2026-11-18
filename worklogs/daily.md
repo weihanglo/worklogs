@@ -1,5 +1,20 @@
 # Daily worklogs
 
+## 2026-11-16
+
+* Issue triages
+  * Commented https://github.com/rust-lang/rust/issues/165241#issuecomment-6934187394
+  * Commented https://github.com/rust-lang/cargo/issues/13020#issuecomment-6936480237
+* PR reviews
+  * Commented https://github.com/rust-lang/cargo/pull/17751#issuecomment-6938448331
+  * Commented 
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17747
+  * Merged https://github.com/rust-lang/cargo/pull/17748
+  * Merged https://github.com/rust-lang/cargo/pull/17750
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/246057-t-cargo/topic/Turning.20cargo.20into.20a.20subtree/near/641068351
+
 ## 2026-11-15
 
 * Issue triages
