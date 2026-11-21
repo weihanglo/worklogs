@@ -1,5 +1,20 @@
 # Daily worklogs
 
+## 2026-11-19
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17771#issuecomment-7017324731
+* PR reviews
+  * Merged https://github.com/rust-lang/cargo/pull/17620#pullrequestreview-5976009744
+  * Merged https://github.com/rust-lang/cargo/pull/17762#pullrequestreview-5965850707
+  * Commented https://github.com/rust-lang/cargo/pull/17772#pullrequestreview-5981025177
+  * Merged https://github.com/rust-lang/cargo/pull/17774#pullrequestreview-5986256456
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17769
+  * Merged https://github.com/rust-lang/cargo/pull/17773
+  * Merged https://github.com/rust-lang/cargo/pull/17775
+  * Created https://github.com/celinval/crabshell/pull/5
+
 ## 2026-11-18
 
 * PR reviews
