@@ -1,5 +1,22 @@
 # Daily worklogs
 
+## 2026-11-20
+
+* Issue triages
+  * Commented https://github.com/rust-lang/cargo/issues/17777#issuecomment-7040570490
+* PR reviews
+  * Closed https://github.com/rust-lang/cargo/pull/17778#issuecomment-7040756874
+  * Commented https://github.com/rust-lang/rust/pull/166238#pullrequestreview-5994610367
+  * Commented https://github.com/rust-lang/cargo/pull/17512#discussion_r4638091410
+  * Merged https://github.com/rust-lang/cargo/pull/17782
+* PR submissions
+  * Merged https://github.com/rust-lang/cargo/pull/17780
+  * Created https://github.com/celinval/crabshell/pull/6
+  * Created https://github.com/rust-lang/cargo/pull/17781
+  * Created https://github.com/rust-lang/rust/pull/166288
+* Discussions
+  * Commented https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/Enabling.20the.20parallel.20frontend.20by.20default.20on.20nightly/near/642238177
+
 ## 2026-11-19
 
 * Issue triages
